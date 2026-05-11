@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200">
+  <title>Cat's Playground</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Titan+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:   #FFB7C5;
+      --green:  #A3D36C;
+      --dark:   #463438;
+      --cream:  #FFF9F0;
+      --yellow: #FFE566;
+      --blue:   #95C2FF;
+      --mint:   #9EE8B5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { 
+      font-family: 'Arial', sans-serif; 
+      background-color: var(--cream); 
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(255,183,197,0.28) 0%, transparent 42%),
+        radial-gradient(circle at 88% 80%, rgba(163,211,108,0.22) 0%, transparent 42%);
+      color: var(--dark); 
+    }
+
+    /* ── TITLE ── */
+    .game-title { 
+      font-family: 'Titan One', cursive; 
+      font-size: clamp(3.2rem, 10vw, 5.5rem); 
+      color: white; 
+      -webkit-text-stroke: 3px var(--dark); 
+      letter-spacing: 3px; 
+      animation: float 3s ease-in-out infinite, glaw 2s ease-in-out infinite alternate; 
+      line-height: 1; 
+    }
+    
+    /* 當登入卡片還在畫面上時，僅保留變色動畫，停止浮動動畫 */
+    body:has(#auth-card:not(.hidden)) .game-title {
+      animation: glaw 2s ease-in-out infinite alternate; /* 只套用變色動畫 */
+      transform: translateY(0); /* 固定位置不動 */
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* ── FLIP CARD (Login/Register) ── */
+    .flip-card { width: 100%; max-width: 500px; height: 620px; perspective: 1000px; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    
+    .flip-card-front, .flip-card-back { 
+      position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+      border: 8px solid var(--dark); border-radius: 35px; background: rgba(255,255,255,0.95); 
+      overflow: hidden; display: flex; flex-direction: column; 
+    }
+    .flip-card-front { padding: 40px; box-shadow: 15px 15px 0 var(--dark); }
+    .flip-card-back { transform: rotateY(180deg); box-shadow: 15px 15px 0 var(--dark); }
+    
+    .pass-header { background: #f0ece8; padding: 20px; border-bottom: 5px dashed var(--dark); text-align: center; }
+    .pass-header h2 { color: var(--dark); font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; }
+    .pass-body { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
+
+    /* ── INPUT FIELDS ── */
+    .input-box-group { 
+      display: flex; align-items: center; margin-bottom: 20px; 
+      border: 4px solid var(--dark); border-radius: 15px; overflow: hidden; 
+      background: white; transition: all 0.2s; 
+    }
+    .input-box-group:focus-within { border-color: var(--green); transform: scale(1.02); }
+    
+    .side-label { 
+      background: var(--dark); color: white; padding: 14px 12px; 
+      font-size: 16px; font-weight: 900; letter-spacing: 1px; 
+      min-width: 120px; text-align: center; white-space: nowrap; flex-shrink: 0; 
+      clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
+      margin-right: -10px; padding-right: 35px;
+    }
+    
+    .game-input { 
+      width: 100%; padding: 10px 15px; font-size: 18px; font-weight: 700; 
+      font-family: 'Nunito', sans-serif; border: none; outline: none; background: transparent; color: var(--dark); 
+    }
+
+    /* ── BUTTONS ── */
+    .game-btn {
+      cursor: pointer;
+      border: 5px solid var(--dark);
+      border-radius: 60px;
+      padding: 12px;
+      font-size: 26px;
+      font-weight: 900;
+      box-shadow: 0 6px 0 var(--dark);
+      position: relative;
+      transition: all 0.1s;
+      text-align: center;
+    }
+    .game-btn:not(:disabled):hover { transform: translateY(-4px); box-shadow: 0 10px 0 var(--dark); }
+    .game-btn:active { top: 4px; transform: translateY(0); box-shadow: 0 2px 0 var(--dark); }
+    .game-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .btn-red { background: #ffa7a7; color: white; text-shadow: 2px 2px 0 var(--dark); } 
+    .btn-green { background: #eff3d9; color: var(--dark); text-shadow: none; } 
+    .btn-blue { background: white; color: var(--dark); text-shadow: none; }
+    .btn-logout { background: #e79494; color: white; text-shadow: 2px 2px 0 var(--dark); }
+
+    .switch-link { text-align: center; margin-top: 15px; font-size: 0.85rem; font-weight: 900; color: #aaa; text-decoration: underline; cursor: pointer; transition: color 0.2s; }
+    .switch-link:hover { color: var(--dark); }
+    .hidden { display: none !important; }
+
+    /* ── Hub & Cards ── */
+    #hub { display: flex; flex-direction: column; align-items: center; gap: 34px; max-width: 1260px; }
+    .player-bar { 
+      width: 100%; max-width: 900px; background: white; border: 6px solid var(--dark); border-radius: 24px; 
+      padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 12px 12px 0 var(--dark); 
+    }
+    .player-main { display: flex; align-items: center; gap: 20px; }
+    .player-avatar { width: 112px; height: 112px; background: #FFF9F0; border: 6px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden; flex-shrink: 0; }
+    .player-avatar img { width: 100%; height: 100%; object-fit: cover; transform-origin: center; }
+    .player-actions { display: flex; gap: 12px; align-items: center; }
+    .game-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; width: 100%; justify-content: center; max-width: 1210px; }
+    
+    .game-card {
+      width: 280px;
+      background: white;
+      border: 6px solid #463438;
+      border-radius: 25px;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 10px 10px 0 #463438;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+    .game-card:hover { top: -4px; transform: rotate(3deg) scale(1.04); }
+    .game-card:active { top: 5px; box-shadow: 2px 2px 0 var(--dark); }
+    
+    /* Hover Shadows & Colors */
+    .game-card:nth-child(1) { background: #fbdbe2; } 
+    .game-card:nth-child(1):hover { box-shadow: 7px 11px 0 var(--pink); }
+    .game-card:nth-child(2) { background: #fdf7d6; } 
+    .game-card:nth-child(2):hover { box-shadow: 7px 11px 0 var(--yellow); }
+    .game-card:nth-child(3) { background: #dceaff; }
+    .game-card:nth-child(3):hover { box-shadow: 7px 11px 0 var(--blue); }
+    .game-card:nth-child(4) { background: #ddf6e5; }
+    .game-card:nth-child(4):hover { box-shadow: 7px 11px 0 var(--mint); }
+
+    .game-card .card-title { font-family: 'Titan One', cursive; font-size: 1.6rem; font-weight: 100; letter-spacing: 1px; text-align: center; margin-top: 8px; color: var(--dark); }
+    .game-card .card-desc { font-size: 0.75rem; font-weight: 700; color: #888; letter-spacing: 1px; text-align: center; text-transform: uppercase; }
+    .card-badge { background: white; border: 3px solid var(--dark); border-radius: 30px; padding: 4px 14px; font-size: 0.8rem; font-weight: 900; color: var(--dark); margin-top: 10px; }
+    .stamp { position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; border: 4px solid var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-15deg); color: var(--green); font-weight: 900; font-size: 12px; pointer-events: none; opacity: 0.7; }
+    .photo-input { padding-top: 14px; padding-bottom: 14px; font-size: 0.85rem; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(70,52,56,0.45); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 10000; }
+    .profile-modal { width: 100%; max-width: 520px; background: rgba(255,255,255,0.98); border: 7px solid var(--dark); border-radius: 28px; box-shadow: 14px 14px 0 var(--dark); padding: 30px; }
+    .profile-modal h2 { font-size: 1.7rem; font-weight: 900; margin-bottom: 18px; color: var(--dark); }
+    .profile-preview { width: 132px; height: 132px; border: 6px solid var(--dark); border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 3rem; margin: 0 auto 18px; }
+    .profile-preview img { width: 100%; height: 100%; object-fit: cover; transform-origin: center; }
+    .photo-controls { display: grid; gap: 12px; margin: -4px 0 18px; }
+    .photo-controls label { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 12px; font-size: 0.85rem; font-weight: 900; color: var(--dark); }
+    .photo-controls input { accent-color: var(--green); }
+
+    /* ── CSS ICONS ── */
+    .css-icon-wrapper { position: relative; width: 60px; height: 60px; display: flex; justify-content: center; align-items: flex-end; }
+    
+    .css-cat { width: 46px; height: 38px; background: var(--cream); border: 4px solid var(--dark); border-radius: 50% 50% 40% 40%; position: relative; z-index: 2; margin: 0 auto; }
+    .css-cat::before, .css-cat::after { content: ''; position: absolute; top: -45%; width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 18px solid var(--dark); z-index: -1; }
+    .css-cat::before { left: -10px; transform: rotate(-33deg); }
+    .css-cat::after { right: -10px; transform: rotate(33deg); }
+    .css-cat-eyes { position: absolute; top: 14px; left: 50%; margin-left: -12px; width: 6px; height: 6px; background: var(--dark); border-radius: 50%; box-shadow: 18px 0 0 var(--dark); animation: cat-blink 2s infinite; }
+    .css-cat-nose { position: absolute; top: 23px; left: 50%; transform: translateX(-50%); width: 6px; height: 4px; background: var(--pink); border-radius: 50%; }
+    @keyframes cat-blink { 0%, 95%, 98%, 100% { transform: scaleY(1); } 96%, 97% { transform: scaleY(0.1); } }
+
+    .css-antenna { position: relative; width: 100%; height: 100%; }
+    .css-antenna-base { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 24px; height: 6px; background: var(--dark); border-radius: 3px 3px 0 0; }
+    .css-antenna-base::before { content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 6px; height: 20px; background: var(--dark); }
+    .css-antenna-dot { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; background: var(--green); border: 3px solid var(--dark); border-radius: 50%; z-index: 2; }
+    .css-antenna-waves { position: absolute; bottom: 12px; top: 10%; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--dark); animation: signal-pulse 2s infinite ease-in-out; }
+    .css-antenna-waves::after { content: ''; position: absolute; top: -50%; left: -36%; width: 46px; height: 46px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--dark); animation: signal-pulse 2s infinite ease-in-out 0.3s; }
+    @keyframes signal-pulse { 0% { opacity: 0.1; } 50% { opacity: 0.8; } 100% { opacity: 0.1; } }
+
+    .css-shield { width: 46px; height: 54px; background: var(--blue); border: 4px solid var(--dark); border-radius: 18px 18px 22px 22px; position: relative; clip-path: polygon(50% 0%, 100% 16%, 92% 68%, 50% 100%, 8% 68%, 0 16%); }
+    .css-shield::before { content: ''; position: absolute; inset: 9px 12px 18px; border: 4px solid white; border-top: 0; border-radius: 0 0 14px 14px; }
+    .css-shield::after { content: ''; position: absolute; top: 17px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: white; border: 3px solid var(--dark); border-radius: 50%; }
+
+    .css-quantum { position: relative; width: 62px; height: 62px; }
+    .css-quantum::before, .css-quantum::after { content: ''; position: absolute; inset: 10px 4px; border: 4px solid var(--dark); border-radius: 50%; }
+    .css-quantum::before { transform: rotate(28deg); }
+    .css-quantum::after { transform: rotate(-28deg); }
+    .css-quantum-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background: var(--mint); border: 4px solid var(--dark); border-radius: 50%; z-index: 2; }
+    .css-quantum-dot { position: absolute; width: 12px; height: 12px; background: white; border: 3px solid var(--dark); border-radius: 50%; z-index: 3; }
+    .css-quantum-dot:nth-child(2) { top: 6px; left: 25px; }
+    .css-quantum-dot:nth-child(3) { right: 4px; bottom: 18px; }
+    .css-quantum-dot:nth-child(4) { left: 5px; bottom: 18px; }
+
+    @keyframes glaw {
+      0% { text-shadow: 0 0 4px #ffafc1, 0 0 9px #ffafc1; }
+      50% { text-shadow: 0 0 4px #ffed95, 0 0 9px #ffed95; }
+      100% { text-shadow: 0 0 6px #95c2ff, 0 0 12px #95c2ff }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+  <h1 class="game-title mb-10 text-center">Cat's Playground</h1>
+
+  <!-- ① Login / Register flip card -->
+  <div class="flip-card" id="auth-card">
+    <div class="flip-card-inner">
+      <!-- Front: Login -->
+      <div class="flip-card-front">
+        <div class="flex-grow flex flex-col justify-center">
+          <!-- 改變這裡的 LOGIN_ 樣式以符合圖片要求 -->
+          <h2 style="font-family:'Arial', sans-serif; font-weight:900; font-style:italic; font-size: 2.2rem; text-align: left; margin-bottom: 1.5rem; color: var(--dark);">LOGIN_</h2>
+          <div class="input-box-group">
+            <div class="side-label">NAME</div>
+            <input type="text" id="login-user" class="game-input" placeholder="Your name...">
+          </div>
+          <div class="input-box-group">
+            <div class="side-label" style="background: var(--dark);">PASS</div>
+            <input type="password" id="login-pass" class="game-input" placeholder="●●●●●●">
+          </div>
+        </div>
+        <button id="btn-login" onclick="handleLogin()" class="game-btn btn-red w-full">START!</button>
+        <p class="switch-link" onclick="toggleAuth()">New cat? Register</p>
+      </div>
+      <!-- Back: Register -->
+      <div class="flip-card-back">
+        <div class="pass-header"><h2>ADVENTURE PASS</h2></div>
+        <div class="pass-body">
+          <div class="stamp">APPROVED</div>
+          <div class="input-box-group">
+            <div class="side-label">IDENTITY</div>
+            <input type="text" id="reg-user" class="game-input" placeholder="Name your cat">
+          </div>
+          <div class="input-box-group">
+            <div class="side-label">SECRET</div>
+            <input type="password" id="reg-pass" class="game-input" placeholder="Enter password">
+          </div>
+          <div class="input-box-group">
+            <div class="side-label">CONFIRM</div>
+            <input type="password" id="reg-confirm" class="game-input" placeholder="Repeat password">
+          </div>
+          <div class="input-box-group">
+            <div class="side-label">PHOTO</div>
+            <input type="file" id="reg-photo" class="game-input photo-input" accept="image/*">
+          </div>
+          <button id="btn-reg" onclick="handleRegister()" class="game-btn btn-green w-full mt-4">JOIN NOW!</button>
+          <p class="switch-link" onclick="toggleAuth()">Go back to login</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② Cat's Playground hub (shown after login) -->
+  <div id="hub" class="hidden w-full max-w-3xl">
+    <div class="player-bar">
+      <div class="player-main">
+        <div id="player-avatar" class="player-avatar">🐱</div>
+        <div>
+          <div id="display-username" class="text-2xl font-black">User</div>
+          <div class="text-sm font-bold text-gray-400 uppercase tracking-widest">Cat Explorer</div>
+        </div>
+      </div>
+      <div class="player-actions">
+        <button onclick="openProfileEditor()" class="game-btn btn-blue" style="font-size:14px;padding:8px 20px;width:auto;margin-top:0;">EDIT</button>
+        <button onclick="handleLogout()" class="game-btn btn-logout" style="font-size:14px;padding:8px 20px;width:auto;margin-top:0;">LOGOUT</button>
+      </div>
+    </div>
+
+    <div class="game-cards">
+      <!-- ✅ Meowtopia card -->
+      <a class="game-card" id="meowtopia-card" href="meowtopia/index.html">
+        <div class="css-icon-wrapper">
+          <div class="css-cat">
+            <div class="css-cat-eyes"></div>
+            <div class="css-cat-nose"></div>
+          </div>
+        </div>
+        <div class="card-title">Meowtopia</div>
+        <div class="card-desc">Guide your cat through mazes!</div>
+        <div class="card-badge">LV. <span id="hub-meow-lv">1</span> / 11</div>
+      </a>
+
+      <!-- Sensor Placement card -->
+      <a class="game-card" id="placement-card" href="placement/index.html">
+        <div class="css-icon-wrapper">
+          <div class="css-antenna">
+            <div class="css-antenna-waves"></div>
+            <div class="css-antenna-dot"></div>
+            <div class="css-antenna-base"></div>
+          </div>
+        </div>
+        <div class="card-title">Sensor Patrol</div>
+        <div class="card-desc">Place sensors to cover zones!</div>
+        <div class="card-badge">LV. <span id="hub-place-lv">1</span> / 19</div>
+      </a>
+
+      <!-- Quantum Security card -->
+      <a class="game-card" id="quantum-security-card" href="https://s112321005.github.io/Cybersecurity-Visualization/QuantumCybersecurityEducationPlatform.html" target="_blank" rel="noopener noreferrer">
+        <div class="css-icon-wrapper">
+          <div class="css-shield"></div>
+        </div>
+        <div class="card-title">Quantum Security</div>
+        <div class="card-desc">Explore cybersecurity visuals!</div>
+        <div class="card-badge">OPEN</div>
+      </a>
+
+      <!-- Quantum Computing Verification card -->
+      <a class="game-card" id="quantum-verification-card" href="#">
+        <div class="css-icon-wrapper">
+          <div class="css-quantum">
+            <div class="css-quantum-core"></div>
+            <div class="css-quantum-dot"></div>
+            <div class="css-quantum-dot"></div>
+            <div class="css-quantum-dot"></div>
+          </div>
+        </div>
+        <div class="card-title">Quantum Verification</div>
+        <div class="card-desc">Link reserved for validation!</div>
+        <div class="card-badge">COMING SOON</div>
+      </a>
+    </div>
+  </div>
+
+  <div id="profile-modal" class="modal-overlay hidden">
+    <div class="profile-modal">
+      <h2>EDIT PROFILE_</h2>
+      <div id="edit-photo-preview" class="profile-preview">🐱</div>
+      <div class="photo-controls">
+        <label for="edit-photo-x">X POS<input type="range" id="edit-photo-x" min="0" max="100" value="50"></label>
+        <label for="edit-photo-y">Y POS<input type="range" id="edit-photo-y" min="0" max="100" value="50"></label>
+        <label for="edit-photo-scale">ZOOM<input type="range" id="edit-photo-scale" min="1" max="2.5" step="0.05" value="1"></label>
+      </div>
+      <div class="input-box-group">
+        <div class="side-label">NAME</div>
+        <input type="text" id="edit-user" class="game-input" placeholder="Your name...">
+      </div>
+      <div class="input-box-group">
+        <div class="side-label">PASS</div>
+        <input type="password" id="edit-pass" class="game-input" placeholder="New password">
+      </div>
+      <div class="input-box-group">
+        <div class="side-label">CONFIRM</div>
+        <input type="password" id="edit-confirm" class="game-input" placeholder="Repeat new password">
+      </div>
+      <div class="input-box-group">
+        <div class="side-label">PHOTO</div>
+        <input type="file" id="edit-photo" class="game-input photo-input" accept="image/*">
+      </div>
+      <div class="flex gap-3 mt-5">
+        <button id="btn-profile-save" onclick="handleProfileSave()" class="game-btn btn-green w-full" style="font-size:18px;">SAVE</button>
+        <button onclick="closeProfileEditor()" class="game-btn btn-red w-full" style="font-size:18px;">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv0cOeJs-vdZehlABjrcJhQNQi9AWsGUutM7KXNFKPbFliqjWLA/exec';
+    const PHOTO_KEY = 'playerPhoto';
+    const PHOTO_X_KEY = 'playerPhotoX';
+    const PHOTO_Y_KEY = 'playerPhotoY';
+    const PHOTO_SCALE_KEY = 'playerPhotoScale';
+    let pendingEditPhoto = '';
+
+    window.onload = () => {
+      const u  = sessionStorage.getItem('currentUser');
+      const ml = parseInt(sessionStorage.getItem('meow_level'));
+      const pl = parseInt(sessionStorage.getItem('placement_level') || sessionStorage.getItem('placementLevel'));
+      if (u && !isNaN(ml) && !isNaN(pl)) showHub(u, ml, pl);
+      document.getElementById('edit-photo')?.addEventListener('change', async event => {
+        const photo = await readPhotoInput(event.target);
+        pendingEditPhoto = photo;
+        if (photo) renderAvatar('edit-photo-preview', photo, document.getElementById('edit-photo-x').value, document.getElementById('edit-photo-y').value, document.getElementById('edit-photo-scale').value);
+      });
+      ['edit-photo-x', 'edit-photo-y', 'edit-photo-scale'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', () => {
+          renderAvatar('edit-photo-preview', pendingEditPhoto || sessionStorage.getItem(PHOTO_KEY), document.getElementById('edit-photo-x').value, document.getElementById('edit-photo-y').value, document.getElementById('edit-photo-scale').value);
+        });
+      });
+    };
+
+    function toggleAuth() { document.getElementById('auth-card').classList.toggle('flipped'); }
+
+    function setStoredProfile(username, meowLv, placeLv, photo, photoX = 50, photoY = 50, photoScale = 1) {
+      sessionStorage.setItem('currentUser', username);
+      sessionStorage.setItem('meow_level', meowLv);
+      sessionStorage.setItem('placement_level', placeLv);
+      sessionStorage.setItem('placementLevel', placeLv);
+      sessionStorage.setItem('currentLevel', meowLv);
+      if (photo) sessionStorage.setItem(PHOTO_KEY, photo);
+      else sessionStorage.removeItem(PHOTO_KEY);
+      sessionStorage.setItem(PHOTO_X_KEY, photoX);
+      sessionStorage.setItem(PHOTO_Y_KEY, photoY);
+      sessionStorage.setItem(PHOTO_SCALE_KEY, photoScale);
+      if (photo) localStorage.setItem(PHOTO_KEY, photo);
+      else localStorage.removeItem(PHOTO_KEY);
+      localStorage.setItem(PHOTO_X_KEY, photoX);
+      localStorage.setItem(PHOTO_Y_KEY, photoY);
+      localStorage.setItem(PHOTO_SCALE_KEY, photoScale);
+    }
+
+    function getPhotoX() { return parseInt(sessionStorage.getItem(PHOTO_X_KEY) || localStorage.getItem(PHOTO_X_KEY) || '50') || 50; }
+    function getPhotoY() { return parseInt(sessionStorage.getItem(PHOTO_Y_KEY) || localStorage.getItem(PHOTO_Y_KEY) || '50') || 50; }
+    function getPhotoScale() {
+      const scale = parseFloat(sessionStorage.getItem(PHOTO_SCALE_KEY) || localStorage.getItem(PHOTO_SCALE_KEY) || '1');
+      return isNaN(scale) ? 1 : Math.min(2.5, Math.max(1, scale));
+    }
+
+    function renderAvatar(targetId, photo = sessionStorage.getItem(PHOTO_KEY) || localStorage.getItem(PHOTO_KEY), photoX = getPhotoX(), photoY = getPhotoY(), photoScale = getPhotoScale()) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.innerHTML = photo ? `<img src="${photo}" alt="Player photo" style="object-position:${photoX}% ${photoY}%;transform-origin:${photoX}% ${photoY}%;transform:scale(${photoScale});">` : '🐱';
+    }
+
+    function readPhotoInput(input) {
+      const file = input?.files?.[0];
+      if (!file) return Promise.resolve('');
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const image = new Image();
+          image.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxSize = 420;
+            const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+            const width = Math.max(1, Math.round(image.width * scale));
+            const height = Math.max(1, Math.round(image.height * scale));
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', 0.75));
+          };
+          image.onerror = reject;
+          image.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleLogin() {
+      const u = document.getElementById('login-user').value.trim();
+      const p = document.getElementById('login-pass').value.trim();
+      if (!u || !p) return alert('Please enter both username and password!');
+      const btn = document.getElementById('btn-login');
+      btn.innerText = 'WAITING...'; btn.disabled = true;
+      try {
+        const res  = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'auth', username: u, password: p }) });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const meowLv_raw  = parseInt(data.meowtopiaLevel);
+          const placeLv_raw = parseInt(data.placementLevel);
+          const meowLv  = isNaN(meowLv_raw)  ? 1 : Math.max(1, meowLv_raw);
+          const placeLv = isNaN(placeLv_raw) ? 1 : Math.max(1, placeLv_raw);
+          setStoredProfile(u, meowLv, placeLv, data.photo || '', data.photoX || 50, data.photoY || 50, data.photoScale || 1);
+          showHub(u, meowLv, placeLv);
+        } else if (data.status === 'wrong_password') {
+          alert('Wrong password!');
+        } else {
+          alert('Account not found! Please register first.');
+          if (!document.getElementById('auth-card').classList.contains('flipped')) toggleAuth();
+        }
+      } catch { alert('Connection failed!'); }
+      finally { btn.innerText = 'START!'; btn.disabled = false; }
+    }
+
+    async function handleRegister() {
+      const u = document.getElementById('reg-user').value.trim();
+      const p = document.getElementById('reg-pass').value.trim();
+      const c = document.getElementById('reg-confirm').value.trim();
+      if (!u || !p || !c) return alert('Please fill all fields!');
+      if (p !== c) return alert('Passwords do not match!');
+      const btn = document.getElementById('btn-reg');
+      btn.innerText = 'WAITING...'; btn.disabled = true;
+      try {
+        const photo = await readPhotoInput(document.getElementById('reg-photo'));
+        const res    = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'register', username: u, password: p, photo }) });
+        const text   = await res.text();
+        let status;
+        try { status = JSON.parse(text).status; } catch { status = text.trim(); }
+        if (status === 'success') { alert('Registration successful! Please login.'); toggleAuth(); }
+        else if (status === 'exists') alert('Username already taken!');
+        else alert('Registration failed.');
+      } catch { alert('Connection failed!'); }
+      finally { btn.innerText = 'JOIN NOW!'; btn.disabled = false; }
+    }
+
+    function openProfileEditor() {
+      document.getElementById('edit-user').value = sessionStorage.getItem('currentUser') || '';
+      document.getElementById('edit-pass').value = '';
+      document.getElementById('edit-confirm').value = '';
+      document.getElementById('edit-photo').value = '';
+      pendingEditPhoto = '';
+      document.getElementById('edit-photo-x').value = getPhotoX();
+      document.getElementById('edit-photo-y').value = getPhotoY();
+      document.getElementById('edit-photo-scale').value = getPhotoScale();
+      renderAvatar('edit-photo-preview');
+      document.getElementById('profile-modal').classList.remove('hidden');
+    }
+
+    function closeProfileEditor() {
+      document.getElementById('profile-modal').classList.add('hidden');
+    }
+
+    async function handleProfileSave() {
+      const currentUsername = sessionStorage.getItem('currentUser') || '';
+      const username = document.getElementById('edit-user').value.trim();
+      const password = document.getElementById('edit-pass').value.trim();
+      const confirm = document.getElementById('edit-confirm').value.trim();
+      if (!username) return alert('Please enter a username!');
+      if (password !== confirm) return alert('Passwords do not match!');
+      const btn = document.getElementById('btn-profile-save');
+      btn.innerText = 'WAITING...'; btn.disabled = true;
+      try {
+        const newPhoto = await readPhotoInput(document.getElementById('edit-photo'));
+        const oldPhoto = sessionStorage.getItem(PHOTO_KEY) || '';
+        const photoX = parseInt(document.getElementById('edit-photo-x').value) || 50;
+        const photoY = parseInt(document.getElementById('edit-photo-y').value) || 50;
+        const photoScale = parseFloat(document.getElementById('edit-photo-scale').value) || 1;
+        const payload = {
+          action: 'updateProfile',
+          currentUsername,
+          username,
+          password,
+          photo: newPhoto || oldPhoto,
+          photoX,
+          photoY,
+          photoScale
+        };
+        const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const meowLv = parseInt(sessionStorage.getItem('meow_level')) || 1;
+          const placeLv = parseInt(sessionStorage.getItem('placement_level')) || 1;
+          setStoredProfile(data.username || username, meowLv, placeLv, data.photo || payload.photo, data.photoX || photoX, data.photoY || photoY, data.photoScale || photoScale);
+          showHub(data.username || username, meowLv, placeLv);
+          closeProfileEditor();
+        } else if (data.status === 'exists') {
+          alert('Username already taken!');
+        } else {
+          alert('Update failed.');
+        }
+      } catch {
+        alert('Connection failed!');
+      } finally {
+        btn.innerText = 'SAVE';
+        btn.disabled = false;
+      }
+    }
+
+    function showHub(user, meowLv, placeLv) {
+      user    = user || sessionStorage.getItem('currentUser');
+      const _ml = parseInt(sessionStorage.getItem('meow_level'));
+      const _pl = parseInt(sessionStorage.getItem('placement_level'));
+      meowLv  = (!meowLv  || isNaN(meowLv))  ? (isNaN(_ml)  ? 1 : _ml)  : meowLv;
+      placeLv = (!placeLv || isNaN(placeLv)) ? (isNaN(_pl) ? 1 : _pl) : placeLv;
+
+      document.getElementById('auth-card').classList.add('hidden');
+      document.getElementById('hub').classList.remove('hidden');
+
+      document.getElementById('display-username').innerText = user;
+      document.getElementById('hub-meow-lv').innerText      = Math.min(meowLv,  11);
+      document.getElementById('hub-place-lv').innerText     = Math.min(placeLv, 19);
+      renderAvatar('player-avatar');
+    }
+
+    function handleLogout() {
+      sessionStorage.clear();
+      localStorage.removeItem(PHOTO_KEY);
+      localStorage.removeItem(PHOTO_X_KEY);
+      localStorage.removeItem(PHOTO_Y_KEY);
+      localStorage.removeItem(PHOTO_SCALE_KEY);
+      location.reload();
+    }
+  </script>
+</body>
+</html>
