@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -26,13 +26,14 @@
         #rankList::-webkit-scrollbar-thumb { background-color: #FFB7C5; border-radius: 10px; }
         .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 2px; border-bottom: 2px solid #fce4ec; font-weight: 900; font-size: 14px; gap: 8px; color: #463438; }
         .rank-item:last-child { border-bottom: none; }
+        .rank-item > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .rank-item span:last-child { flex-shrink: 0; }
         .rank-tab { flex: 1; padding: 6px 4px; font-size: 12px; font-weight: 900; border: 3px solid #463438; border-radius: 12px; cursor: pointer; transition: all 0.12s; text-align: center; background: #fff; color: #463438; }
         .rank-tab.active { background: #463438; color: #fff; }
         .rank-avatar-sm { width: 28px; height: 28px; flex: 0 0 28px; border: 2px solid #463438; border-radius: 50%; background: #fff9f0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 0.9rem; }
         .rank-avatar-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .rank-player-main { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
-        .rank-number { width: 22px; flex: 0 0 22px; text-align: right; font-weight: 900; color: #463438; }
+        .rank-number { width: 28px; flex: 0 0 28px; text-align: right; font-weight: 900; color: #463438; }
         .rank-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
         .rank-avatar-wrap { position: relative; width: 28px; height: 28px; flex: 0 0 28px; }
         .rank-avatar-wrap .rank-avatar-sm { width: 100%; height: 100%; }
@@ -50,25 +51,33 @@
         .rank-champion-name { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
         @keyframes rankChampionPop { 0% { opacity: 0; transform: translate(0, -50%) scale(0.82); } 20% { opacity: 1; transform: translate(0, -62%) scale(1.05); } 68% { opacity: 1; transform: translate(0, -62%) scale(1); } 100% { opacity: 0; transform: translate(0, -50%) scale(0.82); } }
 
-        .node { width: 100px; height: 100px; background: white; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        /* 防止圖層干擾點擊 */
+        #nodes-layer, #fishes-layer { pointer-events: none; }
+        
+        .node { width: 100px; height: 100px; background: white; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
         .node img { width: 76px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .node img.encoded-img { transform: translate(-2px, -5px); }
         .encoded-img { transition: filter 0.25s ease; }
         .node img.encoded-img.bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
         .fish-wrapper img.fish-img.bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
         .fixed-number { position: absolute; bottom: -2px; right: 25px; font-size: 15px; font-weight: 900; color: #463438; pointer-events: none; z-index: 25; }
-        .connection-line { position: absolute; background: #463438; z-index: 10; cursor: pointer; transition: all 0.2s ease; opacity: 1; touch-action: none; }
+        .node-dist-badge { position: absolute; top: -10px; right: -10px; background: #FFB800; color: #463438; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #463438; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; z-index: 50; box-shadow: 2px 2px 0 rgba(70,52,56,0.5); pointer-events: none; }
+        
+        .connection-line { position: absolute; background: #463438; z-index: 10; cursor: pointer; transition: all 0.2s ease; opacity: 1; touch-action: none; pointer-events: auto; }
+        /* 恢復為 -10px */
         .connection-line::after { content: ''; position: absolute; top: -10px; bottom: -10px; left: 0; right: 0; background: transparent; z-index: 10; }
         @media (hover: hover) { .connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 10px !important; z-index: 16; opacity: 1 !important; border-top: none !important; } }
         .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15; border-top: none !important; opacity: 1 !important; }
+        
         .fish-wrapper { position: absolute; width: 70px; height: 70px; pointer-events: none; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-img { width: 49px; height: auto; position: relative; z-index: 2; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape { width: 49px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1);opacity: 1; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape.bit-faded { opacity: 1; }
-        .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 32px; height: 22px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; z-index: 5; position: absolute; top: 25px; }  
+        .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 32px; height: 22px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; z-index: 5; position: absolute; top: 25px; pointer-events: none; }  
         .hat-img { position: absolute; height: auto; pointer-events: none; z-index: 21; }
         .cat-hat { width: 31px !important; top: 6px; left: 50px; transform: translateX(-50%) rotate(0deg); }
         .fish-hat { width: 19px; top: 13px; left: 45%; transform: translateX(-50%) rotate(-10deg); z-index: 31; }
+        
         #pro-panel { width: 0; opacity: 0; height: 550px; overflow: hidden; background: #fff; border: 0px solid #463438; border-radius: 40px; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .pro-active #pro-panel { width: 600px; opacity: 1; border: 8px solid #463438; padding: 15px; box-shadow: 10px 10px 0px #99C44D; }
         .panel-section-title { font-weight: 900; font-size: 18px; margin: 5px 0; color: #463438; text-align: center; white-space: nowrap; }
@@ -100,11 +109,9 @@
         .qubit-label:hover { transform: translateY(-9px) scale(1.05); z-index: 50;}
         .qubit-label:active { transform: translateY(-5px) scale(0.95); }
         
-        /* 3-State 特徵按鈕的 CSS：明確呈現「橘色發光(1)」與「暗色灰階(0)」 */
         .feature-state-1 { border-color: #FFB800 !important; background-color: rgba(255, 184, 0, 0.2); box-shadow: 0 0 10px rgba(255, 184, 0, 0.8); transform: scale(1.1); transition: all 0.2s; }
         .feature-state-0 { border-color: #463438 !important; background-color: rgba(70, 52, 56, 0.2); box-shadow: 0 0 8px rgba(70, 52, 56, 0.8); filter: grayscale(1) brightness(0.85); transform: scale(1.1); transition: all 0.2s; }
 
-        /* 特徵開關 Node Highlight 樣式 */
         .node.feature-highlight { box-shadow: 0 0 0 6px #FFB800, 3px 3px 0 #463438 !important; transform: scale(1.15) !important; z-index: 45 !important; }
         .node.feature-dimmed { opacity: 0.25 !important; transform: scale(0.9) !important; }
         .fish-wrapper.feature-dimmed { opacity: 0.25 !important; }
@@ -125,9 +132,7 @@
         .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 380px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; }
         .victory-actions, .victory-progress-actions { display: flex; gap: 14px; align-items: center; justify-content: center; }
         .victory-actions { margin-bottom: 16px; }
-        .victory-progress-actions .keep-going-btn { flex: 1; margin: 0; }
         .home-btn { width: 150px; border-radius: 60px; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
-        .keep-going-btn { max-width: 280px; white-space: nowrap; }
         .replay-btn { width: 78px; height: 78px; flex: 0 0 78px; border-radius: 50%; padding: 0; display: inline-flex; align-items: center; justify-content: center; margin: 0; }
         .replay-btn svg { width: 38px; height: 38px; filter: drop-shadow(2px 2px 0 #463438); }
         #ios-indicator { position: absolute; top: 0; left: 0; transform: translate(-50%, -120%) scale(0.8); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border-radius: 50px; padding: 6px 18px; display: flex; align-items: center; box-shadow: 0 8px 24px rgba(70,52,56,0.1); opacity: 0; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000; pointer-events: none; border: 1px solid rgba(70, 52, 56, 0.2); }
@@ -177,7 +182,7 @@
         .skin-rip .fish-wrapper img.fish-img { width: 62px; height: auto; position: relative; z-index: 2; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-rip .fish-wrapper img.fish-bg-shape { width: 52px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-rip .node img { width: 75px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .skin-rip .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 8px; right: 12px; transition: opacity 0.3s, transform 0.2s; }
+        .skin-rip .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 8px; right: 12px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
         .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
         .hide-labels .fixed-number, .hide-labels .fish-label { opacity: 0; transform: translateY(1px); pointer-events: none; }
         .hide-labels .node > img.encoded-img:not(.hat-img) { transform: translate(-2px, -2px) scale(1.15); }
@@ -188,35 +193,34 @@
         .skin-poto .fish-wrapper img.fish-img { width: 68px; height: auto; position: relative; z-index: 2; transform: translateY(-5px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-poto .fish-wrapper img.fish-bg-shape { width: 68px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translateY(-5px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-poto .node img { width: 85px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .skin-poto .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 22px; right: 24px; transition: opacity 0.3s, transform 0.2s; }
+        .skin-poto .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 22px; right: 24px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
 
         .skin-mj .fish-wrapper { position: absolute; width: autopx; height: 80px; pointer-events: none; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .skin-mj .fish-wrapper img.fish-img { width: 55px; height: auto; position: relative; z-index: 2; transform: translate(4px, -6px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .skin-mj .fish-wrapper img.fish-bg-shape { width: 55px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translate(4px, -6px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-mj .fish-wrapper img.fish-img { width: 55px; height: auto; position: relative; z-index: 2; transform: translate(4px, -7px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-mj .fish-wrapper img.fish-bg-shape { width: 55px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translate(4px, -7px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-mj .node img { width: 82px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .skin-mj .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 24px; right: 9px; transition: opacity 0.3s, transform 0.2s; }
-        .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
-        .skin-mj .node img { width: 82px; height: auto;  pointer-events: none;  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .skin-mj .node.large-node img { width: 88px;}
-
+        .skin-mj .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 24px; right: 9px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
         .skin-mj.hide-labels .fish-wrapper.large-node img.fish-img,
         .skin-mj.hide-labels .fish-wrapper.large-node img.fish-bg-shape {
-            transform: scale(1.1) translate(10px, 0px) !important;
+            transform: scale(1.1) translate(12px, 0px) !important;
         }
         .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-img,
         .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-bg-shape {
-            transform: scale(1.15) translate(1px, 0px);
+            transform: scale(1.15) translate(1px, -2px);
+        }
+        .skin-mj .fish-wrapper.large-node img.fish-img,
+        .skin-mj .fish-wrapper.large-node img.fish-bg-shape {
+            transform: translate(12px, -5px) !important;
+        }
+        .skin-mj .fish-wrapper:not(.large-node) img.fish-img,
+        .skin-mj .fish-wrapper:not(.large-node) img.fish-bg-shape {
+            transform: translate(2px, -7px);
         }
         .skin-poto.hide-labels .fish-wrapper img.fish-img,
         .skin-poto.hide-labels .fish-wrapper img.fish-bg-shape {
             transform: scale(1.15) translate(2px, 2px) !important;
         }
-        .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-img,
-        .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-bg-shape {
-            transform: scale(1.15) translate(1px, 0px);
-        }
 
-        /* 歸位魚的光環 Highlight */
         .fish-wrapper::before {
             content: ''; position: absolute; width: 140%; height: 140%; background: radial-gradient(circle, rgba(255,184,0,0.85) 0%, rgba(255,184,0,0) 65%); top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 0; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s; pointer-events: none; opacity: 0;
         }
@@ -224,7 +228,6 @@
             transform: translate(-50%, -50%) scale(1); opacity: 1;
         }
 
-        /* --- 修正：更寬且對齊的進度條 --- */
         .progress-bar-wrapper {
             flex: 1; height: 32px; background: #fffaf5; border: 4px solid #463438; border-radius: 20px;
             position: relative; box-shadow: inset 0 3px 5px rgba(0,0,0,0.1), 3px 3px 0 #FFB7C5;
@@ -243,22 +246,23 @@
         
         .progress-text { position: relative; z-index: 5; font-weight: 900; color: #463438; font-size: 14px; letter-spacing: 1px; }
         
-        /* 貓 (移動者，圖層高) - 加大尺寸 */
         .progress-thumb {
             position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%); 
             width: 60px; height: auto;
             z-index: 5; transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.5));
         }
-        /* 魚 (終點，圖層低) - 加大尺寸 */
         .progress-target {
-            position: absolute; right: -20px; top: 50%; transform: translateY(-50%); 
+            position: absolute; right: -25px; top: 50%; transform: translateY(-50%); 
             width: 50px; height: auto;
             z-index: 15; filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.3)); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .progress-win .progress-bar-fill { background-color: #FFB7C5; }
         .progress-win .progress-target { animation: targetBounce 0.5s infinite alternate; }
-        @keyframes targetBounce { 0% { transform: translateY(-50%) scale(1); } 100% { transform: translateY(-50%) scale(1.25) rotate(12deg); } }
+        @keyframes targetBounce { 
+            0% { transform: translateY(-50%) scale(1); } 
+            100% { transform: translateY(-65%) translateX(-5px) scale(1.15) rotate(-10deg); } 
+        }
         @media (min-width: 1024px) {body {zoom: 0.9;} }
     </style>
 </head>
@@ -327,10 +331,10 @@
         </div>
         
         <div class="flex w-full px-4 mb-4 mt-2 items-center justify-between gap-4">
-            <div class="text-2xl font-black text-[#463438] shrink-0">MATCHED：</div>
+            <div class="text-2xl font-black text-[#463438] shrink-0">DISTANCE：</div>
             <div class="progress-bar-wrapper">
                 <div id="progress-bar-fill" class="progress-bar-fill"></div>
-                <div class="progress-text" id="progress-text">0 / 16</div>
+                <div class="progress-text" id="progress-text">0</div>
                 <img id="progress-thumb" src="./svg/111-c.svg" class="progress-thumb" alt="cat">
                 <img id="progress-target" src="./svg/111-f.svg" class="progress-target" alt="fish">
             </div>
@@ -361,17 +365,17 @@
         </div>
         <div id="circuit-area" class="mx-auto">
             <div id="circuit-diagram-title" class="circuit-title font-black text-xl text-center" style="color: #463438;">Paths</div>
-            <div id="q0-label" class="qubit-label" style="top: 60px;" onclick="toggleFeature(0)">d1</div>
-            <div id="q1-label" class="qubit-label" style="top: 100px;" onclick="toggleFeature(1)">d2</div>
-            <div id="q2-label" class="qubit-label" style="top: 140px;" onclick="toggleFeature(2)">d3</div>
-            <div id="q3-label" class="qubit-label" style="top: 180px;" onclick="toggleFeature(3)">d4</div>
+            <div id="q0-label" class="qubit-label" style="top: 64px;" onclick="toggleFeature(0)">d1</div>
+            <div id="q1-label" class="qubit-label" style="top: 104px;" onclick="toggleFeature(1)">d2</div>
+            <div id="q2-label" class="qubit-label" style="top: 144px;" onclick="toggleFeature(2)">d3</div>
+            <div id="q3-label" class="qubit-label" style="top: 184px;" onclick="toggleFeature(3)">d4</div>
             <div id="circuit-content-wrapper"><div id="circuit-content"></div></div>
         </div>
         <div class="w-full text-center mt-6 mb-6">
             <a href="index.html" class="game-btn btn-red px-16">GIVE UP</a>
         </div>
     </div>
-    <div id="victoryModal" class="modal-overlay">
+    <div id="victoryModal" class="modal-overlay" style="z-index: 3000;">
         <div class="modal-content" style="width: 400px;">
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">MEOW!</h2>
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">🐾</h2>
@@ -381,7 +385,7 @@
                 <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
             </div>
             <div class="victory-progress-actions">
-                <button onclick="replayCurrentLevel()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
+                <button onclick="location.reload()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="#fff">
                         <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-3.06c-.77 1.76-2.54 3-4.67 3c-2.76 0-5-2.24-5-5s2.24-5 5-5c1.38 0 2.63.56 3.54 1.46L12 12h8V4z" />
                     </svg>
@@ -392,22 +396,33 @@
     </div>
     <script>
         let labelsOpen = false;
-        let currentSkin = ['default', 'rip', 'poto', 'mj'].includes(sessionStorage.getItem('level11Skin')) ? sessionStorage.getItem('level11Skin') : 'default';
+        const AVAILABLE_SKINS = ['default', 'rip', 'poto', 'mj'];
+        const SKIN_STORAGE_KEY = 'meowtopiaSkin';
+        let currentSkin = AVAILABLE_SKINS.includes(sessionStorage.getItem(SKIN_STORAGE_KEY)) ? sessionStorage.getItem(SKIN_STORAGE_KEY) : 'default';
         let currentSidePanel = 'rank';
         
-        // --- 修正：3-State 特徵高亮狀態記錄 ---
-        // 狀態: null(無篩選) -> 1(必須有該特徵, 橘色) -> 0(必須無該特徵, 黑色)
         let featureStates = [null, null, null, null];
+
+        // 精準計算漢明距離
+        function getHammingDistance(a, b) {
+            let s1 = a.toString(2).padStart(4, '0');
+            let s2 = b.toString(2).padStart(4, '0');
+            let dist = 0;
+            for(let i = 0; i < 4; i++) {
+                if (s1[i] !== s2[i]) dist++;
+            }
+            return dist;
+        }
 
         function toggleFeature(qIndex) {
             if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
             
             if (featureStates[qIndex] === null) {
-                featureStates[qIndex] = 1; // 狀態 1：要求具備特徵
+                featureStates[qIndex] = 1; 
             } else if (featureStates[qIndex] === 1) {
-                featureStates[qIndex] = 0; // 狀態 0：要求不具備特徵
+                featureStates[qIndex] = 0; 
             } else {
-                featureStates[qIndex] = null; // 取消篩選
+                featureStates[qIndex] = null; 
             }
             
             updateCircuitLabels();
@@ -419,15 +434,16 @@
             for (let i = 0; i < 16; i++) {
                 const n = document.getElementById(`node-${i}`);
                 const f = document.getElementById(`fish-${i}`);
+                const badge = document.getElementById(`dist-badge-${i}`);
                 if (!n) continue;
                 
                 if (!anyActive) {
                     n.classList.remove('feature-highlight', 'feature-dimmed');
                     if (f) f.classList.remove('feature-dimmed');
+                    if (badge) badge.classList.add('hidden');
                     continue;
                 }
                 
-                // b 對應位元順序： b[0], b[1], b[2], b[3]
                 let b = i.toString(2).padStart(4, '0');
                 let match = true;
                 for (let q = 0; q < 4; q++) {
@@ -439,10 +455,17 @@
                     n.classList.add('feature-highlight');
                     n.classList.remove('feature-dimmed');
                     if (f) f.classList.remove('feature-dimmed');
+                    if (badge) {
+                        // 【修正】：讓這隻貓(Node)顯示「牠自己的專屬魚目前在哪裡」的距離
+                        let trueFishPos = fishAtNode.indexOf(i); 
+                        badge.innerText = getHammingDistance(i, trueFishPos);
+                        badge.classList.remove('hidden');
+                    }
                 } else {
                     n.classList.remove('feature-highlight');
                     n.classList.add('feature-dimmed');
                     if (f) f.classList.add('feature-dimmed');
+                    if (badge) badge.classList.add('hidden');
                 }
             }
         }
@@ -463,7 +486,6 @@
                 let badge = '';
                 let styleClass = '';
                 
-                // 根據狀態設定外觀樣式與小徽章
                 if (featureStates[i] === 1) {
                     styleClass = 'feature-state-1';
                     badge = `<div style="position:absolute; top:-6px; right:-6px; background:#FFB800; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">1</div>`;
@@ -490,24 +512,26 @@
             const thumb = document.getElementById('progress-thumb');
             const target = document.getElementById('progress-target');
             
-            // Cat 找 Fish
             if (thumb) thumb.src = catSrc;
             if (target) target.src = fishSrc;
         }
 
-        function updateProgressBar(count) {
+        function updateProgressBar(dist) {
             const fill = document.getElementById('progress-bar-fill');
             const text = document.getElementById('progress-text');
             const thumb = document.getElementById('progress-thumb');
             const wrapper = document.querySelector('.progress-bar-wrapper');
 
             if (fill && text && thumb && wrapper) {
-                const percent = (count / 16) * 100;
+                let percent = ((64 - dist) / 64) * 100;
+                if(percent < 0) percent = 0;
+                if(percent > 100) percent = 100;
+                
                 fill.style.width = percent + '%';
                 thumb.style.left = percent + '%';
-                text.innerText = `${count} / 16`;
+                text.innerText = dist;
                 
-                if (count === 16) {
+                if (dist === 0) {
                     wrapper.classList.add('progress-win');
                 } else {
                     wrapper.classList.remove('progress-win');
@@ -568,9 +592,9 @@
         }
 
         function selectSkin(skin) {
-            if (!['default', 'rip', 'poto', 'mj'].includes(skin)) skin = 'default';
+            if (!AVAILABLE_SKINS.includes(skin)) skin = 'default';
             currentSkin = skin;
-            sessionStorage.setItem('level11Skin', skin);
+            sessionStorage.setItem(SKIN_STORAGE_KEY, skin);
             applySkinClass();
             initGameLayout();
             updateProgressImages(); 
@@ -925,7 +949,7 @@
 
         function createLine(i, j, dim) {
             const n1 = nodePositions[i], n2 = nodePositions[j];
-            const x1 = n1.l + 45, y1 = n1.t + 45, x2 = n2.l + 45, y2 = n2.t + 45;
+            const x1 = n1.l + 50, y1 = n1.t + 50, x2 = n2.l + 50, y2 = n2.t + 50;
             const len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
             const ang = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
             const line = document.createElement('div');
@@ -1107,9 +1131,12 @@
         }
         
         function updateFishUI() {
-            let correctCount = 0;
+            let totalDist = 0;
             for (let nI = 0; nI < 16; nI++) {
                 const fishId = fishAtNode[nI];
+                const dist = getHammingDistance(nI, fishId);
+                totalDist += dist; // 整體進度條邏輯保持不變
+                
                 const f = document.getElementById(`fish-${fishId}`);
                 const n = nodePositions[nI];
                 if (f && n) {
@@ -1117,13 +1144,19 @@
                     f.style.left = (n.l + 11) + "px";
                     if (fishId === nI) {
                         f.classList.add('fish-correct');
-                        correctCount++;
                     } else {
                         f.classList.remove('fish-correct');
                     }
                 }
+                
+                // 【修正】：讓這隻貓(Node)的徽章顯示「牠自己的專屬魚目前在哪裡」的距離
+                const badge = document.getElementById(`dist-badge-${nI}`);
+                if (badge && !badge.classList.contains('hidden')) {
+                    let trueFishPos = fishAtNode.indexOf(nI);
+                    badge.innerText = getHammingDistance(nI, trueFishPos);
+                }
             }
-            updateProgressBar(correctCount); 
+            updateProgressBar(totalDist); 
         }
                 
         window.activeDropUnit = null;
@@ -1446,9 +1479,21 @@
 
         function toggleLeaderboard() { toggleSidePanel('rank'); }
 
-        async function fetchLeaderboard() { const listArea = document.getElementById('rankList'); try { const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=9`); const data = await response.json(); if (data && Array.isArray(data) && data.length > 0) { leaderboardData = data; renderRank('steps'); } else { listArea.innerHTML = '<p class="text-center italic text-gray-400 mt-10 text-sm">No records yet</p>'; } } catch (e) { listArea.innerHTML = '<p class="text-center italic text-red-400 mt-10 text-sm">Load Error</p>'; } }
-
-        function renderRank(type) { const tabSteps = document.getElementById('tab-steps'), tabTime = document.getElementById('tab-time'), listArea = document.getElementById('rankList'); if (type === 'steps') { tabSteps.className = 'rank-tab active'; tabTime.className = 'rank-tab bg-gray-100'; } else { tabSteps.className = 'rank-tab bg-gray-100'; tabTime.className = 'rank-tab active'; } if (!leaderboardData || leaderboardData.length === 0) return; const sorted = [...leaderboardData].sort((a, b) => a[type] - b[type]); let html = ""; sorted.slice(0, 10).forEach((item, index) => { const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : (index + 1) + "."; const av=item.photo?`<img src="${item.photo}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:${item.photoX||50}% ${item.photoY||50}%;transform:scale(${item.photoScale||1});">`:'🐱'; html += `<div class="rank-item"><div class="rank-avatar-sm">${av}</div><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">${medal} ${item.username || item.name || 'Anonymous'}</span><span style="flex-shrink:0;color:#5ba4cf;">${type === 'steps' ? item.steps + '🐾' : item.time + 's'}</span></div>`; }); listArea.innerHTML = html; }
+        async function fetchLeaderboard() { 
+            const listArea = document.getElementById('rankList'); 
+            try { 
+                const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=9`); 
+                const data = await response.json(); 
+                if (data && Array.isArray(data) && data.length > 0) { 
+                    leaderboardData = data; 
+                    renderRank('steps'); 
+                } else { 
+                    listArea.innerHTML = '<p class="text-center italic text-gray-400 mt-10 text-sm">No records yet</p>'; 
+                } 
+            } catch (e) { 
+                listArea.innerHTML = '<p class="text-center italic text-red-400 mt-10 text-sm">Load Error</p>'; 
+            } 
+        }
 
         function initGameLayout() {
             const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer');
@@ -1459,21 +1504,23 @@
             
             for (let i = 0; i < 16; i++) {
                 const bin = i.toString(2).padStart(4, '0');
+                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}"></div>`;
+                
                 if (currentSkin === 'rip') {
                     const skinIndex = i + 1;
-                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./RIP/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
+                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">${badgeHtml}<div class="fixed-number">${bin}</div><img src="./RIP/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
                     fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="./RIP/Fish${skinIndex}.png" class="fish-img encoded-img" alt="${bin} fish"></div>`;
                     continue;
                 }
                 if (currentSkin === 'poto') {
                     const skinIndex = i;
-                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./poto/cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
+                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">${badgeHtml}<div class="fixed-number">${bin}</div><img src="./poto/cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
                     fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="./poto/fish${skinIndex}.png" class="fish-img encoded-img" alt="${bin} fish"></div>`;
                     continue;
                 }
                 if (currentSkin === 'mj') {
                     const skinIndex = i;
-                    const largeIndices = [4, 5, 6, 7, 12, 13, 14, 15];
+                    const largeIndices = [1, 3, 5, 7, 9, 11, 13, 15];
                     const isLarge = largeIndices.includes(i);
                     const sizeClass = isLarge ? 'large-node' : '';
                     const offset = isLarge ? 0 : 0; 
@@ -1481,6 +1528,7 @@
 
                     nL.innerHTML += `
                         <div class="node ${sizeClass}" id="node-${i}" style="top:${nodePositions[i].t}px; left:${finalLeft}px;">
+                            ${badgeHtml}
                             <div class="fixed-number">${bin}</div>
                             <img src="./mj/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat">
                         </div>`;
@@ -1493,7 +1541,7 @@
                 }
                 let code = `0${bin.slice(2)}`, faded = bin[0] === '1' ? ' bit-faded' : '', catHat = bin[1] === '1' ? `<img src="./svg/hat-c.svg" class="hat-img cat-hat" alt="">` : '';
                 const catSrc = `./svg/${code}-c.svg`;
-                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catHat}<img src="${catSrc}" class="encoded-img${faded}" alt="${bin} cat"></div>`;
+                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">${badgeHtml}<div class="fixed-number">${bin}</div>${catHat}<img src="${catSrc}" class="encoded-img${faded}" alt="${bin} cat"></div>`;
                 const fishSrc = `./svg/${code}-f.svg`, fishHat = bin[1] === '1' ? `<img src="./svg/hat-f.svg" class="hat-img fish-hat" alt="">` : '';
                 fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div>${fishHat}<img src="${fishSrc}" class="fish-bg-shape encoded-img${faded}" alt=""><img src="${fishSrc}" class="fish-img encoded-img${faded}" alt="${bin} fish"></div>`;
             }
@@ -1677,21 +1725,6 @@
             });
         }
 
-        function toggleLeaderboard() { toggleSidePanel('rank'); const wrapper = document.getElementById('leaderboard-wrapper'); if (wrapper && wrapper.classList.contains('expanded')) setTimeout(() => showRankChampion(activeRankType), 380); }
-
-        async function fetchLeaderboard() {
-            const listArea = document.getElementById('rankList');
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=9`);
-                const data = await response.json();
-                leaderboardData = Array.isArray(data) ? data : [];
-                if (leaderboardData.length > 0) renderRank(activeRankType, !(document.getElementById('leaderboard-wrapper')?.classList.contains('expanded')));
-                else if (listArea) listArea.innerHTML = '<p class="text-center italic text-gray-400 mt-10 text-sm">No records yet</p>';
-            } catch (e) {
-                if (listArea) listArea.innerHTML = '<p class="text-center italic text-red-400 mt-10 text-sm">Load Error</p>';
-            }
-        }
-
         function renderRank(type, silent) {
             activeRankType = type === 'time' ? 'time' : 'steps';
             const tabSteps = document.getElementById('tab-steps'), tabTime = document.getElementById('tab-time'), listArea = document.getElementById('rankList');
@@ -1713,6 +1746,7 @@
         }
 
         function showRankChampion(type) {
+            if (currentSidePanel !== 'rank') return; 
             const wrapper = document.getElementById('leaderboard-wrapper');
             if (wrapper && !wrapper.classList.contains('expanded')) return;
             const champion = sortedRankData(type)[0];
