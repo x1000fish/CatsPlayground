@@ -1683,7 +1683,7 @@
         async function fetchLeaderboard() {
             const listArea = document.getElementById('rankList');
             try {
-                const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=11`);
+                const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=9`);
                 const data = await response.json();
                 leaderboardData = Array.isArray(data) ? data : [];
                 if (leaderboardData.length > 0) renderRank(activeRankType, !(document.getElementById('leaderboard-wrapper')?.classList.contains('expanded')));
