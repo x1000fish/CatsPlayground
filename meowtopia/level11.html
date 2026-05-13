@@ -61,15 +61,16 @@
         .node img.encoded-img.bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
         .fish-wrapper img.fish-img.bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
         .fixed-number { position: absolute; bottom: -2px; right: 25px; font-size: 15px; font-weight: 900; color: #463438; pointer-events: none; z-index: 25; }
-        .node-dist-badge { position: absolute; top: -10px; right: -10px; background: #FFB800; color: #463438; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #463438; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; z-index: 50; box-shadow: 2px 2px 0 rgba(70,52,56,0.5); pointer-events: none; }
+        .node-dist-badge { position: absolute; background: #FFB800; color: #463438; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #463438; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; box-shadow: 2px 2px 0 rgba(70,52,56,0.5); pointer-events: none; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         
         .connection-line { position: absolute; background: #463438; z-index: 10; cursor: pointer; transition: all 0.2s ease; opacity: 1; touch-action: none; pointer-events: auto; }
         /* 恢復為 -10px */
         .connection-line::after { content: ''; position: absolute; top: -10px; bottom: -10px; left: 0; right: 0; background: transparent; z-index: 10; }
-        @media (hover: hover) { .connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 10px !important; z-index: 16; opacity: 1 !important; border-top: none !important; } }
-        .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15; border-top: none !important; opacity: 1 !important; }
+        @media (hover: hover) { .connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 10px !important; z-index: 16 !important; opacity: 1 !important; border-top: none !important; } }
+        .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15 !important; border-top: none !important; opacity: 1 !important; }
         
         .fish-wrapper { position: absolute; width: 70px; height: 70px; pointer-events: none; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fish-wrapper.feature-highlight { z-index: 55 !important; }
         .fish-wrapper img.fish-img { width: 49px; height: auto; position: relative; z-index: 2; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape { width: 49px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1);opacity: 1; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape.bit-faded { opacity: 1; }
@@ -105,15 +106,17 @@
         #circuit-content { display: flex; height: 100%; padding: 0 10px 0 0; min-width: 100%; width: max-content; position: relative; background-image: linear-gradient(#463438,#463438), linear-gradient(#463438,#463438), linear-gradient(#463438,#463438), linear-gradient(#463438,#463438); background-size: 100% 3px; background-repeat: no-repeat; background-position: 0 30px, 0 70px, 0 110px, 0 150px; }
         .mini-mode #circuit-content { background-image: none !important; }
         
-        .qubit-label { position: absolute; left: 19px; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; transform: translateY(-7px); cursor: pointer; user-select: none; }
-        .qubit-label:hover { transform: translateY(-9px) scale(1.05); z-index: 50;}
-        .qubit-label:active { transform: translateY(-5px) scale(0.95); }
+        .circuit-qubit-label { position: absolute; left: 19px; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; transform: translateY(-7px); user-select: none; }
+        .qubit-label { position: relative; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; }
+        .qubit-label:hover { transform: translateY(-2px) scale(1.05); z-index: 50;}
+        .qubit-label:active { transform: translateY(2px) scale(0.95); }
         
         .feature-state-1 { border-color: #FFB800 !important; background-color: rgba(255, 184, 0, 0.2); box-shadow: 0 0 10px rgba(255, 184, 0, 0.8); transform: scale(1.1); transition: all 0.2s; }
         .feature-state-0 { border-color: #463438 !important; background-color: rgba(70, 52, 56, 0.2); box-shadow: 0 0 8px rgba(70, 52, 56, 0.8); filter: grayscale(1) brightness(0.85); transform: scale(1.1); transition: all 0.2s; }
 
-        .node.feature-highlight { box-shadow: 0 0 0 6px #FFB800, 3px 3px 0 #463438 !important; transform: scale(1.15) !important; z-index: 45 !important; }
-        .node.feature-dimmed { opacity: 0.25 !important; transform: scale(0.9) !important; }
+        .node.feature-highlight { border-color: #FFB800 !important; box-shadow: 3px 3px 0 #FFB800 !important; z-index: 45 !important; }
+        .node.feature-dimmed { background-color: #fff !important; }
+        .node.feature-dimmed > img, .node.feature-dimmed > div { opacity: 0.25 !important; }
         .fish-wrapper.feature-dimmed { opacity: 0.25 !important; }
 
         .circuit-unit { min-width: 50px; height: 180px; display: flex; flex-direction: column; position: relative; cursor: pointer; background-color: transparent !important; background-clip: padding-box; border-left: 0px solid transparent; border-right: 0px solid transparent; transition: background-color 0.2s ease, box-shadow 0.2s ease, border-left-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-right-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s ease, opacity 0.2s ease; }
@@ -168,7 +171,7 @@
         .mode-toggle-inline { width: 44px; height: 44px; background: #ffffff; border: 3px solid #463438; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 3px 0 #463438; transition: all 0.1s; margin-left: 10px; color: #463438; text-shadow: none; padding: 0; }
         .mode-toggle-inline:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #463438; }
         .mode-toggle-inline:active { transform: translateY(2px); box-shadow: 0 1px 0 #463438; }
-        .skin-gallery { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; align-content: start; gap: 10px; overflow-y: auto; padding: 2px 2px 8px 0; }
+        .skin-gallery { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; align-content: start; gap: 10px; overflow-y: auto; padding: 2px 2px 0px 10px; }
         .skin-card { min-height: 120px; border: 3px solid #463438; border-radius: 12px; background: #fffaf5; color: #463438; cursor: pointer; font-size: 12px; font-weight: 900; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; box-shadow: 0 4px 0 rgba(70,52,56,0.18); transition: transform 0.12s, background 0.12s, box-shadow 0.12s; }
         .skin-card:hover { background: #fce4ec; transform: translateY(-2px); box-shadow: 0 6px 0 rgba(70,52,56,0.22); }
         .skin-card.active { background: #FFB7C5; color: #fff; box-shadow: 0 4px 0 #463438; }
@@ -184,7 +187,7 @@
         .skin-rip .node img { width: 75px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-rip .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 8px; right: 12px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
         .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
-        .hide-labels .fixed-number, .hide-labels .fish-label { opacity: 0; transform: translateY(1px); pointer-events: none; }
+        .hide-labels .node .fixed-number, .hide-labels .fish-wrapper .fish-label { opacity: 0 !important; transform: translateY(1px) !important; pointer-events: none; }
         .hide-labels .node > img.encoded-img:not(.hat-img) { transform: translate(-2px, -2px) scale(1.15); }
         .hide-labels .node > img.hat-img { transform: translateX(-50%) rotate(0deg) scale(1.15); }
         .hide-labels .fish-wrapper > img.fish-img, .hide-labels .fish-wrapper > img.fish-bg-shape { transform: scale(1.15) translateY(0px); }
@@ -310,6 +313,15 @@
                         <span>MJ</span>
                     </button>
                 </div>
+                <div>
+                    <h3 class="text-xl font-black text-center text-[#463438] mb-3" >FEATURES</h3>
+                    <div class="flex justify-center gap-3 w-full pb-4">
+                        <div id="feat-toggle-0" class="qubit-label" onclick="toggleFeature(0)">d1</div>
+                        <div id="feat-toggle-1" class="qubit-label" onclick="toggleFeature(1)">d2</div>
+                        <div id="feat-toggle-2" class="qubit-label" onclick="toggleFeature(2)">d3</div>
+                        <div id="feat-toggle-3" class="qubit-label" onclick="toggleFeature(3)">d4</div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="rank-bookmark" class="bookmark-tab rank-bookmark active" onclick="toggleSidePanel('rank')">
@@ -357,6 +369,7 @@
                 <div id="lines-layer"></div>
                 <div id="nodes-layer"></div>
                 <div id="fishes-layer"></div>
+                <div id="badges-layer" style="position:absolute; inset:0; pointer-events:none; z-index: 100;"></div>
                 <div id="canvas-bottom-btns">
                     <button class="func-btn btn-reset" onclick="resetCircuit()">RESET</button>
                     <button id="undo-btn-bottom" class="func-btn btn-undo" onclick="undo()">UNDO</button>
@@ -365,10 +378,10 @@
         </div>
         <div id="circuit-area" class="mx-auto">
             <div id="circuit-diagram-title" class="circuit-title font-black text-xl text-center" style="color: #463438;">Paths</div>
-            <div id="q0-label" class="qubit-label" style="top: 64px;" onclick="toggleFeature(0)">d1</div>
-            <div id="q1-label" class="qubit-label" style="top: 104px;" onclick="toggleFeature(1)">d2</div>
-            <div id="q2-label" class="qubit-label" style="top: 144px;" onclick="toggleFeature(2)">d3</div>
-            <div id="q3-label" class="qubit-label" style="top: 184px;" onclick="toggleFeature(3)">d4</div>
+            <div id="q0-label" class="circuit-qubit-label" style="top: 64px;">d1</div>
+            <div id="q1-label" class="circuit-qubit-label" style="top: 104px;">d2</div>
+            <div id="q2-label" class="circuit-qubit-label" style="top: 144px;">d3</div>
+            <div id="q3-label" class="circuit-qubit-label" style="top: 184px;">d4</div>
             <div id="circuit-content-wrapper"><div id="circuit-content"></div></div>
         </div>
         <div class="w-full text-center mt-6 mb-6">
@@ -436,7 +449,9 @@
                 
                 if (!anyActive) {
                     n.classList.remove('feature-highlight', 'feature-dimmed');
-                    if (f) f.classList.remove('feature-dimmed');
+                    if (f) {
+                        f.classList.remove('feature-dimmed', 'feature-highlight');
+                    }
                     if (badge) badge.classList.add('hidden');
                     continue;
                 }
@@ -451,9 +466,11 @@
                 if (match) {
                     n.classList.add('feature-highlight');
                     n.classList.remove('feature-dimmed');
-                    if (f) f.classList.remove('feature-dimmed');
+                    if (f) {
+                        f.classList.remove('feature-dimmed');
+                        f.classList.add('feature-highlight');
+                    }
                     if (badge) {
-                        // 【修正】：讓這隻貓(Node)顯示「牠自己的專屬魚目前在哪裡」的距離
                         let trueFishPos = fishAtNode.indexOf(i); 
                         badge.innerText = getHammingDistance(i, trueFishPos);
                         badge.classList.remove('hidden');
@@ -461,7 +478,10 @@
                 } else {
                     n.classList.remove('feature-highlight');
                     n.classList.add('feature-dimmed');
-                    if (f) f.classList.add('feature-dimmed');
+                    if (f) {
+                        f.classList.add('feature-dimmed');
+                        f.classList.remove('feature-highlight');
+                    }
                     if (badge) badge.classList.add('hidden');
                 }
             }
@@ -477,24 +497,35 @@
         function updateCircuitLabels() {
             const folder = getSkinFolder(currentSkin);
             for(let i=0; i<4; i++) {
-                const lbl = document.getElementById(`q${i}-label`);
-                if (!lbl) continue;
-                
-                let badge = '';
-                let styleClass = '';
-                
-                if (featureStates[i] === 1) {
-                    styleClass = 'feature-state-1';
-                    badge = `<div style="position:absolute; top:-6px; right:-6px; background:#FFB800; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">1</div>`;
-                } else if (featureStates[i] === 0) {
-                    styleClass = 'feature-state-0';
-                    badge = `<div style="position:absolute; top:-6px; right:-6px; background:#463438; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">0</div>`;
+                // 1. 更新 Circuit 區域的標籤 (無特效、無按鈕外觀)
+                const cLbl = document.getElementById(`q${i}-label`);
+                if (cLbl) {
+                    if (labelsOpen) {
+                        cLbl.innerHTML = isQuantumMode ? `q${i}` : `d${i+1}`;
+                    } else {
+                        cLbl.innerHTML = `<img src="${folder}dif${i}.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px;" alt="dif${i}">`;
+                    }
                 }
                 
-                if (labelsOpen) {
-                    lbl.innerHTML = `<div style="position:relative;"><span class="${styleClass}" style="padding: 2px 6px; display: inline-block; border-radius: 6px; border:2px solid transparent;">${isQuantumMode ? `q${i}` : `d${i+1}`}</span>${badge}</div>`;
-                } else {
-                    lbl.innerHTML = `<div style="position:relative;"><img src="${folder}dif${i}.png" class="${styleClass}" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; padding: 2px; border:3px solid transparent;" alt="dif${i}">${badge}</div>`;
+                // 2. 更新側邊欄的控制按鈕 (帶有徽章與高亮顏色)
+                const fLbl = document.getElementById(`feat-toggle-${i}`);
+                if (fLbl) {
+                    let badge = '';
+                    let styleClass = '';
+                    
+                    if (featureStates[i] === 1) {
+                        styleClass = 'feature-state-1';
+                        badge = `<div style="position:absolute; top:-6px; right:-6px; background:#FFB800; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">1</div>`;
+                    } else if (featureStates[i] === 0) {
+                        styleClass = 'feature-state-0';
+                        badge = `<div style="position:absolute; top:-6px; right:-6px; background:#463438; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">0</div>`;
+                    }
+                    
+                    if (labelsOpen) {
+                        fLbl.innerHTML = `<div style="position:relative;"><span class="${styleClass}" style="padding: 2px 6px; display: inline-block; border-radius: 6px; border:2px solid transparent;">${isQuantumMode ? `q${i}` : `d${i+1}`}</span>${badge}</div>`;
+                    } else {
+                        fLbl.innerHTML = `<div style="position:relative;"><img src="${folder}dif${i}.png" class="${styleClass}" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; padding: 2px; border:3px solid transparent;" alt="dif${i}">${badge}</div>`;
+                    }
                 }
             }
         }
@@ -863,7 +894,9 @@
             const animateMove = () => {
                 for (let i = 0; i < 16; i++) {
                     const n = document.getElementById(`node-${i}`);
+                    const b = document.getElementById(`dist-badge-${i}`);
                     if (n) { n.style.left = nodePositions[i].l + "px"; n.style.top = nodePositions[i].t + "px"; }
+                    if (b) { b.style.left = (nodePositions[i].l + 58) + "px"; b.style.top = (nodePositions[i].t - 10) + "px"; }
                 }
                 drawStaticLines();
                 updateFishUI();
@@ -1146,7 +1179,6 @@
                     }
                 }
                 
-                // 【修正】：讓這隻貓(Node)的徽章顯示「牠自己的專屬魚目前在哪裡」的距離
                 const badge = document.getElementById(`dist-badge-${nI}`);
                 if (badge && !badge.classList.contains('hidden')) {
                     let trueFishPos = fishAtNode.indexOf(nI);
@@ -1493,25 +1525,27 @@
         }
 
         function initGameLayout() {
-            const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer');
+            const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer'), bL = document.getElementById('badges-layer');
             nL.innerHTML = '';
             fL.innerHTML = '';
+            bL.innerHTML = '';
             applySkinClass();
             updateProgressImages(); 
             
             for (let i = 0; i < 16; i++) {
                 const bin = i.toString(2).padStart(4, '0');
-                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}"></div>`;
+                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}" style="top:${nodePositions[i].t - 10}px; left:${nodePositions[i].l + 58}px;"></div>`;
+                bL.innerHTML += badgeHtml;
                 
                 if (currentSkin === 'rip') {
                     const skinIndex = i + 1;
-                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">${badgeHtml}<div class="fixed-number">${bin}</div><img src="./RIP/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
+                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./RIP/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
                     fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="./RIP/Fish${skinIndex}.png" class="fish-img encoded-img" alt="${bin} fish"></div>`;
                     continue;
                 }
                 if (currentSkin === 'poto') {
                     const skinIndex = i;
-                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">${badgeHtml}<div class="fixed-number">${bin}</div><img src="./poto/cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
+                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./poto/cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
                     fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="./poto/fish${skinIndex}.png" class="fish-img encoded-img" alt="${bin} fish"></div>`;
                     continue;
                 }
@@ -1525,7 +1559,6 @@
 
                     nL.innerHTML += `
                         <div class="node ${sizeClass}" id="node-${i}" style="top:${nodePositions[i].t}px; left:${finalLeft}px;">
-                            ${badgeHtml}
                             <div class="fixed-number">${bin}</div>
                             <img src="./mj/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat">
                         </div>`;
@@ -1538,7 +1571,7 @@
                 }
                 let code = `0${bin.slice(2)}`, faded = bin[0] === '1' ? ' bit-faded' : '', catHat = bin[1] === '1' ? `<img src="./svg/hat-c.svg" class="hat-img cat-hat" alt="">` : '';
                 const catSrc = `./svg/${code}-c.svg`;
-                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">${badgeHtml}<div class="fixed-number">${bin}</div>${catHat}<img src="${catSrc}" class="encoded-img${faded}" alt="${bin} cat"></div>`;
+                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catHat}<img src="${catSrc}" class="encoded-img${faded}" alt="${bin} cat"></div>`;
                 const fishSrc = `./svg/${code}-f.svg`, fishHat = bin[1] === '1' ? `<img src="./svg/hat-f.svg" class="hat-img fish-hat" alt="">` : '';
                 fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div>${fishHat}<img src="${fishSrc}" class="fish-bg-shape encoded-img${faded}" alt=""><img src="${fishSrc}" class="fish-img encoded-img${faded}" alt="${bin} fish"></div>`;
             }
