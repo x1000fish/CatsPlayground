@@ -899,7 +899,7 @@
                 const ft = time, st = steps, u = sessionStorage.getItem('currentUser'), savedLevel = parseInt(sessionStorage.getItem('currentLevel')) || 1;
                 if (savedLevel < 9) sessionStorage.setItem('currentLevel', 9);
                 setTimeout(() => { if(typeof meow !== 'undefined') { meow.currentTime = 0; meow.play(); } document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`; document.getElementById('victoryModal').style.display = 'flex'; }, 800);
-                if (u) { fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'saveRecord', username: u, level: 8, steps: st, time: ft, circuit: gateHistory.join(',') }) }).then(() => { setTimeout(fetchLeaderboard, 1200); }); }
+                if (u && sessionStorage.getItem('isGuest') !== 'true') { fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'saveRecord', username: u, level: 8, steps: st, time: ft, circuit: gateHistory.join(',') }) }).then(() => { setTimeout(fetchLeaderboard, 1200); }); }
             }
         }
         function viewInLab() { if (gateHistory.length === 0) { alert("Current circuit is empty!"); return; } window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}`; }
