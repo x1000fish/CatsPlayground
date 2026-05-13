@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -1001,7 +1001,7 @@
                     document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`;
                     document.getElementById('victoryModal').style.display = 'flex';
                 }, 800);
-                if (u) {
+                if (u && sessionStorage.getItem('isGuest') !== 'true') {
                     fetch(SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
@@ -1076,6 +1076,7 @@
             if (!silent) showRankChampion(activeRankType);
         }
         function showRankChampion(type) {
+            if (currentSidePanel !== 'rank') return;
             const wrapper = document.getElementById('leaderboard-wrapper');
             if (wrapper && !wrapper.classList.contains('expanded')) return;
             const champion = sortedRankData(type)[0];
