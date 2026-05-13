@@ -55,9 +55,6 @@
         .fish-wrapper::before { content: ''; position: absolute; width: 140%; height: 140%; background: radial-gradient(circle, rgba(255,184,0,0.85) 0%, rgba(255,184,0,0) 65%); top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 0; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s; pointer-events: none; opacity: 0; }
         .fish-wrapper.fish-correct::before { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         .fish-wrapper img.fish-bg-shape { width: 70px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; top: 50%; transform: translateY(-50%); }
-        .hat-img { position: absolute; height: auto; pointer-events: none; z-index: 21; }
-        .cat-hat { width: 40px !important; top: 14px; left: 65px; transform: translateX(-50%) rotate(0deg); }
-        .fish-hat { width: 28px; top: 13px; left: 45%; transform: translateX(-50%) rotate(-10deg); z-index: 31; }
         .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; z-index: 5; position: absolute; top: px; }
         #pro-panel { width: 0; opacity: 0; height: 628px; overflow: hidden; background: #fff; border: 0px solid #463438; border-radius: 40px; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .pro-active #pro-panel { width: 650px; opacity: 1; border: 8px solid #463438; padding: 20px; box-shadow: 10px 10px 0px #99C44D;}
@@ -174,8 +171,6 @@
         .node img, .fish-wrapper img.fish-img, .fish-wrapper img.fish-bg-shape, .hat-img { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         body:not(.hide-labels) .node > img.encoded-img:not(.hat-img), body:not(.hide-labels) .node > img.skin-cat { transform: translate(-2px, -2px) scale(0.87); }
         body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-50%) scale(0.87); }
-        body:not(.hide-labels) .node > img.hat-img { transform: translateX(-50%) rotate(0deg) scale(0.87); }
-        body:not(.hide-labels) .fish-wrapper > img.hat-img { transform: translateX(-50%) rotate(-10deg) scale(0.87); }
         body.skin-poto:not(.hide-labels) .node > img.skin-cat, body.skin-mj:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) scale(0.87); }
         body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-38%) scale(0.87); }
         /* Skin picker copied from Level 11, scoped to the side panel and sprites. */
@@ -1412,7 +1407,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                     document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`;
                     document.getElementById('victoryModal').style.display = 'flex';
                 }, 800);
-                if (u) {
+                if (u && sessionStorage.getItem('isGuest') !== 'true') {
                     fetch(SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
@@ -1434,7 +1429,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
         function toggleLeaderboard() { document.getElementById('leaderboard-wrapper').classList.toggle('expanded'); }
         async function fetchLeaderboard() { const listArea = document.getElementById('rankList'); try { const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=5`); const data = await response.json(); if (data && Array.isArray(data) && data.length > 0) { leaderboardData = data; renderRank('steps'); } else { listArea.innerHTML = '<p class="text-center italic text-gray-400 mt-10 text-sm">No records yet</p>'; } } catch (e) { listArea.innerHTML = '<p class="text-center italic text-red-400 mt-10 text-sm">Load Error</p>'; } }
         function renderRank(type) { const tabSteps = document.getElementById('tab-steps'), tabTime = document.getElementById('tab-time'), listArea = document.getElementById('rankList'); if (type === 'steps') { tabSteps.className = 'rank-tab active'; tabTime.className = 'rank-tab bg-gray-100'; } else { tabSteps.className = 'rank-tab bg-gray-100'; tabTime.className = 'rank-tab active'; } if (!leaderboardData || leaderboardData.length === 0) return; const sorted = [...leaderboardData].sort((a, b) => a[type] - b[type]); let html = ""; sorted.slice(0, 10).forEach((item, index) => { const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : (index + 1) + "."; const av=item.photo?`<img src="${item.photo}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:${item.photoX||50}% ${item.photoY||50}%;transform-origin:${item.photoX||50}% ${item.photoY||50}%;transform:scale(${item.photoScale||1});">`:'🐱'; html += `<div class="rank-item"><div class="rank-avatar-sm">${av}</div><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">${medal} ${item.username || item.name || 'Anonymous'}</span><span style="flex-shrink:0;color:#5ba4cf;">${type === 'steps' ? item.steps + '🐾' : item.time + 's'}</span></div>`; }); listArea.innerHTML = html; }
-        function initGameLayout() { const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer'); nL.innerHTML = ''; fL.innerHTML = ''; applySkinClass(); for (let i = 0; i < 8; i++) { let bin = i.toString(2).padStart(3, '0'); nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${skinAssetHtml('cat', i, 8, bin)}</div>`; fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div>${skinAssetHtml('fish', i, 8, bin)}</div>`; } }
+        function initGameLayout() { const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer'); nL.innerHTML = ''; fL.innerHTML = ''; for (let i = 0; i < 8; i++) { let bin = i.toString(2).padStart(3, '0'); nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./svg/${bin}-c.svg" class="encoded-img" alt="${bin} cat"></div>`; const fishSrc = `./svg/${bin}-f.svg`; fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="${fishSrc}" class="fish-bg-shape"><img src="${fishSrc}" class="fish-img"></div>`; } }
             var activeRankType = 'steps';
         var rankChampionTimers = [];
         function rankDisplayName(item) { return item.username || item.name || 'Anonymous'; }
@@ -1483,6 +1478,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
             if (!silent) showRankChampion(activeRankType);
         }
         function showRankChampion(type) {
+            if (currentSidePanel !== 'rank') return;
             const wrapper = document.getElementById('leaderboard-wrapper');
             if (wrapper && !wrapper.classList.contains('expanded')) return;
             const champion = sortedRankData(type)[0];
@@ -1536,13 +1532,13 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
         function defaultSkinCode(index, count) {
             const bits = getSkinBits(index, count);
             if (count > 8) return '0' + bits.slice(2);
-            if (count > 4) return '0' + bits.slice(1);
+            if (count > 4) return bits;
             return '0' + bits;
         }
         function defaultSkinHat(kind, index, count) {
+            if (count <= 8) return '';
             const bits = getSkinBits(index, count);
-            const hatBit = count > 8 ? bits[1] : count > 4 ? bits[0] : '0';
-            if (hatBit !== '1') return '';
+            if (bits[1] !== '1') return '';
             const asset = kind === 'cat' ? 'hat-c' : 'hat-f';
             const cls = kind === 'cat' ? 'cat-hat' : 'fish-hat';
             return '<img src="./svg/' + asset + '.svg" class="hat-img ' + cls + '" alt="">';
