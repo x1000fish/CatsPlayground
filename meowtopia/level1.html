@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=1200">
@@ -132,7 +132,7 @@
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">🐾</h2>
             <p id="victoryMsg" class="text-xl font-bold mb-6"></p>
             <div class="victory-actions">
-                <button onclick="location.href='index.html'" class="game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
+                <button onclick="location.href='index.html'" class="w-full game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
             </div>
             <div class="victory-progress-actions">
                 <button onclick="location.reload()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
@@ -252,7 +252,7 @@
                     document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`;
                     document.getElementById('victoryModal').style.display = 'flex';
                 }, 800);
-                if (u) {
+                if (u && sessionStorage.getItem('isGuest') !== 'true') {
                     const currentLvInSession = parseInt(sessionStorage.getItem('currentLevel') || "1");
                     if (currentLvInSession <= 1) {
                         sessionStorage.setItem('currentLevel', 2);
