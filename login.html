@@ -114,6 +114,16 @@
     .switch-link:hover { color: var(--dark); }
     .hidden { display: none !important; }
 
+    .login-scale-shell {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: scale(0.9);
+      transform-origin: center center;
+    }
+
     /* ── Hub & Cards ── */
     #hub { display: flex; flex-direction: column; align-items: center; gap: 34px; max-width: 1260px; }
     .player-bar { 
@@ -187,19 +197,158 @@
     .css-antenna-waves::after { content: ''; position: absolute; top: -50%; left: -36%; width: 46px; height: 46px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--dark); animation: signal-pulse 2s infinite ease-in-out 0.3s; }
     @keyframes signal-pulse { 0% { opacity: 0.1; } 50% { opacity: 0.8; } 100% { opacity: 0.1; } }
 
-    .css-shield { width: 46px; height: 54px; background: var(--blue); border: 4px solid var(--dark); border-radius: 18px 18px 22px 22px; position: relative; clip-path: polygon(50% 0%, 100% 16%, 92% 68%, 50% 100%, 8% 68%, 0 16%); }
-    .css-shield::before { content: ''; position: absolute; inset: 9px 12px 18px; border: 4px solid white; border-top: 0; border-radius: 0 0 14px 14px; }
-    .css-shield::after { content: ''; position: absolute; top: 17px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: white; border: 3px solid var(--dark); border-radius: 50%; }
+    /* ── QUANTUM SECURITY SHIELD (NEW) ── */
+    .css-q-shield { 
+      width: 48px; 
+      height: 56px; 
+      background: var(--blue); 
+      border: 4px solid var(--dark); 
+      /* 利用不對稱的 border-radius 畫出完美的圓潤盾牌形狀 */
+      border-radius: 12px 12px 26px 26px / 12px 12px 34px 34px; 
+      position: relative; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: inset 0 6px 0 rgba(255,255,255,0.6); /* 頂部高光效果 */
+      margin: 0 auto;
+      z-index: 2;
+    }
+    
+    /* 盾牌內部的原子軌道 */
+    .css-q-orbit { 
+      position: absolute; 
+      width: 40px; 
+      height: 14px; 
+      border: 3px solid rgba(255,255,255,0.9); 
+      border-radius: 50%; 
+    }
+    .css-q-orbit.deg1 { transform: rotate(45deg); }
+    .css-q-orbit.deg2 { transform: rotate(-45deg); }
+    
+    /* 盾牌中心的量子核心 */
+    .css-q-core { 
+      position: absolute; 
+      width: 14px; 
+      height: 14px; 
+      background: var(--cream); 
+      border: 3px solid var(--dark); 
+      border-radius: 50%; 
+      z-index: 3;
+      animation: q-core-pulse 1.5s infinite ease-in-out alternate;
+    }
 
-    .css-quantum { position: relative; width: 62px; height: 62px; }
-    .css-quantum::before, .css-quantum::after { content: ''; position: absolute; inset: 10px 4px; border: 4px solid var(--dark); border-radius: 50%; }
-    .css-quantum::before { transform: rotate(28deg); }
-    .css-quantum::after { transform: rotate(-28deg); }
-    .css-quantum-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background: var(--mint); border: 4px solid var(--dark); border-radius: 50%; z-index: 2; }
-    .css-quantum-dot { position: absolute; width: 12px; height: 12px; background: white; border: 3px solid var(--dark); border-radius: 50%; z-index: 3; }
-    .css-quantum-dot:nth-child(2) { top: 6px; left: 25px; }
-    .css-quantum-dot:nth-child(3) { right: 4px; bottom: 18px; }
-    .css-quantum-dot:nth-child(4) { left: 5px; bottom: 18px; }
+    /* 盾牌外部漂浮的裝飾火花 */
+    .css-q-spark {
+      position: absolute;
+      background: var(--yellow);
+      border: 3px solid var(--dark);
+      border-radius: 50%;
+      z-index: 3;
+    }
+    .css-q-s1 { width: 12px; height: 12px; top: -2px; right: -4px; animation: float 2s infinite ease-in-out; }
+    .css-q-s2 { width: 10px; height: 10px; bottom: 8px; left: -6px; animation: float 2s infinite ease-in-out 1s; }
+
+    @keyframes q-core-pulse {
+      0% { transform: scale(1); background: var(--cream); }
+      100% { transform: scale(1.2); background: var(--mint); }
+    }
+    /* ── QUANTUM VERIFICATION (NEW) ── */
+    /* 放大鏡鏡片主體 */
+    .css-q-verify {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      background: rgba(255,255,255,0.9);
+      border: 4px solid var(--dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      z-index: 2;
+      box-shadow: inset -4px -4px 0 rgba(149, 194, 255, 0.4); /* 玻璃邊緣反光 */
+      animation: inspect-float 3s infinite ease-in-out;
+    }
+    
+    /* 放大鏡的把手 */
+    .css-v-handle {
+      position: absolute;
+      bottom: -16px;
+      right: -12px;
+      width: 14px;
+      height: 22px;
+      background: var(--pink);
+      border: 4px solid var(--dark);
+      border-radius: 6px;
+      transform: rotate(-45deg);
+      z-index: -1;
+      box-shadow: inset -3px 0 0 rgba(0,0,0,0.1);
+    }
+    
+    /* 鏡片內的量子軌道 */
+    .css-v-orbit {
+      position: absolute;
+      width: 32px;
+      height: 12px;
+      border: 3px solid var(--dark);
+      border-radius: 50%;
+    }
+    .css-v-orbit.deg1 { transform: rotate(35deg); border-color: var(--blue); }
+    .css-v-orbit.deg2 { transform: rotate(-35deg); border-color: var(--yellow); }
+    
+    /* 被檢驗的量子核心 */
+    .css-v-core {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--dark);
+      border-radius: 50%;
+      z-index: 3;
+      animation: v-core-blink 1.5s infinite alternate;
+    }
+
+    /* 驗證成功的綠色打勾徽章 */
+    .css-v-badge {
+      position: absolute;
+      bottom: 2px;
+      left: -4px;
+      width: 22px;
+      height: 22px;
+      background: var(--green);
+      border: 3px solid var(--dark);
+      border-radius: 50%;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 2px 0 var(--dark);
+      animation: pop-bounce 2s infinite;
+    }
+    
+    /* 打勾符號 (純 CSS 繪製) */
+    .css-v-badge::after {
+      content: '';
+      width: 5px;
+      height: 10px;
+      border: 3px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    @keyframes inspect-float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(6deg); }
+    }
+    @keyframes v-core-blink {
+      0% { transform: scale(1); background: var(--dark); }
+      100% { transform: scale(1.3); background: var(--mint); }
+    }
+    @keyframes pop-bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1) rotate(-10deg); }
+    }
 
     @keyframes glaw {
       0% { text-shadow: 0 0 4px #ffafc1, 0 0 9px #ffafc1; }
@@ -210,6 +359,8 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
+  <div class="login-scale-shell">
+
   <h1 class="game-title mb-10 text-center">Cat's Playground</h1>
 
   <!-- ① Login / Register flip card -->
@@ -218,7 +369,6 @@
       <!-- Front: Login -->
       <div class="flip-card-front">
         <div class="flex-grow flex flex-col justify-center">
-          <!-- 改變這裡的 LOGIN_ 樣式以符合圖片要求 -->
           <h2 style="font-family:'Arial', sans-serif; font-weight:900; font-style:italic; font-size: 2.2rem; text-align: left; margin-bottom: 1.5rem; color: var(--dark);">LOGIN_</h2>
           <div class="input-box-group">
             <div class="side-label">NAME</div>
@@ -229,8 +379,15 @@
             <input type="password" id="login-pass" class="game-input" placeholder="●●●●●●">
           </div>
         </div>
+        
+        <!-- 主要行動按鈕：保持醒目 -->
         <button id="btn-login" onclick="handleLogin()" class="game-btn btn-red w-full">START!</button>
-        <p class="switch-link" onclick="toggleAuth()">New cat? Register</p>
+        
+        <!-- 次要選項區域：移除顏色標籤，全部統一為原本的灰色 -->
+        <div class="flex justify-between items-center px-2 mt-4">
+          <p class="switch-link !mt-0" onclick="handleGuestLogin()">Just visiting? Guest</p>
+          <p class="switch-link !mt-0" onclick="toggleAuth()">New cat? Register</p>
+        </div>
       </div>
       <!-- Back: Register -->
       <div class="flip-card-back">
@@ -271,7 +428,7 @@
         </div>
       </div>
       <div class="player-actions">
-        <button onclick="openProfileEditor()" class="game-btn btn-blue" style="font-size:14px;padding:8px 20px;width:auto;margin-top:0;">EDIT</button>
+        <button id="edit-profile-btn" onclick="openProfileEditor()" class="game-btn btn-blue" style="font-size:14px;padding:8px 20px;width:auto;margin-top:0;">EDIT</button>
         <button onclick="handleLogout()" class="game-btn btn-logout" style="font-size:14px;padding:8px 20px;width:auto;margin-top:0;">LOGOUT</button>
       </div>
     </div>
@@ -305,9 +462,18 @@
       </a>
 
       <!-- Quantum Security card -->
+      <!-- Quantum Security card -->
       <a class="game-card" id="quantum-security-card" href="https://s112321005.github.io/Cybersecurity-Visualization/QuantumCybersecurityEducationPlatform.html" target="_blank" rel="noopener noreferrer">
         <div class="css-icon-wrapper">
-          <div class="css-shield"></div>
+          <!-- 漂浮裝飾 -->
+          <div class="css-q-spark css-q-s1"></div>
+          <div class="css-q-spark css-q-s2"></div>
+          <!-- 主盾牌 -->
+          <div class="css-q-shield">
+            <div class="css-q-orbit deg1"></div>
+            <div class="css-q-orbit deg2"></div>
+            <div class="css-q-core"></div>
+          </div>
         </div>
         <div class="card-title">Quantum Security</div>
         <div class="card-desc">Explore cybersecurity visuals!</div>
@@ -317,18 +483,23 @@
       <!-- Quantum Computing Verification card -->
       <a class="game-card" id="quantum-verification-card" href="#">
         <div class="css-icon-wrapper">
-          <div class="css-quantum">
-            <div class="css-quantum-core"></div>
-            <div class="css-quantum-dot"></div>
-            <div class="css-quantum-dot"></div>
-            <div class="css-quantum-dot"></div>
+          <!-- 放大鏡主體 -->
+          <div class="css-q-verify">
+            <div class="css-v-orbit deg1"></div>
+            <div class="css-v-orbit deg2"></div>
+            <div class="css-v-core"></div>
+            <div class="css-v-handle"></div>
           </div>
+          <!-- 綠色打勾標章 -->
+          <div class="css-v-badge"></div>
         </div>
         <div class="card-title">Quantum Verification</div>
         <div class="card-desc">Link reserved for validation!</div>
         <div class="card-badge">COMING SOON</div>
       </a>
     </div>
+  </div>
+
   </div>
 
   <div id="profile-modal" class="modal-overlay hidden">
@@ -369,6 +540,7 @@
     const PHOTO_X_KEY = 'playerPhotoX';
     const PHOTO_Y_KEY = 'playerPhotoY';
     const PHOTO_SCALE_KEY = 'playerPhotoScale';
+    const GUEST_KEY = 'isGuest';
     let pendingEditPhoto = '';
 
     window.onload = () => {
@@ -391,6 +563,7 @@
     function toggleAuth() { document.getElementById('auth-card').classList.toggle('flipped'); }
 
     function setStoredProfile(username, meowLv, placeLv, photo, photoX = 50, photoY = 50, photoScale = 1) {
+      sessionStorage.removeItem(GUEST_KEY);
       sessionStorage.setItem('currentUser', username);
       sessionStorage.setItem('meow_level', meowLv);
       sessionStorage.setItem('placement_level', placeLv);
@@ -406,6 +579,25 @@
       localStorage.setItem(PHOTO_X_KEY, photoX);
       localStorage.setItem(PHOTO_Y_KEY, photoY);
       localStorage.setItem(PHOTO_SCALE_KEY, photoScale);
+    }
+
+    function handleGuestLogin() {
+      sessionStorage.clear();
+      sessionStorage.setItem(GUEST_KEY, 'true');
+      sessionStorage.setItem('currentUser', 'Guest');
+      sessionStorage.setItem('meow_level', '1');
+      sessionStorage.setItem('placement_level', '1');
+      sessionStorage.setItem('placementLevel', '1');
+      sessionStorage.setItem('currentLevel', '1');
+      sessionStorage.removeItem(PHOTO_KEY);
+      sessionStorage.setItem(PHOTO_X_KEY, '50');
+      sessionStorage.setItem(PHOTO_Y_KEY, '50');
+      sessionStorage.setItem(PHOTO_SCALE_KEY, '1');
+      localStorage.removeItem(PHOTO_KEY);
+      localStorage.removeItem(PHOTO_X_KEY);
+      localStorage.removeItem(PHOTO_Y_KEY);
+      localStorage.removeItem(PHOTO_SCALE_KEY);
+      showHub('Guest', 1, 1);
     }
 
     function getPhotoX() { return parseInt(sessionStorage.getItem(PHOTO_X_KEY) || localStorage.getItem(PHOTO_X_KEY) || '50') || 50; }
@@ -496,6 +688,10 @@
     }
 
     function openProfileEditor() {
+      if (sessionStorage.getItem(GUEST_KEY) === 'true') {
+        alert('Guest profiles are temporary. Please register to edit and save a profile.');
+        return;
+      }
       document.getElementById('edit-user').value = sessionStorage.getItem('currentUser') || '';
       document.getElementById('edit-pass').value = '';
       document.getElementById('edit-confirm').value = '';
@@ -572,6 +768,8 @@
       document.getElementById('hub-meow-lv').innerText      = Math.min(meowLv,  11);
       document.getElementById('hub-place-lv').innerText     = Math.min(placeLv, 19);
       renderAvatar('player-avatar');
+      const editBtn = document.getElementById('edit-profile-btn');
+      if (editBtn) editBtn.style.display = sessionStorage.getItem(GUEST_KEY) === 'true' ? 'none' : '';
     }
 
     function handleLogout() {
