@@ -57,17 +57,14 @@
   </div>
   <script>
     const popAudio = new Audio('pop.m4a');
-
     function playSound(audio) {
       audio.currentTime = 0;
       audio.play().catch(() => {});
     }
-
     function playPopThen(callback) {
       playSound(popAudio);
       setTimeout(callback, 120);
     }
-
     function renderPlayerPhoto() {
       const photo = sessionStorage.getItem('playerPhoto') || localStorage.getItem('playerPhoto');
       const avatar = document.getElementById('meow-player-avatar');
@@ -77,7 +74,6 @@
       const photoScale = sessionStorage.getItem('playerPhotoScale') || localStorage.getItem('playerPhotoScale') || '1';
       avatar.innerHTML = photo ? `<img src="${photo}" alt="Player photo" style="object-position:${photoX}% ${photoY}%;transform-origin:${photoX}% ${photoY}%;transform:scale(${photoScale});">` : '🐱';
     }
-
     (function initMeowtopiaMap() {
       const user = sessionStorage.getItem('currentUser');
       showMeowMap(user);
