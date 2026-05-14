@@ -58,8 +58,9 @@
         .fish-ready { display: flex; }
         .fish-animate { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img { width: 70px; height: auto; }
-        .fish-wrapper::before { content: ''; position: absolute; width: 140%; height: 140%; background: radial-gradient(circle, rgba(255,184,0,0.85) 0%, rgba(255,184,0,0) 65%); top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 0; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s; pointer-events: none; opacity: 0; }
-        .fish-wrapper.fish-correct::before { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .node.node-correct { background: #ebceff; }
+        .fish-wrapper::before { content: none; }
+        .fish-wrapper.fish-correct::before { opacity: 0; }
         .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; margin-bottom: -47px; z-index: 5; position: relative; top: -10px; }
         .game-btn { cursor: pointer; border: 5px solid #463438; border-radius: 60px; padding: 12px; font-size: 26px; font-weight: 900; color: white; text-shadow: 2px 2px 0 #463438; box-shadow: 0 6px 0 #463438; position: relative; transition: all 0.1s; display: inline-block; }
         .game-btn:active { top: 6px; box-shadow: 0 2px 0 #463438; }
@@ -687,8 +688,10 @@
                 if(f && n) {
                     f.style.top = (n.offsetTop + (nodeIndex < 2 ? 100 : 104)) + "px";
                     f.style.left = (n.offsetLeft + 65) + "px";
-                    f.classList.toggle('fish-correct', nodeIndex === i);
+                    f.classList.remove('fish-correct');
                 }
+                const nodeEl = document.getElementById(`node-${i}`);
+                if (nodeEl) nodeEl.classList.toggle('node-correct', nodeIndex === i);
             }
         }
         function getHighlightPairsForGate(type) {
