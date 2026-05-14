@@ -26,6 +26,7 @@
         .connection-line:hover { background: #99C44D; box-shadow: 0 0 20px rgba(153, 196, 77, 0.8); }
         .connection-line::after { content: ''; position: absolute; top: -20px; bottom: -20px; left: -20px; right: -20px; background-color: transparent; z-index: 11; }
         .cat-node { width: 160px; height: 160px; background: white; border: 6px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; top: 50%; transform: translateY(-50%); z-index: 20; }
+        .cat-node.node-correct { background: #ebceff; }
         .cat-node > img { width: 112px; height: auto; }
         #node-0 { left: 150px; } #node-1 { right: 150px; }
         .fish-wrapper { position: absolute; width: 80px; z-index: 30; pointer-events: none; display: none; flex-direction: column; align-items: center; height: 80px; justify-content: center; transform: translate(-50%, -50%);}
@@ -236,6 +237,8 @@
                     f.style.top = (n.offsetTop + 32) + "px";
                     f.style.left = (n.offsetLeft + 75) + "px";
                 }
+                const nodeEl = document.getElementById(`node-${i}`);
+                if (nodeEl) nodeEl.classList.toggle('node-correct', fishAtNode[i] === i);
             }
         }
         async function checkWin() {
