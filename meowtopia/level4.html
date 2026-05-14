@@ -38,16 +38,16 @@
         .rank-crown { position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-8deg); font-size: 18px; line-height: 1; filter: drop-shadow(0 2px 0 rgba(70,52,56,0.35)); pointer-events: none; }
         .rank-champion-backdrop { position: fixed; inset: 0; background: rgba(255, 249, 240, 0.46); opacity: 0; z-index: 120; pointer-events: none; transition: opacity 0.2s ease; }
         .rank-champion-backdrop.show { opacity: 1; }
-        .rank-champion-toast { position: fixed; left: 12px; top: 108px; transform: translate(0, -50%) scale(0.82); opacity: 0; z-index: 3000; background: #fffaf5; border: 6px solid #463438; border-radius: 22px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; pointer-events: none; transform-origin: left center; }
+        .rank-champion-toast { position: fixed; left: 12px; top: 108px; transform: translate(0, -50%) scale(0.82); opacity: 0; z-index: 3000; background: #fffaf5; border: 6px solid #463438; border-radius: 22px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; pointer-events: none; transform-origin: left center; box-sizing: border-box; overflow: hidden; }
         .rank-champion-toast.show { animation: rankChampionPop 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .rank-champion-toast .rank-avatar-sm { width: 58px; height: 58px; flex-basis: 58px; border-width: 4px; }
-        .rank-champion-text { display: flex; flex-direction: column; line-height: 1.05; }
+        .rank-champion-text { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; flex: 1 1 auto; overflow: hidden; }
         .rank-champion-label { font-size: 12px; font-weight: 900; color: #5ba4cf; letter-spacing: 0; }
-        .rank-champion-name { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
+        .rank-champion-name { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
         @keyframes rankChampionPop { 0% { opacity: 0; transform: translate(0, -50%) scale(0.82); } 20% { opacity: 1; transform: translate(0, -62%) scale(1.05); } 68% { opacity: 1; transform: translate(0, -62%) scale(1); } 100% { opacity: 0; transform: translate(0, -50%) scale(0.82); } }
         .node { width: 140px; height: 140px; background: white; border: 6px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .node img { width: 110px; height: auto; pointer-events: none; }
-        .fixed-number { position: absolute; bottom: -5px; right: 50px; font-size: 22px; font-weight: 900; color: #463438; pointer-events: none; z-index: 25; }       
+        .fixed-number { position: absolute; bottom: -3px; right: 50px; font-size: 22px; font-weight: 900; color: #463438; pointer-events: none; z-index: 25; }       
         .connection-line { position: absolute; background: #463438; cursor: pointer; z-index: 10; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
         .connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; z-index: 16 !important; }
         .connection-line::after { content: ''; position: absolute; top: -15px; bottom: -15px; left: -15px; right: -15px; background-color: transparent; }
@@ -144,12 +144,15 @@
         .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
         .hide-labels .fixed-number, .hide-labels .fish-label { opacity: 0; transform: translateY(1px); pointer-events: none; }
         .node img, .fish-wrapper img, .hat-img { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        body:not(.hide-labels) .node > img.encoded-img:not(.hat-img), body:not(.hide-labels) .node > img.skin-cat, body:not(.hide-labels) .node > img:not(.hat-img) { transform: translate(-2px, -2px) scale(0.87); }
-        body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape, body:not(.hide-labels) .fish-wrapper > img:not(.hat-img) { transform: scale(0.87) translateY(0px); }
-        body.skin-poto:not(.hide-labels) .node > img.skin-cat { transform: translateX(-4px) scale(0.87); }
-        body.skin-mj:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) scale(0.87); }
-        body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(6px) scale(0.87); }
-        /* Skin picker copied from Level 11, scoped to the side panel and sprites. */
+        body:not(.hide-labels) .node > img.encoded-img:not(.hat-img), body:not(.hide-labels) .node > img.skin-cat, body:not(.hide-labels) .node > img:not(.hat-img) { transform: translate(-2px, -7px) scale(0.94); }
+        body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape, body:not(.hide-labels) .fish-wrapper > img:not(.hat-img) { transform: scale(0.94) translateY(1px); }
+        body.skin-poto:not(.hide-labels) .node > img.skin-cat { transform: translateY(-7px) translateX(-2px) scale(0.94); }
+        body.skin-poto.hide-labels .node > img.skin-cat { transform: translateY(0px) translateX(-2px) scale(1); }
+        body.skin-mj:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) translateY(-8px) scale(0.94); }
+        body.skin-rip:not(.hide-labels) .node > img.skin-cat { transform: translateX(0px) translateY(-8px) scale(0.94); }
+        body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-5px) translateX(2px) scale(1); }
+        body.skin-mj:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-mj:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(6px) translateX(4px) scale(0.95); }
+        body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-20px) translateX(2px) scale(1); }
         .side-leaderboard-content { height: 450px; max-height: calc(100vh - 90px); }
         .bookmark-tab.rank-bookmark { top: 40px; background: #514749; }
         .bookmark-tab.skin-bookmark { top: 170px; height: 118px; background: #7d6961; }
@@ -164,11 +167,11 @@
         .skin-preview img.preview-hat { position: absolute; width: 24px; top: 8px; left: 35px; transform: translateX(-50%); z-index: 2; pointer-events: none; }
         .skin-card.active .skin-preview { border-color: #fff; }
         .node img.skin-cat, .fish-wrapper img.fish-img, .fish-wrapper img.fish-bg-shape { object-fit: contain; }
-        .skin-rip .node img.skin-cat { width: 122px; }
-        .skin-rip .fish-wrapper img.fish-img { width: 82px; }
+        .skin-rip .node img.skin-cat { width: 115px; transform: translateY(-4px);}
+        .skin-rip .fish-wrapper img.fish-img { width: 86px; }
         .skin-poto .node img.skin-cat { width: 120px; transform: translateX(-4px); }
-        .skin-poto .fish-wrapper img.fish-img { width: 82px; transform: translateY(6px); }
-        .skin-mj .node img.skin-cat { width: 122px; transform: translateX(-3px); }
+        .skin-poto .fish-wrapper img.fish-img { width: 120px; transform:scale(1.1) translateY(4px) translateX(1px); }
+        .skin-mj .node img.skin-cat { width: 122px; transform: translateX(-3px) translateY(-2px); }
         .fish-wrapper img.fish-bg-shape { display: none; }
         .bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
         .progress-bar-wrapper { flex: 1; height: 32px; background: #fffaf5; border: 4px solid #463438; border-radius: 20px; position: relative; box-shadow: inset 0 3px 5px rgba(0,0,0,0.1), 3px 3px 0 #FFB7C5; display: flex; align-items: center; justify-content: center; }
@@ -182,6 +185,21 @@
         .progress-win .progress-target { animation: targetBounce 0.5s infinite alternate; }
         @keyframes targetBounce { 0% { transform: translateY(-50%) scale(1); } 100% { transform: translateY(-50%) scale(1.25) rotate(12deg); } }
         @media (min-width: 1024px) {body {zoom: 0.9;} }
+        .fish-label { width: 32px; height: 22px; border-radius: 10px; font-size: 11px; position: absolute; top: 8px; right: auto; margin-bottom: 0; pointer-events: none; }
+        body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-50%); }
+        .hide-labels .fish-wrapper > img.fish-img, .hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-35%) translateX(4%) scale(1.05) !important; }
+        .skin-rip .fish-wrapper img.fish-bg-shape { width: 80px; }
+        body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-40%) translateX(4%) scale(1.05); }
+        .skin-rip.hide-labels .fish-wrapper > img.fish-img, .skin-rip.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-30%) translateX(4%) scale(1.15) !important; }
+        .skin-rip .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 4px; right: 33px; }
+        body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-36%) translateX(8%) scale(1.05); }
+        .skin-poto.hide-labels .fish-wrapper > img.fish-img, .skin-poto.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-20%) translateX(10%) scale(1.15) !important; }
+        .skin-poto .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 8px; right: 30px; }
+        body.skin-mj:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-mj:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translate(2px, -42%); }
+        .skin-mj.hide-labels .fish-wrapper > img.fish-img, .skin-mj.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translate(1px, -30%) scale(1.05) !important; }
+        .skin-mj .fish-wrapper.large-node > img.fish-img, .skin-mj .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(14px, -30%) scale(0.92)!important; }
+        .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-img, .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(14px, -18%) scale(1) !important; }
+        .skin-mj .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 13px; right: 18px; }
 </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels" id="body-root">
@@ -1184,6 +1202,9 @@
             for (let i = 0; i < count; i++) {
                 const node = document.getElementById('node-' + i);
                 const fish = document.getElementById('fish-' + i);
+                const isMjLarge = currentSkin === 'mj' && i % 2 === 1;
+                if (node) node.classList.toggle('large-node', isMjLarge);
+                if (fish) fish.classList.toggle('large-node', isMjLarge);
                 const nodeLabel = (node && node.querySelector('.fixed-number') && node.querySelector('.fixed-number').textContent) || getSkinBits(i, count);
                 const fishLabel = (fish && fish.querySelector('.fish-label') && fish.querySelector('.fish-label').textContent) || getSkinBits(i, count);
                 if (node) {
