@@ -42,12 +42,12 @@
         .rank-crown { position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-8deg); font-size: 18px; line-height: 1; filter: drop-shadow(0 2px 0 rgba(70,52,56,0.35)); pointer-events: none; }
         .rank-champion-backdrop { position: fixed; inset: 0; background: rgba(255, 249, 240, 0.46); opacity: 0; z-index: 120; pointer-events: none; transition: opacity 0.2s ease; }
         .rank-champion-backdrop.show { opacity: 1; }
-        .rank-champion-toast { position: fixed; left: 12px; top: 108px; transform: translate(0, -50%) scale(0.82); opacity: 0; z-index: 3000; background: #fffaf5; border: 6px solid #463438; border-radius: 22px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; pointer-events: none; transform-origin: left center; }
+        .rank-champion-toast { position: fixed; left: 12px; top: 108px; transform: translate(0, -50%) scale(0.82); opacity: 0; z-index: 3000; background: #fffaf5; border: 6px solid #463438; border-radius: 22px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; pointer-events: none; transform-origin: left center; box-sizing: border-box; overflow: hidden; }
         .rank-champion-toast.show { animation: rankChampionPop 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .rank-champion-toast .rank-avatar-sm { width: 58px; height: 58px; flex-basis: 58px; border-width: 4px; }
-        .rank-champion-text { display: flex; flex-direction: column; line-height: 1.05; }
+        .rank-champion-text { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; flex: 1 1 auto; overflow: hidden; }
         .rank-champion-label { font-size: 12px; font-weight: 900; color: #5ba4cf; letter-spacing: 0; }
-        .rank-champion-name { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
+        .rank-champion-name { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
         @keyframes rankChampionPop { 0% { opacity: 0; transform: translate(0, -50%) scale(0.82); } 20% { opacity: 1; transform: translate(0, -62%) scale(1.05); } 68% { opacity: 1; transform: translate(0, -62%) scale(1); } 100% { opacity: 0; transform: translate(0, -50%) scale(0.82); } }
         #nodes-layer, #fishes-layer { pointer-events: none; }       
         .node { width: 100px; height: 100px; background: white; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
