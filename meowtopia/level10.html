@@ -201,7 +201,7 @@
         .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-img, .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-bg-shape { transform: scale(1.15) translate(1px, -2px); }
         .skin-mj .fish-wrapper.large-node img.fish-img, .skin-mj .fish-wrapper.large-node img.fish-bg-shape { transform: translate(12px, -5px) scale(0.92) !important; }
         .skin-mj .fish-wrapper:not(.large-node) img.fish-img, .skin-mj .fish-wrapper:not(.large-node) img.fish-bg-shape { transform: translate(2px, -7px); }
-        .skin-poto.hide-labels .fish-wrapper img.fish-img, .skin-poto.hide-labels .fish-wrapper img.fish-bg-shape { transform: scale(1.15) translate(2px, 2px) !important; }
+        .skin-poto.hide-labels .fish-wrapper img.fish-img, .skin-poto.hide-labels .fish-wrapper img.fish-bg-shape { transform: scale(1.15) translate(2px, 0px) !important; }
         .node.node-correct { background: #ebceff; }
         .fish-wrapper::before { content: none; }
         .fish-wrapper.fish-correct::before { opacity: 0; }
@@ -226,8 +226,8 @@
             <div id="rank-panel" class="side-panel-view flex flex-col flex-grow min-h-0">
             <h2 class="text-xl font-black mb-3 text-center" style="color: #463438;">TOP CATS</h2>
             <div class="flex gap-2 mb-3">
-                <button onclick="renderRank('steps')" id="tab-steps" class="rank-tab active">STEPS</button>
-                <button onclick="renderRank('time')" id="tab-time" class="rank-tab">TIME</button>
+                <button onclick="playPopSound(); renderRank('steps')" id="tab-steps" class="rank-tab active">STEPS</button>
+                <button onclick="playPopSound(); renderRank('time')" id="tab-time" class="rank-tab">TIME</button>
             </div>
             <div id="rankList" class="flex-grow overflow-y-auto space-y-1 pr-1">
                 <p class="text-center italic text-gray-400 mt-10 text-sm">Loading...</p>
@@ -527,6 +527,7 @@
             if (skinBookmark) skinBookmark.classList.toggle('active', panel === 'skin');
         }
         function toggleSidePanel(panel) {
+            playPopSound();
             const wrapper = document.getElementById('leaderboard-wrapper');
             if (!wrapper) return;
             const isExpanded = wrapper.classList.contains('expanded');
@@ -539,6 +540,7 @@
             if (panel === 'rank') setTimeout(() => showRankChampion(activeRankType), 380);
         }
         function selectSkin(skin) {
+            playPopSound();
             if (!AVAILABLE_SKINS.includes(skin)) skin = 'default';
             currentSkin = skin;
             sessionStorage.setItem(SKIN_STORAGE_KEY, skin);
@@ -652,6 +654,9 @@
             }
         }
         const pop = new Audio('pop.m4a'), meow = new Audio('meow.m4a');
+        function playPopSound() {
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+        }
         const baseOffsetY = 195;
         const side = 120;
         const hyperOffset = 400;
