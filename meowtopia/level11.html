@@ -33,6 +33,8 @@
         .rank-avatar-sm { width: 28px; height: 28px; flex: 0 0 28px; border: 2px solid #463438; border-radius: 50%; background: #fff9f0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 0.9rem; }
         .rank-avatar-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .rank-player-main { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
+        .rank-player-main { flex: 1 1 0; overflow: hidden; }
+        .rank-value { flex: 0 0 auto; max-width: 62px; text-align: right; color: #5ba4cf; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .rank-number { width: 28px; flex: 0 0 28px; text-align: right; font-weight: 900; color: #463438; }
         .rank-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
         .rank-avatar-wrap { position: relative; width: 28px; height: 28px; flex: 0 0 28px; }
@@ -49,12 +51,18 @@
         .rank-champion-label { font-size: 12px; font-weight: 900; color: #5ba4cf; letter-spacing: 0; }
         .rank-champion-name { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
         @keyframes rankChampionPop { 0% { opacity: 0; transform: translate(0, -50%) scale(0.82); } 20% { opacity: 1; transform: translate(0, -62%) scale(1.05); } 68% { opacity: 1; transform: translate(0, -62%) scale(1); } 100% { opacity: 0; transform: translate(0, -50%) scale(0.82); } }
-        #nodes-layer, #fishes-layer { pointer-events: none; }       
+        #nodes-layer, #fishes-layer { position: absolute; inset: 0; pointer-events: none; }
+        #nodes-layer { z-index: 20; }
+        #fishes-layer { z-index: 60; }
         .node { width: 100px; height: 100px; background: white; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
         .node img { width: 76px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .node img.encoded-img { transform: translate(-2px, -5px); }
+        .node img.cat-bg-shape { position: absolute; z-index: 19; filter: brightness(0) invert(1); opacity: 0; }
+        .feature-filter-active .node img.cat-bg-shape { opacity: 1; }
+        .node img.encoded-img:not(.cat-bg-shape):not(.hat-bg-shape) { position: relative; z-index: 22; }
         .encoded-img { transition: filter 0.25s ease; }
         .node img.encoded-img.bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
+        .node img.cat-bg-shape.bit-faded { filter: brightness(0) invert(1); }
         .fish-wrapper img.fish-img.bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
         .fixed-number { position: absolute; bottom: -2px; right: 25px; font-size: 15px; font-weight: 900; color: #463438; pointer-events: none; z-index: 25; }
         .node-dist-badge { position: absolute; background: #FFB800; color: #463438; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #463438; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; box-shadow: 2px 2px 0 rgba(70,52,56,0.5); pointer-events: none; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -62,8 +70,10 @@
         .connection-line::after { content: ''; position: absolute; top: -10px; bottom: -10px; left: 0; right: 0; background: transparent; z-index: 10; }
         @media (hover: hover) { .connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 10px !important; z-index: 16 !important; opacity: 1 !important; border-top: none !important; } }
         .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15 !important; border-top: none !important; opacity: 1 !important; }
-        .fish-wrapper { position: absolute; width: 70px; height: 70px; pointer-events: none; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .fish-wrapper.feature-highlight { z-index: 55 !important; }
+        .fish-wrapper { position: absolute; width: 70px; height: 70px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fish-wrapper.feature-highlight { z-index: 75 !important; }
+        .feature-filter-active #fishes-layer { z-index: 90 !important; }
+        .feature-filter-active .fish-wrapper { z-index: 90 !important; }
         .fish-wrapper img.fish-img { width: 49px; height: auto; position: relative; z-index: 2; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape { width: 49px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1);opacity: 1; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape.bit-faded { opacity: 1; }
@@ -108,11 +118,14 @@
         .cat-hat.hat-bg-shape { z-index: 20; }
         .fish-hat.hat-bg-shape { z-index: 30; }
         .node.feature-dimmed { background-color: #fff !important; }
-        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div { opacity: 0.25 !important; }
+        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div:not(.fixed-number):not(.node-dist-badge) { opacity: 0.25 !important; }
+        .node.feature-dimmed > img.cat-bg-shape { opacity: 1 !important; }
+        .node.feature-dimmed > .fixed-number { opacity: 0 !important; visibility: hidden !important; }
         .node.feature-dimmed > img.hat-bg-shape { opacity: 1 !important; }
         .fish-wrapper.feature-dimmed { opacity: 1 !important; }
         .fish-wrapper.feature-dimmed img.fish-bg-shape { opacity: 1 !important; }
-        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape), .fish-wrapper.feature-dimmed .fish-label { opacity: 0.25 !important; }
+        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape) { opacity: 0.25 !important; }
+        .fish-wrapper.feature-dimmed .fish-label { opacity: 0 !important; visibility: hidden !important; }
         .circuit-unit { min-width: 50px; height: 180px; display: flex; flex-direction: column; position: relative; cursor: pointer; background-color: transparent !important; background-clip: padding-box; border-left: 0px solid transparent; border-right: 0px solid transparent; transition: background-color 0.2s ease, box-shadow 0.2s ease, border-left-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-right-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s ease, opacity 0.2s ease; }
         .circuit-unit:hover { background-color: var(--bg-hover, rgba(255, 183, 197, 0.3)) !important; border-radius: 12px; }
         .circuit-unit[data-type="start"]:hover, .circuit-unit[data-type="end"]:hover { background-color: transparent !important; box-shadow: none !important; }
@@ -175,7 +188,7 @@
         .skin-preview img.preview-cat.default-cat { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); transform: translate(-1px, 3px); }
         .skin-preview img.preview-hat { position: absolute; width: 24px; top: 8px; left: 35px; transform: translateX(-50%); z-index: 2; pointer-events: none; }
         .skin-card.active .skin-preview { border-color: #fff; }
-        .skin-rip .fish-wrapper { position: absolute; width: 66px; height: 70px; pointer-events: none; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-rip .fish-wrapper { position: absolute; width: 66px; height: 70px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-rip .fish-wrapper img.fish-img { width: 62px; height: auto; position: relative; z-index: 2; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-rip .fish-wrapper img.fish-bg-shape { width: 62px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-rip .node img { width: 75px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -186,12 +199,12 @@
         .hide-labels .node > img.hat-img { transform: translateX(-50%) rotate(0deg) scale(1.15); }
         .hide-labels .fish-wrapper > img.fish-img, .hide-labels .fish-wrapper > img.fish-bg-shape { transform: scale(1.15) translateY(0px); }
         .hide-labels .fish-wrapper > img.hat-img { transform: translateX(-50%) rotate(-10deg) scale(1.15); }
-        .skin-poto .fish-wrapper { position: absolute; width: 80px; height: 80px; pointer-events: none; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-poto .fish-wrapper { position: absolute; width: 80px; height: 80px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-poto .fish-wrapper img.fish-img { width: 60px; height: auto; position: relative; z-index: 2; transform: translateY(-5px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-poto .fish-wrapper img.fish-bg-shape { width: 60px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translateY(-5px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-poto .node img { width: 75px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-poto .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 22px; right: 24px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
-        .skin-mj .fish-wrapper { position: absolute; width: autopx; height: 80px; pointer-events: none; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-mj .fish-wrapper { position: absolute; width: autopx; height: 80px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-mj .fish-wrapper img.fish-img { width: 52px; height: auto; position: relative; z-index: 2; transform: translate(4px, -7px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-mj .fish-wrapper img.fish-bg-shape { width: 52px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translate(4px, -7px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .skin-mj .node img { width: 75px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -226,8 +239,8 @@
             <div id="rank-panel" class="side-panel-view flex flex-col flex-grow min-h-0">
             <h2 class="text-xl font-black mb-3 text-center" style="color: #463438;">TOP CATS</h2>
             <div class="flex gap-2 mb-3">
-                <button onclick="renderRank('steps')" id="tab-steps" class="rank-tab active">STEPS</button>
-                <button onclick="renderRank('time')" id="tab-time" class="rank-tab">TIME</button>
+                <button onclick="playPopSound(); renderRank('steps')" id="tab-steps" class="rank-tab active">STEPS</button>
+                <button onclick="playPopSound(); renderRank('time')" id="tab-time" class="rank-tab">TIME</button>
             </div>
             <div id="rankList" class="flex-grow overflow-y-auto space-y-1 pr-1">
                 <p class="text-center italic text-gray-400 mt-10 text-sm">Loading...</p>
@@ -324,10 +337,10 @@
         </div>
         <div id="circuit-area" class="mx-auto">
             <div id="circuit-diagram-title" class="circuit-title font-black text-xl text-center" style="color: #463438;">Paths</div>
-            <div id="q0-label" class="circuit-qubit-label" style="top: 64px;">d1</div>
-            <div id="q1-label" class="circuit-qubit-label" style="top: 104px;">d2</div>
-            <div id="q2-label" class="circuit-qubit-label" style="top: 144px;">d3</div>
-            <div id="q3-label" class="circuit-qubit-label" style="top: 184px;">d4</div>
+            <div id="q0-label" class="circuit-qubit-label" style="top: 64px;"><img src="./RIP/dif0.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px;" alt="dif0"></div>
+            <div id="q1-label" class="circuit-qubit-label" style="top: 104px;"><img src="./RIP/dif1.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px;" alt="dif1"></div>
+            <div id="q2-label" class="circuit-qubit-label" style="top: 144px;"><img src="./RIP/dif2.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px;" alt="dif2"></div>
+            <div id="q3-label" class="circuit-qubit-label" style="top: 184px;"><img src="./RIP/dif3.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px;" alt="dif3"></div>
             <div id="circuit-content-wrapper"><div id="circuit-content"></div></div>
         </div>
         <div class="w-full text-center mt-6 mb-6">
@@ -382,6 +395,8 @@
         }
         function updateFeatureHighlights() {
             let anyActive = featureStates.some(f => f !== null);
+            const root = document.getElementById('body-root') || document.body;
+            root.classList.toggle('feature-filter-active', anyActive);
             for (let i = 0; i < 16; i++) {
                 const n = document.getElementById(`node-${i}`);
                 const f = document.getElementById(`fish-${i}`);
@@ -424,14 +439,24 @@
                 }
             }
         }
+        function catLayerHtml(src, alt, extraClass = '') {
+            const classes = `encoded-img${extraClass}`;
+            return `<img src="${src}" class="${classes} cat-bg-shape" alt=""><img src="${src}" class="${classes}" alt="${alt}">`;
+        }
         function getSkinFolder(skin) {
             if (skin === 'rip') return './RIP/';
             if (skin === 'poto') return './poto/';
             if (skin === 'mj') return './mj/';
             return './svg/';
         }
+        function getFeatureSkinFolder(skin) {
+            if (skin === 'rip') return './RIP/';
+            if (skin === 'poto') return './poto/';
+            if (skin === 'mj') return './mj/';
+            return './RIP/';
+        }
         function updateCircuitLabels() {
-            const folder = getSkinFolder(currentSkin);
+            const folder = getFeatureSkinFolder(currentSkin);
             for(let i=0; i<4; i++) {
                 const cLbl = document.getElementById(`q${i}-label`);
                 if (cLbl) {
@@ -526,6 +551,7 @@
             if (skinBookmark) skinBookmark.classList.toggle('active', panel === 'skin');
         }
         function toggleSidePanel(panel) {
+            playPopSound();
             const wrapper = document.getElementById('leaderboard-wrapper');
             if (!wrapper) return;
             const isExpanded = wrapper.classList.contains('expanded');
@@ -538,6 +564,7 @@
             if (panel === 'rank') setTimeout(() => showRankChampion(activeRankType), 380);
         }
         function selectSkin(skin) {
+            playPopSound();
             if (!AVAILABLE_SKINS.includes(skin)) skin = 'default';
             currentSkin = skin;
             sessionStorage.setItem(SKIN_STORAGE_KEY, skin);
@@ -651,6 +678,9 @@
             }
         }
         const pop = new Audio('pop.m4a'), meow = new Audio('meow.m4a');
+        function playPopSound() {
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+        }
         const baseOffsetY = 195;
         const side = 120;
         const hyperOffset = 400;
@@ -787,7 +817,7 @@
             pop.currentTime = 0; pop.play();
             isPro = !isPro;
             document.getElementById('body-root').classList.toggle('pro-active', isPro);
-            document.getElementById('mode-toggle').innerText = isPro ? "⚡️" : "👁️";
+            document.getElementById('mode-toggle').innerText = isPro ? "⚡" : "👁️";
             const qToggle = document.getElementById('quantum-toggle');
             if (isPro) qToggle.classList.remove('hidden'); else qToggle.classList.add('hidden');
             let startTime = Date.now();
@@ -956,7 +986,7 @@
         function showIndicatorLockedPrompt() {
             const pill = document.getElementById('ios-indicator');
             const frac = document.getElementById('ind-fraction');
-            frac.innerText = isTouchDevice ? `↔ TILT/SWIPE & 2-FINGER TAP` : `↕ SCROLL & R-CLICK`;
+            frac.innerHTML = isTouchDevice ? '&#11108; TILT/SWIPE & 2-FINGER TAP' : '&#8597; SCROLL & R-CLICK';
             pill.classList.add('active');
             clearHighlight();
             highlightPairs([[hoverLine.i, hoverLine.j]]);
@@ -1398,17 +1428,17 @@
             updateProgressImages();         
             for (let i = 0; i < 16; i++) {
                 const bin = i.toString(2).padStart(4, '0');
-                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}" style="top:${nodePositions[i].t - 10}px; left:${nodePositions[i].l + 58}px;"></div>`;
+                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}" style="top:${nodePositions[i].t - 6}px; left:${nodePositions[i].l + 74}px;"></div>`;
                 bL.innerHTML += badgeHtml;
                 if (currentSkin === 'rip') {
                     const skinIndex = i + 1;
-                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./RIP/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
+                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catLayerHtml(`./RIP/Cat${skinIndex}.png`, `${bin} cat`)}</div>`;
                     fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="./RIP/Fish${skinIndex}.png" class="fish-bg-shape encoded-img" alt=""><img src="./RIP/Fish${skinIndex}.png" class="fish-img encoded-img" alt="${bin} fish"></div>`;
                     continue;
                 }
                 if (currentSkin === 'poto') {
                     const skinIndex = i;
-                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div><img src="./poto/cat${skinIndex}.png" class="encoded-img" alt="${bin} cat"></div>`;
+                    nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catLayerHtml(`./poto/cat${skinIndex}.png`, `${bin} cat`)}</div>`;
                     fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="./poto/fish${skinIndex}.png" class="fish-bg-shape encoded-img" alt=""><img src="./poto/fish${skinIndex}.png" class="fish-img encoded-img" alt="${bin} fish"></div>`;
                     continue;
                 }
@@ -1422,7 +1452,7 @@
                     nL.innerHTML += `
                         <div class="node ${sizeClass}" id="node-${i}" style="top:${nodePositions[i].t}px; left:${finalLeft}px;">
                             <div class="fixed-number">${bin}</div>
-                            <img src="./mj/Cat${skinIndex}.png" class="encoded-img" alt="${bin} cat">
+                            ${catLayerHtml(`./mj/Cat${skinIndex}.png`, `${bin} cat`)}
                         </div>`;
                     fL.innerHTML += `
                         <div id="fish-${i}" class="fish-wrapper ${sizeClass}" style="top:${nodePositions[i].t}px; left:${finalLeft}px;">
@@ -1435,7 +1465,7 @@
                 let code = `0${bin.slice(2)}`, faded = bin[0] === '1' ? ' bit-faded' : '';
                 let catHat = bin[1] === '1' ? `<img src="./svg/hat-c.svg" class="hat-img cat-hat hat-bg-shape" alt=""><img src="./svg/hat-c.svg" class="hat-img cat-hat" alt="">` : '';
                 const catSrc = `./svg/${code}-c.svg`;
-                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catHat}<img src="${catSrc}" class="encoded-img${faded}" alt="${bin} cat"></div>`;   
+                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catHat}${catLayerHtml(catSrc, `${bin} cat`, faded)}</div>`;   
                 const fishSrc = `./svg/${code}-f.svg`;
                 let fishHat = bin[1] === '1' ? `<img src="./svg/hat-f.svg" class="hat-img fish-hat hat-bg-shape" alt=""><img src="./svg/hat-f.svg" class="hat-img fish-hat" alt="">` : '';
                 fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div>${fishHat}<img src="${fishSrc}" class="fish-bg-shape encoded-img${faded}" alt=""><img src="${fishSrc}" class="fish-img encoded-img${faded}" alt="${bin} fish"></div>`;
@@ -1617,7 +1647,7 @@
             sorted.slice(0, 10).forEach((item, index) => {
                 const displayValue = activeRankType === 'steps' ? item.steps + '🐾' : item.time + 's';
                 const crown = index === 0 ? '<span class="rank-crown">👑</span>' : '';
-                html += `<div class="rank-item ${index === 0 ? 'rank-champion' : ''}"><div class="rank-player-main"><span class="rank-number">${index + 1}.</span><div class="rank-avatar-wrap">${crown}<div class="rank-avatar-sm">${rankAvatarHtml(item)}</div></div><span class="rank-name">${rankDisplayName(item)}</span></div><span style="flex-shrink:0;color:#5ba4cf;">${displayValue}</span></div>`;
+                html += `<div class="rank-item ${index === 0 ? 'rank-champion' : ''}"><div class="rank-player-main"><span class="rank-number">${index + 1}.</span><div class="rank-avatar-wrap">${crown}<div class="rank-avatar-sm">${rankAvatarHtml(item)}</div></div><span class="rank-name">${rankDisplayName(item)}</span></div><span class="rank-value">${displayValue}</span></div>`;
             });
             listArea.innerHTML = html;
             if (!silent) showRankChampion(activeRankType);
