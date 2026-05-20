@@ -33,6 +33,8 @@
         .rank-avatar-sm { width: 28px; height: 28px; flex: 0 0 28px; border: 2px solid #463438; border-radius: 50%; background: #fff9f0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 0.9rem; }
         .rank-avatar-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .rank-player-main { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
+        .rank-player-main { flex: 1 1 0; overflow: hidden; }
+        .rank-value { flex: 0 0 auto; max-width: 62px; text-align: right; color: #5ba4cf; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .rank-number { width: 28px; flex: 0 0 28px; text-align: right; font-weight: 900; color: #463438; }
         .rank-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
         .rank-avatar-wrap { position: relative; width: 28px; height: 28px; flex: 0 0 28px; }
@@ -49,7 +51,7 @@
         .rank-champion-label { font-size: 12px; font-weight: 900; color: #5ba4cf; letter-spacing: 0; }
         .rank-champion-name { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
         @keyframes rankChampionPop { 0% { opacity: 0; transform: translate(0, -50%) scale(0.82); } 20% { opacity: 1; transform: translate(0, -62%) scale(1.05); } 68% { opacity: 1; transform: translate(0, -62%) scale(1); } 100% { opacity: 0; transform: translate(0, -50%) scale(0.82); } }
-        #nodes-layer, #fishes-layer { pointer-events: none; }       
+        #nodes-layer, #fishes-layer { position: absolute; inset: 0; pointer-events: none; }       
         .node { width: 100px; height: 100px; background: white; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
         .node img { width: 76px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .node img.encoded-img { transform: translate(-2px, -5px); }
@@ -64,6 +66,8 @@
         .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15 !important; border-top: none !important; opacity: 1 !important; }
         .fish-wrapper { position: absolute; width: 70px; height: 70px; pointer-events: none; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper.feature-highlight { z-index: 55 !important; }
+        .feature-filter-active #fishes-layer { z-index: 90 !important; }
+        .feature-filter-active .fish-wrapper { z-index: 90 !important; }
         .fish-wrapper img.fish-img { width: 49px; height: auto; position: relative; z-index: 2; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape { width: 49px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1);opacity: 1; transform: translateY(-3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img.fish-bg-shape.bit-faded { opacity: 1; }
@@ -108,11 +112,13 @@
         .cat-hat.hat-bg-shape { z-index: 20; }
         .fish-hat.hat-bg-shape { z-index: 30; }
         .node.feature-dimmed { background-color: #fff !important; }
-        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div { opacity: 0.25 !important; }
+        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div:not(.fixed-number):not(.node-dist-badge) { opacity: 0.25 !important; }
+        .node.feature-dimmed > .fixed-number { opacity: 0 !important; visibility: hidden !important; }
         .node.feature-dimmed > img.hat-bg-shape { opacity: 1 !important; }
         .fish-wrapper.feature-dimmed { opacity: 1 !important; }
         .fish-wrapper.feature-dimmed img.fish-bg-shape { opacity: 1 !important; }
-        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape), .fish-wrapper.feature-dimmed .fish-label { opacity: 0.25 !important; }
+        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape) { opacity: 0.25 !important; }
+        .fish-wrapper.feature-dimmed .fish-label { opacity: 0 !important; visibility: hidden !important; }
         .circuit-unit { min-width: 50px; height: 180px; display: flex; flex-direction: column; position: relative; cursor: pointer; background-color: transparent !important; background-clip: padding-box; border-left: 0px solid transparent; border-right: 0px solid transparent; transition: background-color 0.2s ease, box-shadow 0.2s ease, border-left-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-right-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s ease, opacity 0.2s ease; }
         .circuit-unit:hover { background-color: var(--bg-hover, rgba(255, 183, 197, 0.3)) !important; border-radius: 12px; }
         .circuit-unit[data-type="start"]:hover, .circuit-unit[data-type="end"]:hover { background-color: transparent !important; box-shadow: none !important; }
@@ -383,6 +389,8 @@
         }
         function updateFeatureHighlights() {
             let anyActive = featureStates.some(f => f !== null);
+            const root = document.getElementById('body-root') || document.body;
+            root.classList.toggle('feature-filter-active', anyActive);
             for (let i = 0; i < 16; i++) {
                 const n = document.getElementById(`node-${i}`);
                 const f = document.getElementById(`fish-${i}`);
@@ -431,8 +439,14 @@
             if (skin === 'mj') return './mj/';
             return './svg/';
         }
+        function getFeatureSkinFolder(skin) {
+            if (skin === 'rip') return './RIP/';
+            if (skin === 'poto') return './poto/';
+            if (skin === 'mj') return './mj/';
+            return './RIP/';
+        }
         function updateCircuitLabels() {
-            const folder = getSkinFolder(currentSkin);
+            const folder = getFeatureSkinFolder(currentSkin);
             for(let i=0; i<4; i++) {
                 const cLbl = document.getElementById(`q${i}-label`);
                 if (cLbl) {
@@ -793,7 +807,7 @@
             pop.currentTime = 0; pop.play();
             isPro = !isPro;
             document.getElementById('body-root').classList.toggle('pro-active', isPro);
-            document.getElementById('mode-toggle').innerText = isPro ? "⚡️" : "👁️";
+            document.getElementById('mode-toggle').innerText = isPro ? "⚡" : "👁️";
             const qToggle = document.getElementById('quantum-toggle');
             if (isPro) qToggle.classList.remove('hidden'); else qToggle.classList.add('hidden');
             let startTime = Date.now();
@@ -962,7 +976,7 @@
         function showIndicatorLockedPrompt() {
             const pill = document.getElementById('ios-indicator');
             const frac = document.getElementById('ind-fraction');
-            frac.innerText = isTouchDevice ? `↔ TILT/SWIPE & 2-FINGER TAP` : `↕ SCROLL & R-CLICK`;
+            frac.innerHTML = isTouchDevice ? '&#11108; TILT/SWIPE & 2-FINGER TAP' : '&#8597; SCROLL & R-CLICK';
             pill.classList.add('active');
             clearHighlight();
             highlightPairs([[hoverLine.i, hoverLine.j]]);
@@ -1404,7 +1418,7 @@
             updateProgressImages();         
             for (let i = 0; i < 16; i++) {
                 const bin = i.toString(2).padStart(4, '0');
-                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}" style="top:${nodePositions[i].t - 10}px; left:${nodePositions[i].l + 58}px;"></div>`;
+                const badgeHtml = `<div class="node-dist-badge hidden" id="dist-badge-${i}" style="top:${nodePositions[i].t - 6}px; left:${nodePositions[i].l + 74}px;"></div>`;
                 bL.innerHTML += badgeHtml;
                 if (currentSkin === 'rip') {
                     const skinIndex = i + 1;
@@ -1623,7 +1637,7 @@
             sorted.slice(0, 10).forEach((item, index) => {
                 const displayValue = activeRankType === 'steps' ? item.steps + '🐾' : item.time + 's';
                 const crown = index === 0 ? '<span class="rank-crown">👑</span>' : '';
-                html += `<div class="rank-item ${index === 0 ? 'rank-champion' : ''}"><div class="rank-player-main"><span class="rank-number">${index + 1}.</span><div class="rank-avatar-wrap">${crown}<div class="rank-avatar-sm">${rankAvatarHtml(item)}</div></div><span class="rank-name">${rankDisplayName(item)}</span></div><span style="flex-shrink:0;color:#5ba4cf;">${displayValue}</span></div>`;
+                html += `<div class="rank-item ${index === 0 ? 'rank-champion' : ''}"><div class="rank-player-main"><span class="rank-number">${index + 1}.</span><div class="rank-avatar-wrap">${crown}<div class="rank-avatar-sm">${rankAvatarHtml(item)}</div></div><span class="rank-name">${rankDisplayName(item)}</span></div><span class="rank-value">${displayValue}</span></div>`;
             });
             listArea.innerHTML = html;
             if (!silent) showRankChampion(activeRankType);
