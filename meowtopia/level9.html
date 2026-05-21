@@ -74,7 +74,7 @@
         .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 32px; height: 22px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; z-index: 5; position: absolute; top: 25px; pointer-events: none; }  
         .hat-img { position: absolute; height: auto; pointer-events: none; z-index: 21; }
         .cat-hat { width: 31px !important; top: 6px; left: 50px; transform: translateX(-50%) rotate(0deg); }
-        .fish-hat { width: 19px; top: 13px; left: 45%; transform: translateX(-50%) rotate(-10deg); z-index: 31; }      
+        .fish-hat { width: 19px; top: 13px; left: 45%; transform: translateX(-50%) rotate(-10deg); z-index: 31; }       
         #pro-panel { width: 0; opacity: 0; height: 550px; overflow: hidden; background: #fff; border: 0px solid #463438; border-radius: 40px; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .pro-active #pro-panel { width: 600px; opacity: 1; border: 8px solid #463438; padding: 15px; box-shadow: 10px 10px 0px #99C44D; }
         .panel-section-title { font-weight: 900; font-size: 18px; margin: 5px 0; color: #463438; text-align: center; white-space: nowrap; }
@@ -131,7 +131,7 @@
         .mode-toggle-fixed { position: fixed; top: 20px; right: 20px; width: 70px; height: 70px; background: #ffffff; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 4px 0 #463438; z-index: 500; }
         #gate-scroll-area { position: relative; margin-top: 5px; flex: 1; min-height: 0; overflow-y: auto; width: 100%; padding: 5px; scrollbar-width: none; }
         #gate-scroll-area::-webkit-scrollbar { display: none; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(70, 52, 56, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
         .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 850px; max-width: 95vw; box-shadow: 0 10px 0 #FFB7C5; color: #463438; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1) translate(0, 0); opacity: 1; }
         .victory-actions, .victory-progress-actions { display: flex; gap: 14px; align-items: center; justify-content: center; }
         .victory-actions { margin-bottom: 16px; }
@@ -290,7 +290,7 @@
         <div class="flex w-full px-4 mb-2 items-center justify-between">
             <div class="text-3xl font-black whitespace-nowrap" style="color: #463438">STEPS: <span id="step-count">0</span> | TIME: <span id="timer">0</span></div>
             <div class="flex items-center gap-2 whitespace-nowrap">
-                <button id="help-btn" class="multi-toggle-btn" style="min-width: 40px; width: 40px; height: 40px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #FFB7C5; color: white;" onclick="openTutorial()">?</button>
+                <button id="help-btn" class="multi-toggle-btn" style="min-width: 40px; width: 40px; height: 40px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #FFB7C5; color: white;" onclick="openTutorial(true)">?</button>
                 <button id="label-toggle-btn" class="mode-toggle-inline" onclick="toggleLabels()" title="Toggle labels" aria-label="Toggle labels">&#127991;&#65039;</button>
                 <button id="mode-btn" class="multi-toggle-btn" onclick="cycleLineMode()">Mode: 1</button>
                 <div class="text-3xl font-black ml-6" style="color: #7bc202;">LEVEL 9</div>
@@ -515,10 +515,15 @@
                     const fishCode = `0${fishBin.slice(2)}`;
                     const fishIsFaded = fishBin[0] === '1' ? 'filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72);' : '';
 
+                    let catHatHtml = bin[1] === '1' ? `<img src="./svg/hat-c.svg" style="width: 12px; position:absolute; top: 3px; left: 20px; transform: translateX(-50%); z-index: 20; filter: brightness(0) invert(1);" alt=""><img src="./svg/hat-c.svg" style="width: 12px; position:absolute; top: 3px; left: 20px; transform: translateX(-50%); z-index: 22;" alt="">` : '';
+                    let fishHatHtml = fishBin[1] === '1' ? `<img src="./svg/hat-f.svg" style="width: 8px; position:absolute; top: 7px; left: 45%; transform: translate(0px, 6px) translateX(-50%) rotate(-10deg); z-index: 26; filter: brightness(0) invert(1);" alt=""><img src="./svg/hat-f.svg" style="width: 8px; position:absolute; top: 7px; left: 45%; transform: translate(0px, 6px) translateX(-50%) rotate(-10deg); z-index: 27;" alt="">` : '';
+
                     html += `<div class="preview-node" style="left:${p.x}px; top:${p.y}px; width:40px; height:40px; border-width:3px; position:absolute; z-index:20; background:white; display:flex; align-items:center; justify-content:center; transform:translate(-50%,-50%); border-radius:50%; border-color:#463438; border-style:solid;">
+                                ${catHatHtml}
                                 <img src="./svg/${code}-c.svg" style="width:30px; ${isFaded} position:absolute; z-index:21;">
-                                <img src="./svg/${fishCode}-f.svg" style="width:20px; position:absolute; z-index:25; filter: brightness(0) invert(1); transform: translate(0px, 5px);" alt="">
-                                <img src="./svg/${fishCode}-f.svg" style="width:20px; ${fishIsFaded} position:absolute; z-index:25; transform: translate(0px, 5px);" alt="">
+                                ${fishHatHtml}
+                                <img src="./svg/${fishCode}-f.svg" style="width:20px; position:absolute; z-index:25; filter: brightness(0) invert(1); transform: translate(0px, 4px);" alt="">
+                                <img src="./svg/${fishCode}-f.svg" style="width:20px; ${fishIsFaded} position:absolute; z-index:25; transform: translate(0px, 4px);" alt="">
                              </div>`;
                 }
 
@@ -875,9 +880,8 @@
             if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
         }
         
-        /* ---------------- 教學功能 ---------------- */
-        function openTutorial() {
-            if(typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+        function openTutorial(animate = true) {
+            if(animate && typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
             const modal = document.getElementById('tutorialModal');
             const modalContent = document.querySelector('#tutorialModal .modal-content');
             
@@ -885,21 +889,28 @@
             const page2 = document.getElementById('tut-page-2');
             if (page2) page2.classList.add('hidden');
 
-            const btn = document.getElementById('help-btn');
-            if (btn && modalContent) {
-                const btnRect = btn.getBoundingClientRect();
-                const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
-                const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
-                modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
-            }
             modal.style.display = 'flex';
-            modalContent.style.transform = 'scale(0)';
-            modalContent.style.opacity = '0';
-            void modalContent.offsetWidth; 
-            requestAnimationFrame(() => {
+            
+            if (animate) {
+                const btn = document.getElementById('help-btn');
+                if (btn && modalContent) {
+                    const btnRect = btn.getBoundingClientRect();
+                    const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
+                    const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
+                    modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
+                }
+                modalContent.style.transform = 'scale(0)';
+                modalContent.style.opacity = '0';
+                void modalContent.offsetWidth; 
+                requestAnimationFrame(() => {
+                    modalContent.style.transform = 'scale(1)';
+                    modalContent.style.opacity = '1';
+                });
+            } else {
+                modalContent.style.transformOrigin = 'center';
                 modalContent.style.transform = 'scale(1)';
                 modalContent.style.opacity = '1';
-            });
+            }
         }
         function closeTutorial() {
             if(typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
@@ -1754,16 +1765,8 @@
             updateUndoStatus();
             fetchLeaderboard();
             
-            // 綁定教學按鈕並在開始時主動觸發
-            const btn = document.getElementById('help-btn');
-            const modalContent = document.querySelector('#tutorialModal .modal-content');
-            if (btn && modalContent) {
-                const btnRect = btn.getBoundingClientRect();
-                const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
-                const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
-                modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
-            }
-            openTutorial();
+            // 綁定教學按鈕並在開始時主動觸發，傳入 false 以移除初次載入時的彈出動畫
+            openTutorial(false);
 
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             const gateScrollArea = document.getElementById('gate-scroll-area');
