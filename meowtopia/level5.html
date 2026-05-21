@@ -53,6 +53,7 @@
         .connection-line::after { content: ''; position: absolute; top: -20px; bottom: -20px; left: 0; right: 0; background-color: rgba(255, 255, 255, 0); z-index: 10; }
         @media (hover: hover) { .connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 10px !important; z-index: 16; opacity: 1 !important; } }
         .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15; opacity: 1 !important; }
+
         .fish-wrapper { position: absolute; width: 80px; height: 80px; pointer-events: none; z-index: 30; display: flex; justify-content: center; align-items: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);  transform: translate(-50%, -50%);}
         .fish-wrapper img.fish-img { width: 70px; height: auto; position: absolute; z-index: 2; top: 50%; transform: translateY(-50%); }
         .node.node-correct { background: #ebceff; }
@@ -75,7 +76,7 @@
         .keep-going-btn { max-width: 280px; white-space: nowrap; }
         .replay-btn { width: 78px; height: 78px; flex: 0 0 78px; border-radius: 50%; padding: 0; display: inline-flex; align-items: center; justify-content: center; margin: 0; }
         .replay-btn svg { width: 38px; height: 38px; filter: drop-shadow(2px 2px 0 #463438); }
-.multi-toggle-btn { background: #e2de6e; border: 4px solid #463438; border-radius: 20px; padding: 5px 15px; font-weight: 900; font-size: 20px; color: white; cursor: pointer; box-shadow: 0 4px 0 #463438; transition: all 0.1s; min-width: 140px; text-shadow: 2px 2px 0 #463438; }
+        .multi-toggle-btn { background: #e2de6e; border: 4px solid #463438; border-radius: 20px; padding: 5px 15px; font-weight: 900; font-size: 20px; color: white; cursor: pointer; box-shadow: 0 4px 0 #463438; transition: all 0.1s; min-width: 140px; text-shadow: 2px 2px 0 #463438; }
         .multi-toggle-btn.mode-2 { background: #629eed; }
         .multi-toggle-btn.mode-4 { background: #b583e5; }
         .multi-toggle-btn:hover, .game-btn:hover, .mode-toggle-fixed:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #463438;}
@@ -106,41 +107,138 @@
         .circuit-target::after { content: ""; position: absolute; width: 100%; height: 2.5px; background: #463438; top: 50%; transform: translateY(-50%); }
         .mode-toggle-fixed { position: fixed; top: 20px; right: 20px; width: 70px; height: 70px; background: #fff; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 4px 0 #463438; z-index: 500; }
         #gate-scroll-area { position: relative; margin-top: 5px; flex: 1; min-height: 0; overflow-y: auto; width: 100%; padding: 10px; -ms-overflow-style: none; scrollbar-width: none; }
-        #gate-scroll-area::-webkit-scrollbar { display: none; }       
+        #gate-scroll-area::-webkit-scrollbar { display: none; }        
         :root { --cube-offset-x: 175px; }
-        .pro-active { --cube-offset-x: 42px; }    
+        .pro-active { --cube-offset-x: 42px; }   
         .modal-overlay { position: fixed; inset: 0; background: rgba(70, 52, 56, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
-        .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 380px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1) translate(0, 0); opacity: 1; }
+        .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 850px; max-width: 95vw; box-shadow: 0 10px 0 #FFB7C5; color: #463438; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1) translate(0, 0); opacity: 1; }
+        
         .tut-anim-box { height: 110px; background: #fffaf5; border: 3px dashed #463438; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin: 12px 0; }
-        .tut-anim-line { width: 80%; height: 6px; background: #99C44D; position: absolute; border-radius: 3px; }     
-        .css-mouse { width: 44px; height: 64px; border: 3.5px solid #463438; border-radius: 22px; position: absolute; z-index: 3; background: #fff; animation: mouseMoveAnim 6s infinite; display: flex; justify-content: center; box-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
+        .tut-anim-line { width: 80%; height: 6px; position: absolute; border-radius: 3px; z-index: 1;}    
+        
+        /* Unified 10s Timeline Animations */
+        @keyframes mouseMoveAnim {
+            0%, 5% { opacity: 0; transform: translate(0, 5px) scale(1); }
+            10%, 85% { opacity: 1; transform: translate(0, 0) scale(1); }
+            90%, 100% { opacity: 0; transform: translate(0, 5px) scale(1); }
+        }
+        @keyframes leftClickAnim {
+            0%, 14% { background: #fff; }
+            15%, 18% { background: #FFB7C5; }
+            19%, 100% { background: #fff; }
+        }
+        @keyframes rightClickAnim {
+            0%, 77% { background: #fff; }
+            78%, 81% { background: #FFB7C5; }
+            82%, 100% { background: #fff; }
+        }
+        @keyframes wheelAnim {
+            0%, 34% { transform: translateY(0); background: #463438; }
+            35%, 75% { background: #629eed; transform: translateY(-4px); }
+            76%, 100% { transform: translateY(0); background: #463438; }
+        }
+        @keyframes scrollTextAnim {
+            0%, 34% { opacity: 0; transform: translateY(10px); }
+            35%, 75% { opacity: 1; transform: translateY(0); }
+            76%, 100% { opacity: 0; transform: translateY(-10px); }
+        }
+        @keyframes tutLineAnim {
+            0%, 14% { background: #463438; box-shadow: none; height: 6px; }
+            15%, 77% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 8px; z-index: 15; }
+            78%, 81% { background: #FFB7C5; box-shadow: 0 0 15px rgba(255, 183, 197, 0.8); height: 8px; z-index: 15; }
+            82%, 100% { background: #463438; box-shadow: none; height: 6px; }
+        }
+        
+        @keyframes tutFingerSwipe {
+            0%, 5% { opacity: 0; transform: translateX(0); }
+            10%, 34% { opacity: 1; transform: translateX(0); }
+            45% { opacity: 1; transform: translateX(-40px); }
+            65% { opacity: 1; transform: translateX(40px); }
+            70% { opacity: 1; transform: translateX(0); }
+            74%, 100% { opacity: 0; transform: translateX(0); }
+        }
+        @keyframes seqTapAnim {
+            0%, 14% { opacity: 0; transform: scale(0.5); }
+            15% { opacity: 1; transform: scale(1.2); }
+            20%, 100% { opacity: 0; transform: scale(1.8); }
+        }
+        @keyframes seqDTapAnim {
+            0%, 77% { opacity: 0; transform: scale(0.5); }
+            78% { opacity: 1; transform: scale(1.2); }
+            83%, 100% { opacity: 0; transform: scale(1.8); }
+        }
+        @keyframes phoneAnim {
+            0%, 5% { opacity: 0; transform: rotate(0deg); }
+            10%, 34% { opacity: 1; transform: rotate(0deg); }
+            45% { opacity: 1; transform: rotate(-25deg); }
+            65% { opacity: 1; transform: rotate(25deg); }
+            75%, 85% { opacity: 1; transform: rotate(0deg); }
+            90%, 100% { opacity: 0; transform: rotate(0deg); }
+        }
+        @keyframes anim-phone-still {
+            0%, 5% { opacity: 0; transform: rotate(0deg); }
+            10%, 85% { opacity: 1; transform: rotate(0deg); }
+            90%, 100% { opacity: 0; transform: rotate(0deg); }
+        }
+        
+        @keyframes dim1Lines {
+            0%, 33.32% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); z-index: 15; }
+            33.33%, 100% { background: #463438; box-shadow: none; z-index: 10; }
+        }
+        @keyframes dim2Lines {
+            0%, 33.32% { background: #463438; box-shadow: none; z-index: 10; }
+            33.33%, 66.65% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); z-index: 15; }
+            66.66%, 100% { background: #463438; box-shadow: none; z-index: 10; }
+        }
+        @keyframes dim3Lines {
+            0%, 66.65% { background: #463438; box-shadow: none; z-index: 10; }
+            66.66%, 100% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); z-index: 15; }
+        }
+        .tut-dim1 { animation: dim1Lines 6s infinite; }
+        .tut-dim2 { animation: dim2Lines 6s infinite; }
+        .tut-dim3 { animation: dim3Lines 6s infinite; }
+
+        @keyframes opDif1 {
+            0%, 33.32% { opacity: 1; }
+            33.33%, 100% { opacity: 0; }
+        }
+        @keyframes opDif2 {
+            0%, 33.32% { opacity: 0; }
+            33.33%, 66.65% { opacity: 1; }
+            66.66%, 100% { opacity: 0; }
+        }
+        @keyframes opDif3 {
+            0%, 66.65% { opacity: 0; }
+            66.66%, 100% { opacity: 1; }
+        }
+
+        .desktop-anim-line { animation: tutLineAnim 10s infinite; }
+        .mobile-tilt-line { animation: tutLineAnim 10s infinite; }
+        .mobile-swipe-line { animation: tutLineAnim 10s infinite; }
+
+        .css-mouse { width: 44px; height: 64px; border: 3.5px solid #463438; border-radius: 22px; position: absolute; z-index: 23; background: #fff; animation: mouseMoveAnim 10s infinite; display: flex; justify-content: center; box-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
         .mouse-left, .mouse-right { position: absolute; width: 50%; height: 28px; top: -1px; border-bottom: 3.5px solid #463438; }
-        .mouse-left { left: -1px; border-right: 1.75px solid #463438; border-top-left-radius: 20px; border-left: 3.5px solid #463438; border-top: 3.5px solid #463438; animation: leftClickAnim 6s infinite; }
-        .mouse-right { right: -1px; border-left: 1.75px solid #463438; border-top-right-radius: 20px; border-right: 3.5px solid #463438; border-top: 3.5px solid #463438; animation: rightClickAnim 6s infinite; }
-        .mouse-wheel { position: absolute; width: 6px; height: 14px; background: #463438; border-radius: 3px; top: 10px; animation: wheelAnim 6s infinite; z-index: 2; }
-        .anim-scroll { font-size: 24px; position: absolute; z-index: 2; margin-top: -40px; animation: scrollTextAnim 6s infinite; opacity: 0; }
-        @keyframes mouseMoveAnim { 0% { opacity: 0; } 0%, 5% { transform: translate(0, 5px) scale(1); opacity: 1; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); } 8% { transform: translate(0, 5px) scale(0.95); filter: drop-shadow(0 0 10px #FFB7C5); } 18%, 24% { transform: translate(0, 5px) scale(1); filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); } 24%, 60% { transform: translate(0, 5px) scale(1); } 74% { transform: translate(0, 5px) scale(1); filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); } 77% { transform: translate(0, 5px) scale(0.95); filter: drop-shadow(0 0 10px #99C44D); } 87% { transform: translate(0, 5px) scale(1); filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); opacity: 1; } 90%, 100% { transform: translate(0, 5px) scale(1); opacity: 0; } }
-        @keyframes leftClickAnim { 0%, 18% { background: #fff; } 18%, 20% { background: #FFB7C5; } 20%, 100% { background: #fff; } }
-        @keyframes rightClickAnim { 0%, 74% { background: #fff; } 75%, 85% { background: #99C44D; } 86%, 100% { background: #fff; } }
-        @keyframes wheelAnim { 0%, 30% { transform: translateY(0); background: #463438; } 31%, 60% { background: #629eed; transform: translateY(-4px); } 65%, 100% { transform: translateY(0); background: #463438; } }
-        @keyframes scrollTextAnim { 0%, 38% { opacity: 0; transform: translateY(10px); } 45%, 60% { opacity: 1; transform: translateY(0); } 65%, 100% { opacity: 0; transform: translateY(-10px); } }
-        .anim-phone { font-size: 50px; position: absolute; z-index: 3; animation: phoneAnim 6s infinite; }
-        .anim-phone-still { font-size: 50px; position: absolute; z-index: 3; animation: anim-phone-still 6s infinite;}
-        .anim-finger-swipe { position: absolute; z-index: 5; font-size: 30px; animation: fingerSwipeAnim 6s infinite; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3)); top: 45%; left: 50%; margin-top: 0px; margin-left: -15px; }
-        .anim-tap { width: 25px; height: 25px; background: rgba(255, 183, 197, 0.8); border: 2px solid #463438; border-radius: 50%; position: absolute; z-index: 4; opacity: 0; }
+        .mouse-left { left: -1px; border-right: 1.75px solid #463438; border-top-left-radius: 20px; border-left: 3.5px solid #463438; border-top: 3.5px solid #463438; animation: leftClickAnim 10s infinite; }
+        .mouse-right { right: -1px; border-left: 1.75px solid #463438; border-top-right-radius: 20px; border-right: 3.5px solid #463438; border-top: 3.5px solid #463438; animation: rightClickAnim 10s infinite; }
+        .mouse-wheel { position: absolute; width: 6px; height: 14px; background: #463438; border-radius: 3px; top: 10px; animation: wheelAnim 10s infinite; z-index: 2; }
+        .anim-scroll { font-size: 24px; position: absolute; z-index: 2; margin-top: -40px; animation: scrollTextAnim 10s infinite; opacity: 0; }
+        
+        .anim-phone { font-size: 50px; position: absolute; z-index: 23; animation: phoneAnim 10s infinite; }
+        .anim-phone-still { font-size: 50px; position: absolute; z-index: 23; animation: anim-phone-still 10s infinite;}
+        
+        .anim-finger-swipe { position: absolute; z-index: 25; font-size: 30px; animation: tutFingerSwipe 10s infinite; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3)); top: 30%; left: 50%; margin-left: -15px;}
+        
+        .anim-tap { width: 25px; height: 25px; background: rgba(255, 183, 197, 0.8); border: 2px solid #463438; border-radius: 50%; position: absolute; z-index: 24; opacity: 0; }
         .anim-tap.center { margin-left: 0px; margin-top: 0px; }
         .anim-tap.left { margin-left: -30px; margin-top: 0px; }
         .anim-tap.right { margin-left: 30px; margin-top: 0px; }
-        .seq-tap { animation: seqTapAnim 6s infinite; }
-        .seq-dtap { animation: seqDTapAnim 6s infinite; }
-        @keyframes seqTapAnim { 0%, 5% { opacity: 0; transform: scale(0.5); } 8% { opacity: 1; transform: scale(1.2); } 15%, 100% { opacity: 0; transform: scale(1.8); } }
-        @keyframes seqDTapAnim { 0%, 75% { opacity: 0; transform: scale(0.5); } 78% { opacity: 1; transform: scale(1.2); } 85%, 100% { opacity: 0; transform: scale(1.8); } }
-        @keyframes phoneAnim { 0%, 15% { opacity: 1; transform: rotate(0deg); } 20%, 30% { opacity: 1; transform: rotate(0deg); } 30% { transform: rotate(-25deg); opacity: 1; } 60% { transform: rotate(25deg); opacity: 1; } 70%, 85% { opacity: 1; transform: rotate(0deg); filter: drop-shadow(0 0 10px #FFB7C5); } 90%, 100% { opacity: 0; transform: rotate(0deg); } }
-        @keyframes anim-phone-still { 0%, 15% { opacity: 1; transform: rotate(0deg); } 70%, 85% { opacity: 1; transform: rotate(0deg); filter: drop-shadow(0 0 10px #FFB7C5); } 90%, 100% { opacity: 0; transform: rotate(0deg); } }
-        @keyframes fingerSwipeAnim { 0%, 15% { transform: translate(0, 30px); opacity: 0; } 20% { transform: translate(0, 0); opacity: 1; } 40% { transform: translate(-25px, 0); opacity: 1; } 60% { transform: translate(25px, 0); opacity: 1; } 70%, 85% { transform: translate(0, 0); opacity: 0; filter: drop-shadow(0 0 10px #FFB7C5); } 90%, 100% { transform: translate(0, 30px); opacity: 0; } }
+        .seq-tap { animation: seqTapAnim 10s infinite; }
+        .seq-dtap { animation: seqDTapAnim 10s infinite; }
+        
         #ios-indicator { position: absolute; top: 0; left: 0; transform: translate(-50%, -120%) scale(0.8); background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(15px); border-radius: 50px; padding: 6px 18px; display: flex; align-items: center; box-shadow: 0 8px 24px rgba(70,52,56,0.12); opacity: 0; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000; pointer-events: none; border: 1px solid rgba(70,52,56,0.35); }
         #ios-indicator.active { opacity: 1; transform: translate(-50%, -120%) scale(1); }
         .ind-fraction { color: #463438; font-size: 16px; font-weight: 900; } 
+        
         .gate-btn-v2 { position: relative; height: 75px; width: 60px; display: flex; align-items: center; justify-content: center; padding: 0; border: 2px solid #463438; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); background-size: 60% 1.5px; background-repeat: no-repeat; background-position: center 18px, center 36.5px, center 55px; margin: auto;}
         .gate-btn-v2:hover { background-color: #FFB7C5 !important; filter: brightness(1.05); transform: scale(1.05); z-index: 10; }
         .btn-highlight { transform: scale(1.15); box-shadow: 0 0 10px rgba(0,0,0,0.3); border: 4px solid #99C44D !important; z-index: 10; filter: brightness(1.1); background-color: #FFB7C5 !important; }
@@ -162,12 +260,12 @@
         .pro-active #canvas-bottom-btns {display: none !important;}
         canvas, .game-canvas, .node, .gate-btn-v2 { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; } 
         .circuit-unit { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: pan-x !important; }
-        .swap-active { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15 !important; opacity: 1 !important; border-top: none !important;}     
+        .swap-active { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15 !important; opacity: 1 !important; border-top: none !important;}   
         .drag-target{margin-left:25px;position:relative;}
         .drag-target.right{margin-left:0;margin-right:25px;}
         .drag-target::before{content:'';position:absolute;left:-14px;top:10px;bottom:10px;width:4px;background-color:#FFB7C5;border-radius:4px;z-index:200;pointer-events:none;}
         .drag-target.right::before{left:auto;right:-14px;}
-            .mode-toggle-inline { width: 44px; height: 44px; background: #ffffff; border: 3px solid #463438; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 3px 0 #463438; transition: all 0.1s; margin-left: 10px; color: #463438; text-shadow: none; padding: 0; }
+        .mode-toggle-inline { width: 44px; height: 44px; background: #ffffff; border: 3px solid #463438; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 3px 0 #463438; transition: all 0.1s; margin-left: 10px; color: #463438; text-shadow: none; padding: 0; }
         .mode-toggle-inline:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #463438; }
         .mode-toggle-inline:active { transform: translateY(2px); box-shadow: 0 1px 0 #463438; }
         .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
@@ -176,7 +274,7 @@
         body:not(.hide-labels) .node > img.encoded-img:not(.hat-img), body:not(.hide-labels) .node > img.skin-cat { transform: translate(-2px, -5px) scale(0.95); }
         body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-66%) scale(0.5); }
         body.skin-poto:not(.hide-labels) .node > img.skin-cat, body.skin-poto:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) translateY(-7%) scale(0.94); }
-         body.skin-mj:not(.hide-labels) .node > img.skin-cat, body.skin-mj:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) translateY(-6px) scale(0.95); }
+        body.skin-mj:not(.hide-labels) .node > img.skin-cat, body.skin-mj:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) translateY(-6px) scale(0.95); }
         body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-48%) scale(1); }
         .side-leaderboard-content { height: 450px; max-height: calc(100vh - 90px); }
         .bookmark-tab.rank-bookmark { top: 40px; background: #514749; }
@@ -205,7 +303,8 @@
         .progress-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background-color: #99C44D; border-radius: 16px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s; overflow: hidden; border-right: 3px solid #463438; }
         .progress-bar-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(45deg, rgba(255,255,255,0.25) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.25) 75%, transparent 75%, transparent); background-size: 30px 30px; animation: stripeMove 1s linear infinite; }
         @keyframes stripeMove { 0% { background-position: 0 0; } 100% { background-position: 30px 0; } }
-                .rank-item { gap: 8px; align-items: center; }
+        
+        .rank-item { gap: 8px; align-items: center; }
         .rank-player-main { flex: 1 1 0; overflow: hidden; }
         .rank-value { flex: 0 0 auto; max-width: 62px; text-align: right; color: #5ba4cf; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .feature-toggle-row .qubit-label { position: relative; left: auto; top: auto; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; z-index: 5; }
@@ -234,7 +333,6 @@
         .progress-target { position: absolute; right: -12px; top: 50%; transform: translateY(-50%); width: 60px; height: auto; z-index: 15; filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.3)); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .progress-win .progress-bar-fill { background-color: #FFB7C5; }
         .progress-win .progress-target { animation: targetBounce 0.5s infinite alternate; }
-        @keyframes targetBounce { 0% { transform: translateY(-50%) scale(1); } 100% { transform: translateY(-50%) scale(1.25) rotate(12deg); } }
         @media (min-width: 1024px) {body {zoom: 0.8;} }
         .fish-label { width: 32px; height: 22px; border-radius: 10px; font-size: 11px; position: absolute; top: 30px; right: auto; margin-bottom: 0; pointer-events: none; }
         body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translate(-2px, -30px) scale(0.95); }
@@ -242,7 +340,6 @@
         .skin-rip .fish-wrapper img.fish-bg-shape { width: 86px; }
         body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-65%); }
         .skin-rip.hide-labels .fish-wrapper > img.fish-img, .skin-rip.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-50%) scale(1.15) !important; }
-
         .skin-rip .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 18px; right: 32px; }
         body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-52%); }
         .skin-poto.hide-labels .fish-wrapper > img.fish-img, .skin-poto.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-38%) scale(1.15) !important; }
@@ -252,6 +349,64 @@
         .skin-mj .fish-wrapper.large-node > img.fish-img, .skin-mj .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(8px, -55%) scale(1) !important; }
         .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-img, .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(10px, -45%) scale(1) !important; }
         .skin-mj .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 25px; right: 20px; }
+
+        /* Preview Animation Syncing */
+        .preview-node { position: absolute; width: 72px; height: 72px; border: 4px solid #463438; background: white; z-index: 20; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -50%); border-radius: 50%; }
+        .preview-node img.cat { position: absolute; width: 58px; z-index: 21; }
+        .preview-node-label { position: absolute; bottom: -2px; right: -8px; font-size: 10px; font-weight: 900; color: #463438; z-index: 23; background: rgba(255,255,255,0.8); border-radius: 4px; padding: 0 2px; pointer-events: none; }
+        .preview-fish { position: absolute; width: 42px; z-index: 30; transform: translate(-50%, -50%); }
+        .preview-line { position: absolute; background: #463438; z-index: 10; transform-origin: 0 50%; height: 6px; }
+
+        @keyframes syncIndicator {
+            0%, 34% { opacity: 0; transform: translate(-50%, -80%) scale(0.75); }
+            35%, 77% { opacity: 1; transform: translate(-50%, -110%) scale(0.85); }
+            78%, 100% { opacity: 0; transform: translate(-50%, -80%) scale(0.75); }
+        }
+        @keyframes syncFrac {
+            0%, 50% { content: "1 / 2"; }
+            51%, 64% { content: "2 / 2"; }
+            65%, 100% { content: "1 / 2"; }
+        }
+        @keyframes syncLine1 {
+            0%, 14% { background: #463438; box-shadow: none; height: 6px; }
+            15%, 50% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 8px; z-index: 15; }
+            51%, 64% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+            65%, 77% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 8px; z-index: 15; }
+            78%, 81% { background: #FFB7C5; box-shadow: 0 0 15px rgba(255, 183, 197, 0.8); height: 8px; z-index: 15; }
+            82%, 100% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+        }
+        @keyframes syncLine2 {
+            0%, 50% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+            51%, 64% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 8px; z-index: 15; }
+            65%, 100% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+        }
+        @keyframes syncLine4 {
+            0%, 34% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+            35%, 50% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 8px; z-index: 15; }
+            51%, 64% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+            65%, 77% { background: #99C44D; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 8px; z-index: 15; }
+            78%, 81% { background: #FFB7C5; box-shadow: 0 0 15px rgba(255, 183, 197, 0.8); height: 8px; z-index: 15; }
+            82%, 100% { background: #463438; box-shadow: none; height: 6px; z-index: 10; }
+        }
+        @keyframes syncFishLeft {
+            0%, 81% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            82% { transform: translate(-50%, -70%) scale(1.1); opacity: 1; }
+            89% { transform: translate(calc(-50% + 270px), -50%) scale(1); opacity: 1; }
+            92% { transform: translate(calc(-50% + 270px), -50%) scale(1); opacity: 0; }
+            93%, 96% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        @keyframes syncFishRight {
+            0%, 81% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            82% { transform: translate(-50%, -70%) scale(1.1); opacity: 1; }
+            89% { transform: translate(calc(-50% - 270px), -50%) scale(1); opacity: 1; }
+            92% { transform: translate(calc(-50% - 270px), -50%) scale(1); opacity: 0; }
+            93%, 96% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        #tut-ios-indicator { animation: syncIndicator 10s infinite; opacity: 0; z-index: 100; position: absolute; pointer-events: none; border-radius: 50px; padding: 6px 18px; display: flex; align-items: center; border: 1px solid rgba(70,52,56,0.35); background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(15px); }
+        #preview-frac-text::after { animation: syncFrac 10s infinite; content: "1 / 2"; }
+
 </style>
 </head>
 <body id="body-root" class="mini-mode hide-labels">
@@ -369,63 +524,196 @@
             <a href="index.html" class="game-btn btn-red px-16">GIVE UP</a>
         </div>
     </div>
-    <div id="tutorialModal" class="modal-overlay" style="display: flex;">
-        <div class="modal-content" style="width: 600px; max-width: 95vw; padding: 25px;">
-            <h2 class="text-2xl font-black mb-4" style="color: #463438;">How to Play Multi-Line Mode 🐾</h2>
-            <div class="flex flex-col md:flex-row gap-4 mb-4 font-bold text-left">
-                <div class="flex-1 bg-white p-4 border-4 border-[#463438] rounded-2xl relative mt-4 md:mt-0">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#99C44D] text-white px-4 py-1 rounded-full border-4 border-[#463438] whitespace-nowrap">
-                        🖥️ Desktop
-                    </div>
-                    <div class="tut-anim-box">
-                        <div class="tut-anim-line"></div>
-                        <div class="anim-scroll">&#8597;</div>
-                        <div class="css-mouse">
-                            <div class="mouse-left"></div>
-                            <div class="mouse-right"></div>
-                            <div class="mouse-wheel"></div>
+    
+    <div id="tutorialModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content text-left">
+            <div id="tut-page-1">
+                <h2 class="text-3xl font-black mb-10 flex justify-center items-center gap-3" style="color: #463438;">
+                    How to Play 
+                    <div class="multi-toggle-btn mode-2 pointer-events-none flex items-center justify-center" style="font-size: 18px; padding: 0 16px; min-width: auto; height: 40px; margin: 0;">Mode: 2</div>
+                    <span class="text-2xl">🐾</span>
+                </h2>
+
+                <div class="flex gap-6">
+                    <div class="flex flex-col w-[300px] justify-between">
+                        <div class="bg-white p-4 border-4 border-[#463438] rounded-2xl relative">
+                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#99C44D] text-white px-4 py-1 rounded-full border-4 border-[#463438] whitespace-nowrap text-sm font-black">
+                                🖥️ Desktop
+                            </div>
+                            <div class="tut-anim-box">
+                                <div class="tut-anim-line desktop-anim-line"></div>
+                                <div class="anim-scroll">&#8597;</div>
+                                <div class="css-mouse">
+                                    <div class="mouse-left"></div>
+                                    <div class="mouse-right"></div>
+                                    <div class="mouse-wheel"></div>
+                                </div>
+                            </div>
+                            <ol class="list-decimal pl-5 text-xs space-y-1 mt-2 font-bold" style="color: #463438;">
+                                <li><b>Click</b> a line to select.</li>
+                                <li><b>Scroll</b> mouse wheel to switch.</li>
+                                <li><b>Right-Click</b> to confirm.</li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-white p-4 border-4 border-[#463438] rounded-2xl relative">
+                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#FFB7C5] text-white px-4 py-1 rounded-full border-4 border-[#463438] whitespace-nowrap text-sm font-black">
+                                📱 Mobile
+                            </div>
+                            <div class="flex gap-2 my-3"> 
+                                <div class="tut-anim-box flex-1 m-0 flex-col relative" style="height: 110px;">
+                                    <div class="text-[10px] font-black absolute top-1" style="color:#463438;">TILT</div>
+                                    <div class="tut-anim-line mobile-tilt-line"></div>
+                                    <div class="anim-phone mt-3">📱</div>
+                                    <div class="anim-tap center seq-tap"></div>
+                                    <div class="anim-tap left seq-dtap"></div>
+                                    <div class="anim-tap right seq-dtap"></div>
+                                </div>
+                                <div class="tut-anim-box flex-1 m-0 flex-col relative" style="height: 110px;">
+                                    <div class="text-[10px] font-black absolute top-1" style="color:#463438;">SWIPE</div>
+                                    <div class="tut-anim-line mobile-swipe-line"></div>
+                                    <div class="anim-phone-still mt-3">📱</div>
+                                    <div class="anim-finger-swipe">👆🏻</div>
+                                    <div class="anim-tap center seq-tap"></div>
+                                    <div class="anim-tap left seq-dtap"></div>
+                                    <div class="anim-tap right seq-dtap"></div>
+                                </div>
+                            </div>
+                            <ol class="list-decimal pl-5 text-xs space-y-1 mt-2 font-bold" style="color: #463438;">
+                                <li><b>Tap</b> a line to select.</li>
+                                <li><b>Tilt/Swipe</b> to switch.</li>
+                                <li><b>2-Finger Tap</b> to confirm.</li>
+                            </ol>
                         </div>
                     </div>
-                    <ol class="list-decimal pl-5 text-sm space-y-2 mt-2" style="color: #463438;">
-                        <li><b>Click</b> a line to select.</li>
-                        <li><b>Scroll</b> mouse wheel to switch.</li>
-                        <li><b>Right-Click</b> to confirm.</li>
-                    </ol>
+
+                    <div class="flex-1 bg-white p-6 border-4 border-[#463438] rounded-2xl relative flex flex-col items-center justify-center">
+                        <div class="absolute -top-4 bg-[#5BA4CF] text-white px-4 py-1 rounded-full border-4 border-[#463438] font-black text-sm z-50">PREVIEW</div>
+                        
+                        <div class="relative w-[388px] h-[388px] bg-[#FFF9F0] border-4 border-dashed border-[#463438] rounded-xl overflow-hidden">
+                            
+                            <div id="tut-ios-indicator" style="top: 56px; left: 194px; padding: 4px 12px;">
+                                <span id="preview-frac-text" style="color: #463438; font-size: 13px; font-weight: 900;"></span>
+                            </div>
+
+                            <div class="preview-line" style="top:56px; left:59px; width:270px; animation: syncLine1 10s infinite; z-index: 10;"></div>
+                            <div class="preview-line" style="top:326px; left:59px; width:270px; animation: syncLine4 10s infinite; z-index: 10;"></div>
+                            
+                            <div class="preview-line" style="top:59px; left:56px; height:270px; width:6px;"></div>
+                            <div class="preview-line" style="top:59px; left:326px; height:270px; width:6px;"></div>
+                            
+                            <div class="preview-line" style="top:121px; left:124px; width:140px; animation: syncLine2 10s infinite; z-index: 10;"></div>
+                            <div class="preview-line" style="top:261px; left:124px; width:140px; animation: syncLine2 10s infinite; z-index: 10;"></div>
+                            <div class="preview-line" style="top:124px; left:121px; height:140px; width:6px;"></div>
+                            <div class="preview-line" style="top:124px; left:261px; height:140px; width:6px;"></div>
+                            
+                            <div class="preview-line" style="top:56px; left:59px; width:92px; height:6px; transform: rotate(45deg);"></div>
+                            <div class="preview-line" style="top:121px; left:264px; width:92px; height:6px; transform: rotate(-45deg);"></div>
+                            <div class="preview-line" style="top:326px; left:59px; width:92px; height:6px; transform: rotate(-45deg);"></div>
+                            <div class="preview-line" style="top:261px; left:264px; width:92px; height:6px; transform: rotate(45deg);"></div>
+                            
+                            <div class="preview-node" style="top:59px; left:58px;"><img src="./svg/100-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:59px; left:329px;"><img src="./svg/101-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:329px; left:58px;"><img src="./svg/110-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:329px; left:329px;"><img src="./svg/111-c.svg" class="cat"></div>
+                            
+                            <div class="preview-node" style="top:124px; left:123px;"><img src="./svg/000-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:124px; left:264px;"><img src="./svg/001-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:264px; left:123px;"><img src="./svg/010-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:264px; left:264px;"><img src="./svg/011-c.svg" class="cat"></div>
+
+                            <img src="./svg/100-f.svg" class="preview-fish" style="top:68px; left:58px; animation: syncFishLeft 10s infinite;">
+                            <img src="./svg/101-f.svg" class="preview-fish" style="top:68px; left:329px; animation: syncFishRight 10s infinite;">
+                            <img src="./svg/110-f.svg" class="preview-fish" style="top:338px; left:58px; animation: syncFishLeft 10s infinite;">
+                            <img src="./svg/111-f.svg" class="preview-fish" style="top:338px; left:329px; animation: syncFishRight 10s infinite;">
+                            
+                            <img src="./svg/000-f.svg" class="preview-fish" style="top:133px; left:123px;">
+                            <img src="./svg/001-f.svg" class="preview-fish" style="top:133px; left:264px;">
+                            <img src="./svg/010-f.svg" class="preview-fish" style="top:273px; left:123px;">
+                            <img src="./svg/011-f.svg" class="preview-fish" style="top:273px; left:264px;">
+                        </div>
+                        <p class="mt-4 font-black text-[#463438] text-xs italic text-center">In Mode: 2, clicking an edge offers two connection combinations to choose from.</p>
+                    </div>
                 </div>
-                <div class="flex-1 bg-white p-4 border-4 border-[#463438] rounded-2xl relative mt-4 md:mt-0 flex flex-col">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#FFB7C5] text-white px-4 py-1 rounded-full border-4 border-[#463438] whitespace-nowrap">
-                        📱 Mobile
-                    </div>
-                    <div class="flex gap-2 mt-4"> 
-                        <div class="tut-anim-box flex-1 m-0 flex-col relative" style="height: 110px;">
-                            <div class="text-[10px] font-black absolute top-1" style="color:#463438;">TILT</div>
-                            <div class="tut-anim-line"></div>
-                            <div class="anim-phone mt-3">📱</div>
-                            <div class="anim-tap center seq-tap"></div>
-                            <div class="anim-tap left seq-dtap"></div>
-                            <div class="anim-tap right seq-dtap"></div>
-                        </div>
-                        <div class="tut-anim-box flex-1 m-0 flex-col relative" style="height: 110px;">
-                            <div class="text-[10px] font-black absolute top-1" style="color:#463438;">SWIPE</div>
-                            <div class="tut-anim-line"></div>
-                            <div class="anim-phone-still mt-3">📱</div>
-                            <div class="anim-finger-swipe">&#11108;</div>
-                            <div class="anim-tap center seq-tap"></div>
-                            <div class="anim-tap left seq-dtap"></div>
-                            <div class="anim-tap right seq-dtap"></div>
-                        </div>
-                    </div>
-                    <ol class="list-decimal pl-5 text-sm space-y-2 mt-4" style="color: #463438;">
-                        <li><b>Tap</b> a line to select.</li>
-                        <li><b>Tilt</b> or <b>Swipe</b> L/R to switch.</li>
-                        <li><b>2-Finger Tap</b> to confirm.</li>
-                    </ol>
+
+                <div class="mt-8 mb-2 flex justify-end">
+                     <button onclick="nextPage()" class="game-btn btn-blue px-10 py-3 text-xl">NEXT PAGE</button>
                 </div>
             </div>
-            <p class="text-sm font-black mb-5" style="color: #463438;">💡 TIP: You can also just use the Gate Buttons!</p>
-            <button onclick="closeTutorial()" class="game-btn btn-green w-full">GOT IT!</button>
+
+            <div id="tut-page-2" class="hidden">
+                <h2 class="text-3xl font-black mb-10 flex justify-center items-center gap-3" style="color: #463438;">
+                    How to Play 
+                    <div class="multi-toggle-btn mode-4 pointer-events-none flex items-center justify-center" style="font-size: 18px; padding: 0 16px; min-width: auto; height: 40px; margin: 0;">Mode: 4</div>
+                    <span class="text-2xl">🐾</span>
+                </h2>
+                
+                <div class="flex justify-center w-full mx-auto">
+                    <div class="w-full bg-white p-6 border-4 border-[#463438] rounded-2xl relative flex flex-row items-center justify-center gap-8">
+                        
+                        <div class="relative w-[388px] h-[388px] bg-[#FFF9F0] border-4 border-dashed border-[#463438] rounded-xl overflow-hidden shrink-0">
+                            <div class="preview-line tut-dim1" style="top:56px; left:59px; width:270px;"></div>
+                            <div class="preview-line tut-dim1" style="top:326px; left:59px; width:270px;"></div>
+                            <div class="preview-line tut-dim1" style="top:121px; left:124px; width:140px;"></div>
+                            <div class="preview-line tut-dim1" style="top:261px; left:124px; width:140px;"></div>
+                            
+                            <div class="preview-line tut-dim2" style="top:59px; left:56px; height:270px; width:6px;"></div>
+                            <div class="preview-line tut-dim2" style="top:59px; left:326px; height:270px; width:6px;"></div>
+                            <div class="preview-line tut-dim2" style="top:124px; left:121px; height:140px; width:6px;"></div>
+                            <div class="preview-line tut-dim2" style="top:124px; left:261px; height:140px; width:6px;"></div>
+                            
+                            <div class="preview-line tut-dim3" style="top:56px; left:59px; width:92px; height:6px; transform: rotate(45deg);"></div>
+                            <div class="preview-line tut-dim3" style="top:121px; left:264px; width:92px; height:6px; transform: rotate(-45deg);"></div>
+                            <div class="preview-line tut-dim3" style="top:326px; left:59px; width:92px; height:6px; transform: rotate(-45deg);"></div>
+                            <div class="preview-line tut-dim3" style="top:261px; left:264px; width:92px; height:6px; transform: rotate(45deg);"></div>
+                            
+                            <div class="preview-node" style="top:59px; left:58px;"><img src="./svg/100-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:59px; left:329px;"><img src="./svg/101-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:329px; left:58px;"><img src="./svg/110-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:329px; left:329px;"><img src="./svg/111-c.svg" class="cat"></div>
+                            
+                            <div class="preview-node" style="top:124px; left:123px;"><img src="./svg/000-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:124px; left:264px;"><img src="./svg/001-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:264px; left:123px;"><img src="./svg/010-c.svg" class="cat"></div>
+                            <div class="preview-node" style="top:264px; left:264px;"><img src="./svg/011-c.svg" class="cat"></div>
+
+                            <img src="./svg/100-f.svg" class="preview-fish" style="top:68px; left:58px;">
+                            <img src="./svg/101-f.svg" class="preview-fish" style="top:68px; left:329px;">
+                            <img src="./svg/110-f.svg" class="preview-fish" style="top:338px; left:58px;">
+                            <img src="./svg/111-f.svg" class="preview-fish" style="top:338px; left:329px;">
+                            <img src="./svg/000-f.svg" class="preview-fish" style="top:133px; left:123px;">
+                            <img src="./svg/001-f.svg" class="preview-fish" style="top:133px; left:264px;">
+                            <img src="./svg/010-f.svg" class="preview-fish" style="top:273px; left:123px;">
+                            <img src="./svg/011-f.svg" class="preview-fish" style="top:273px; left:264px;">
+                        </div>
+                        
+                        <div class="flex flex-col items-center gap-6 justify-center max-w-[320px]">
+                            <div class="text-2xl font-black text-center leading-relaxed" style="color: #463438;">
+                                Moves <span class="text-[#99C44D]">4 parallel paths</span><br>at the same time!
+                            </div>
+                            <div class="bg-[#fce4ec] p-4 rounded-xl border-4 border-[#463438] w-full">
+                                <p class="font-black text-[#463438] text-[16px] italic text-center leading-relaxed">
+                                    Mode 4 swaps the fish for<br>all cats<br>with the same<br>
+                                    <span class="relative inline-block w-12 h-12 mx-1 align-middle" style="margin-top: 4px;">
+                                        <img src="./RIP/dif3.png" class="absolute inset-0 w-12 h-12 object-contain rounded-md border-[3px] border-[#463438] bg-[#FFF9F0]" style="animation: opDif1 6s infinite;" alt="feature">
+                                        <img src="./RIP/dif2.png" class="absolute inset-0 w-12 h-12 object-contain rounded-md border-[3px] border-[#463438] bg-[#FFF9F0]" style="animation: opDif2 6s infinite;" alt="feature">
+                                        <img src="./RIP/dif1.png" class="absolute inset-0 w-12 h-12 object-contain rounded-md border-[3px] border-[#463438] bg-[#FFF9F0]" style="animation: opDif3 6s infinite;" alt="feature">
+                                    </span><br>
+                                    feature at once!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 mb-2 flex justify-between">
+                    <button onclick="prevPage()" class="game-btn btn-red px-10 py-3 text-xl">BACK</button>
+                    <button onclick="closeTutorial()" class="game-btn btn-green px-10 py-3 text-xl">GOT IT!</button>
+                </div>
+            </div>
         </div>
     </div>
+    
     <div id="victoryModal" class="modal-overlay" style="z-index: 3000;">
         <div class="modal-content" style="width: 400px;">
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">MEOW!</h2>
@@ -448,7 +736,6 @@
 <script>
         let labelsOpen = false;
         function toggleLabels() {
-            
             if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
             labelsOpen = !labelsOpen;
             const root = document.getElementById('body-root') || document.body;
@@ -458,7 +745,7 @@
             updateCircuitLabels();
             updateFeatureToggleLabels();
         }
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv0cOeJs-vdZehlABjrcJhQNQi9AWsGUutM7KXNFKPbFliqjWLA/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv0cOeJs-vdZehlABjrcJhQNQi9AWsGUutM7KXNFKPbFliqjWLA/exec';
         let steps = 0, time = 0, isPro = false, isQuantumMode = false, timerInterval, gateHistory = [], isSolved = false;
         let selectedIndices = [];
         let actionStack = [];
@@ -493,7 +780,6 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
             return PROGRESS_BITS === 2 ? index + 2 : index + 1;
         }
         function getFeatureSkinFolder() {
-            if (typeof currentSkin === 'undefined') return './RIP/';
             if (currentSkin === 'rip') return './RIP/';
             if (currentSkin === 'poto') return './poto/';
             if (currentSkin === 'mj') return './mj/';
@@ -638,7 +924,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
             updateProgressBar(getTotalHammingDistance());
             updateFeatureHighlights();
         });
-     
+        
         let lineMode = 1;
         let hoverLine = null;
         let currentOptionIndex = -1;
@@ -691,6 +977,11 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
             if(typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
             const modal = document.getElementById('tutorialModal');
             const modalContent = document.querySelector('#tutorialModal .modal-content');
+            
+            document.getElementById('tut-page-1').classList.remove('hidden');
+            const page2 = document.getElementById('tut-page-2');
+            if (page2) page2.classList.add('hidden');
+
             const btn = document.getElementById('help-btn');
             if (btn && modalContent) {
                 const btnRect = btn.getBoundingClientRect();
@@ -728,13 +1019,23 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                 }
             }, 400);
         }
+        function nextPage() {
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            document.getElementById('tut-page-1').classList.add('hidden');
+            document.getElementById('tut-page-2').classList.remove('hidden');
+        }
+        function prevPage() {
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            document.getElementById('tut-page-2').classList.add('hidden');
+            document.getElementById('tut-page-1').classList.remove('hidden');
+        }
         window.onload = () => {
             initGameLayout();
             initGates();
             drawStaticLines();
             updateFishUI();
             updateUndoStatus();
-            fetchLeaderboard();    
+            fetchLeaderboard();   
             const btn = document.getElementById('help-btn');
             const modalContent = document.querySelector('#tutorialModal .modal-content');
             if (btn && modalContent) {
@@ -742,7 +1043,10 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                 const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
                 const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
                 modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
-            }  
+            }
+            // Auto open tutorial on start
+            openTutorial();
+
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             const gateScrollArea = document.getElementById('gate-scroll-area');
             circuitWrapper.addEventListener('wheel', (e) => {
@@ -841,7 +1145,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                 }
             }, { passive: false });
             const canvas = document.getElementById('main-canvas');
-            const indicator = document.getElementById('ios-indicator');     
+            const indicator = document.getElementById('ios-indicator');   
             canvas.addEventListener('mousedown', (e) => {
                 if (lockedLineId && !isTouchDevice) {
                     if (e.button === 0 && !e.target.classList.contains('connection-line')) { 
@@ -1013,7 +1317,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
         function getGateColorMap(type) {
             if (type.startsWith('SWAP')) return '#e2de6e'; 
             if (type.startsWith('CX')) return '#629eed';   
-            if (type.startsWith('X')) return '#b583e5';    
+            if (type.startsWith('X')) return '#b583e5';   
             return '#fff';
         }
         function getMiniHypercubeSVG(type) {
@@ -1102,7 +1406,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
         }
         function initGates() {
             const grid = document.getElementById('gate-grid');
-            let html = '';     
+            let html = '';       
             let gateOrderX = [];
             let gateOrderCX = [];
             let gateOrderSWAP = [];
@@ -1254,7 +1558,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
         function showIndicatorLockedPrompt() {
             const pill = document.getElementById('ios-indicator');
             const frac = document.getElementById('ind-fraction');
-            frac.innerHTML = isTouchDevice ? '&#11108; TILT/SWIPE & 2-FINGER TAP' : '&#8597; SCROLL & R-CLICK';
+            frac.innerHTML = isTouchDevice ? '👆 TILT/SWIPE & TAP' : '&#8597; SCROLL & R-CLICK';
             pill.classList.add('active');
             clearHighlight();
             highlightPairs([[hoverLine.i, hoverLine.j]]);
@@ -1346,7 +1650,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
             c.innerHTML = '';
             gateHistory.forEach((g, idx) => {
                 const u = document.createElement('div');
-                u.className = 'circuit-unit';     
+                u.className = 'circuit-unit';        
                 const hex = getGateColorMap(g);
                 u.style.setProperty('--bg-hover', getRgba(hex, 0.35));
                 u.style.setProperty('--border-color', hex);
@@ -1355,11 +1659,11 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                 u.addEventListener('dragstart', (e) => {
                     if (isSolved || mobileDragging) return;
                     draggedIndex = idx;
-                    const ghost = u.cloneNode(true);      
+                    const ghost = u.cloneNode(true);        
                     ghost.style.position = 'absolute';
                     ghost.style.top = '-1000px';
                     ghost.style.left = '-1000px';
-                    document.body.appendChild(ghost);       
+                    document.body.appendChild(ghost);        
                     e.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight / 2);
                     setTimeout(() => {
                         u.classList.add('opacity-50');
@@ -1370,7 +1674,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                 });   
                 u.addEventListener('dragover', (e) => { 
                     e.preventDefault(); 
-                    e.dataTransfer.dropEffect = 'move';       
+                    e.dataTransfer.dropEffect = 'move';        
                     if (draggedIndex !== null && draggedIndex !== idx) {
                         document.querySelectorAll('.circuit-unit').forEach(el => el.classList.remove('drag-target', 'right'));
                         const rect = u.getBoundingClientRect();
@@ -1413,12 +1717,12 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                 let originalRect;
                 u.addEventListener('touchstart', (e) => {
                     if (isSolved || e.touches.length > 1) return;
-                    startX = e.touches[0].clientX; startY = e.touches[0].clientY;      
+                    startX = e.touches[0].clientX; startY = e.touches[0].clientY;     
                     touchTimer = setTimeout(() => {
                         touchTimer = null;
                         mobileDragging = true;
                         isDraggingElement = true;
-                        draggedIndex = idx;         
+                        draggedIndex = idx;        
                         if ('vibrate' in navigator) navigator.vibrate(50);     
                         originalRect = u.getBoundingClientRect();  
                         const placeholder = document.createElement('div');
@@ -1441,7 +1745,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                         
                         u.classList.add('dragging-active'); 
                     }, 300);
-                }, { passive: true });     
+                }, { passive: true });      
                 u.addEventListener('touchmove', (e) => {
                     if (isDraggingElement) {
                         if (e.cancelable) e.preventDefault();
@@ -1497,7 +1801,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                             }
                         }
                     }
-                }, { passive: false });                
+                }, { passive: false });              
                 u.addEventListener('touchend', (e) => { 
                     if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; } 
                     if (isDraggingElement) {
@@ -1533,7 +1837,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                             let targetIdx = units.indexOf(targetUnit);
                             const rect = targetUnit.getBoundingClientRect();
                             const isAfter = (currentX - rect.left) > (rect.width / 2);
-                            if (isAfter) targetIdx++;                           
+                            if (isAfter) targetIdx++;            
                             if (draggedIndex < targetIdx) targetIdx--;
                             if (draggedIndex !== targetIdx && targetIdx >= 0 && targetIdx <= gateHistory.length) {
                                 pop.currentTime = 0; pop.play();
@@ -1575,10 +1879,10 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
             });
             updateUndoStatus();
             if (selectedIndices.length === 0 && gateHistory.length > 0 && draggedIndex === null) { setTimeout(() => wrapper.scrollTo({ left: wrapper.scrollWidth, behavior: 'smooth' }), 50); }
-        }       
+        }        
         function undo() { if (isSolved || actionStack.length === 0) return; pop.currentTime = 0; pop.play(); const action = actionStack.pop(); if (action.type === 'add') { gateHistory.splice(action.index, 1); } else if (action.type === 'delete') { gateHistory.splice(action.index, 0, ...action.oldGates); } else if (action.type === 'replace') { if (action.newGate === null) gateHistory = [...action.oldGates]; else gateHistory.splice(action.index, 1, ...action.oldGates); } selectedIndices = []; recalculate(); }
         function resetCircuit() { if (isSolved) return; pop.currentTime = 0; pop.play(); gateHistory = []; actionStack = []; selectedIndices = []; recalculate(); }
-        function updateUndoStatus() { const isActive = actionStack.length > 0 && !isSolved; const topUndo = document.getElementById('undo-btn'); if(topUndo) topUndo.classList.toggle('active', isActive); const bottomUndo = document.getElementById('undo-btn-bottom'); if(bottomUndo) bottomUndo.classList.toggle('active', isActive); }    
+        function updateUndoStatus() { const isActive = actionStack.length > 0 && !isSolved; const topUndo = document.getElementById('undo-btn'); if(topUndo) topUndo.classList.toggle('active', isActive); const bottomUndo = document.getElementById('undo-btn-bottom'); if(bottomUndo) bottomUndo.classList.toggle('active', isActive); }   
         async function checkWin() {
             if (fishAtNode.every((pos, i) => pos === i)) {
                 isSolved = true; updateUndoStatus(); if (timerInterval) clearInterval(timerInterval);
@@ -1596,7 +1900,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
                         body: JSON.stringify({
                             action: 'saveRecord',
                             username: u,
-                            level: 5,          
+                            level: 5,         
                             steps: st,
                             time: ft,
                             circuit: gateHistory.join(',')
@@ -1693,7 +1997,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv
         }
             function replayCurrentLevel() {
             window.location.reload();
-        }    
+        }   
         const SKIN_STORAGE_KEY = 'meowtopiaSkin';
         const AVAILABLE_SKINS = ['default', 'rip', 'poto', 'mj'];
         let currentSkin = AVAILABLE_SKINS.includes(sessionStorage.getItem(SKIN_STORAGE_KEY)) ? sessionStorage.getItem(SKIN_STORAGE_KEY) : 'default';
