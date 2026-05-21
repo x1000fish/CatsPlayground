@@ -51,7 +51,7 @@
         .rank-champion-label { font-size: 12px; font-weight: 900; color: #5ba4cf; letter-spacing: 0; }
         .rank-champion-name { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; font-weight: 900; }
         @keyframes rankChampionPop { 0% { opacity: 0; transform: translate(0, -50%) scale(0.82); } 20% { opacity: 1; transform: translate(0, -62%) scale(1.05); } 68% { opacity: 1; transform: translate(0, -62%) scale(1); } 100% { opacity: 0; transform: translate(0, -50%) scale(0.82); } }
-        #nodes-layer, #fishes-layer { position: absolute; inset: 0; pointer-events: none; }       
+        #nodes-layer, #fishes-layer { position: absolute; inset: 0; pointer-events: none; }        
         .node { width: 100px; height: 100px; background: white; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; box-shadow: 3px 3px 0 #463438; z-index: 20; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
         .node img { width: 76px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .node img.encoded-img { transform: translate(-2px, -5px); }
@@ -131,8 +131,8 @@
         .mode-toggle-fixed { position: fixed; top: 20px; right: 20px; width: 70px; height: 70px; background: #ffffff; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 4px 0 #463438; z-index: 500; }
         #gate-scroll-area { position: relative; margin-top: 5px; flex: 1; min-height: 0; overflow-y: auto; width: 100%; padding: 5px; scrollbar-width: none; }
         #gate-scroll-area::-webkit-scrollbar { display: none; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(70, 52, 56, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 380px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(70, 52, 56, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
+        .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 850px; max-width: 95vw; box-shadow: 0 10px 0 #FFB7C5; color: #463438; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1) translate(0, 0); opacity: 1; }
         .victory-actions, .victory-progress-actions { display: flex; gap: 14px; align-items: center; justify-content: center; }
         .victory-actions { margin-bottom: 16px; }
         .home-btn { width: 150px; border-radius: 60px; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
@@ -290,11 +290,12 @@
         <div class="flex w-full px-4 mb-2 items-center justify-between">
             <div class="text-3xl font-black whitespace-nowrap" style="color: #463438">STEPS: <span id="step-count">0</span> | TIME: <span id="timer">0</span></div>
             <div class="flex items-center gap-2 whitespace-nowrap">
+                <button id="help-btn" class="multi-toggle-btn" style="min-width: 40px; width: 40px; height: 40px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #FFB7C5; color: white;" onclick="openTutorial()">?</button>
                 <button id="label-toggle-btn" class="mode-toggle-inline" onclick="toggleLabels()" title="Toggle labels" aria-label="Toggle labels">&#127991;&#65039;</button>
                 <button id="mode-btn" class="multi-toggle-btn" onclick="cycleLineMode()">Mode: 1</button>
                 <div class="text-3xl font-black ml-6" style="color: #7bc202;">LEVEL 9</div>
             </div>
-        </div>    
+        </div>  
         <div class="flex w-full px-4 mb-4 mt-2 items-center justify-between gap-4">
             <div class="text-2xl font-black text-[#463438] shrink-0">DISTANCE：</div>
             <div class="progress-bar-wrapper">
@@ -340,8 +341,82 @@
             <a href="index.html" class="game-btn btn-red px-16">GIVE UP</a>
         </div>
     </div>
+    
+    <div id="tutorialModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content text-left">
+            <div id="tut-page-1">
+                <h2 class="text-3xl font-black mb-10 flex justify-center items-center gap-3" style="color: #463438;">
+                    How to Play 
+                    <div class="multi-toggle-btn mode-4 pointer-events-none flex items-center justify-center" style="font-size: 18px; padding: 0 16px; min-width: auto; height: 40px; margin: 0; background: #b583e5;">Mode: 4</div>
+                    <span class="text-2xl">🐾</span>
+                </h2>
+
+                <div class="flex justify-center w-full mx-auto">
+                    <div class="w-full bg-white p-6 border-4 border-[#463438] rounded-2xl relative flex flex-col md:flex-row items-center justify-center gap-8">
+                        
+                        <div id="preview-container-m4" class="relative w-[388px] h-[388px] bg-[#FFF9F0] border-4 border-dashed border-[#463438] rounded-xl overflow-hidden shrink-0"></div>
+
+                        <div class="flex flex-col items-center gap-6 justify-center max-w-[320px]">
+                            <div class="text-2xl font-black text-center leading-relaxed" style="color: #463438;">
+                                Mode 4 offers <span class="text-[#b583e5]">multiple</span> choices!
+                            </div>
+                            <div class="bg-[#fce4ec] p-4 rounded-xl border-4 border-[#463438] w-full">
+                                <p class="font-black text-[#463438] text-lg italic text-center">
+                                    Selecting an edge provides multiple connection combinations to choose from!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 mb-2 flex justify-end">
+                     <button onclick="nextPage()" class="game-btn btn-blue px-10 py-3 text-xl">NEXT PAGE</button>
+                </div>
+            </div>
+
+            <div id="tut-page-2" class="hidden">
+                <h2 class="text-3xl font-black mb-10 flex justify-center items-center gap-3" style="color: #463438;">
+                    How to Play 
+                    <div class="multi-toggle-btn mode-8 pointer-events-none flex items-center justify-center" style="font-size: 18px; padding: 0 16px; min-width: auto; height: 40px; margin: 0; background: #46c89d;">Mode: 8</div>
+                    <span class="text-2xl">🐾</span>
+                </h2>
+                
+                <div class="flex justify-center w-full mx-auto">
+                    <div class="w-full bg-white p-6 border-4 border-[#463438] rounded-2xl relative flex flex-col md:flex-row items-center justify-center gap-8">
+                        
+                        <div id="preview-container-m8" class="relative w-[388px] h-[388px] bg-[#FFF9F0] border-4 border-dashed border-[#463438] rounded-xl overflow-hidden shrink-0"></div>
+                        
+                        <div class="flex flex-col items-center gap-6 justify-center max-w-[320px]">
+                            <div class="text-2xl font-black text-center leading-relaxed" style="color: #463438;">
+                                Moves <span class="text-[#99C44D]">8 parallel paths</span><br>at the same time!
+                            </div>
+                            <div class="bg-[#fce4ec] p-4 rounded-xl border-4 border-[#463438] w-full">
+                                <p class="font-black text-[#463438] text-[17px] italic text-center flex flex-col items-center justify-center gap-2">
+                                    <span>Mode 8 swaps the fish for all cats</span>
+                                    <span>with the same</span>
+                                    <span class="relative inline-block w-14 h-14 mx-1 align-middle">
+                                        <img src="./RIP/dif3.png" class="absolute inset-0 w-14 h-14 object-contain rounded-md border-4 border-[#463438] bg-[#FFF9F0]" style="animation: syncDif3 10s infinite;" alt="feature">
+                                        <img src="./RIP/dif2.png" class="absolute inset-0 w-14 h-14 object-contain rounded-md border-4 border-[#463438] bg-[#FFF9F0]" style="animation: syncDif2 10s infinite;" alt="feature">
+                                        <img src="./RIP/dif1.png" class="absolute inset-0 w-14 h-14 object-contain rounded-md border-4 border-[#463438] bg-[#FFF9F0]" style="animation: syncDif1 10s infinite;" alt="feature">
+                                        <img src="./RIP/dif0.png" class="absolute inset-0 w-14 h-14 object-contain rounded-md border-4 border-[#463438] bg-[#FFF9F0]" style="animation: syncDif0 10s infinite;" alt="feature">
+                                    </span>
+                                    <span>feature at once!</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 mb-2 flex justify-between">
+                    <button onclick="prevPage()" class="game-btn btn-red px-10 py-3 text-xl">BACK</button>
+                    <button onclick="closeTutorial()" class="game-btn btn-green px-10 py-3 text-xl">GOT IT!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="victoryModal" class="modal-overlay" style="z-index: 3000;">
-        <div class="modal-content" style="width: 400px;">
+        <div class="modal-content" style="width: 400px; transform: scale(1) translate(0, 0); opacity: 1;">
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">MEOW!</h2>
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">🐾</h2>
             <p id="victoryMsg" class="text-xl font-bold mb-6"></p>
@@ -360,6 +435,136 @@
         </div>
     </div>
     <script>
+        // 動態生成 4-bit Hypercube 教學預覽圖的腳本
+        function generateTutPreviews() {
+            const scale = 0.45, offsetX = 75, offsetY = 185;
+            const getPos = (i) => {
+                let x = (i & 1) ? 120 : 0; let y = (i & 2) ? 120 : 0;
+                if (i & 4) { x += (i & 1) ? 90 : -80; y += (i & 2) ? 80 : -80; }
+                if (i & 8) { x += 400; y -= 80; }
+                return { x: x * scale + offsetX, y: y * scale + offsetY };
+            };
+            
+            let css = '';
+            
+            const renderCube = (containerId, mode) => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                let html = '';
+                let m8KeyframesAdded = {};
+                for (let i = 0; i < 16; i++) {
+                    for (let b = 0; b < 4; b++) {
+                        let j = i ^ (1 << b);
+                        if (j > i) {
+                            const p1 = getPos(i), p2 = getPos(j);
+                            const len = Math.sqrt((p2.x - p1.x)**2 + (p2.y - p1.y)**2);
+                            const ang = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+                            
+                            let animStyle = '';
+                            if (mode === 4 && b === 0) {
+                                let inOpt0 = i === 4;
+                                let inOpt1 = (i & 8) === 0;
+                                let inOpt2 = (i & 4) !== 0;
+                                let inOpt3 = (i & 2) === 0;
+                                let animName = `anim_edge_m4_${i}`;
+                                css += `@keyframes ${animName} {
+                                    0%, 19% { background: ${inOpt0 ? '#99C44D' : '#463438'}; box-shadow: ${inOpt0 ? '0 0 15px rgba(153,196,77,0.8)' : 'none'}; z-index: ${inOpt0 ? '15' : '10'}; height: ${inOpt0 ? '5px' : '3px'}; opacity: 1; }
+                                    20%, 39% { background: ${inOpt1 ? '#99C44D' : '#463438'}; box-shadow: ${inOpt1 ? '0 0 15px rgba(153,196,77,0.8)' : 'none'}; z-index: ${inOpt1 ? '15' : '10'}; height: ${inOpt1 ? '5px' : '3px'}; opacity: 1; }
+                                    40%, 59% { background: ${inOpt2 ? '#99C44D' : '#463438'}; box-shadow: ${inOpt2 ? '0 0 15px rgba(153,196,77,0.8)' : 'none'}; z-index: ${inOpt2 ? '15' : '10'}; height: ${inOpt2 ? '5px' : '3px'}; opacity: 1; }
+                                    60%, 79% { background: ${inOpt3 ? '#99C44D' : '#463438'}; box-shadow: ${inOpt3 ? '0 0 15px rgba(153,196,77,0.8)' : 'none'}; z-index: ${inOpt3 ? '15' : '10'}; height: ${inOpt3 ? '5px' : '3px'}; opacity: 1; }
+                                    80%, 100% { background: #463438; box-shadow: none; z-index: 10; height: 3px; opacity: 1; }
+                                }`;
+                                animStyle = `animation: ${animName} 10s infinite;`;
+                            } else if (mode === 8) {
+                                let animName = `anim_edge_m8_${b}`;
+                                if (!m8KeyframesAdded[b]) {
+                                    let start = b * 25, end = start + 23;
+                                    let defBg = b===3 ? 'transparent' : '#463438';
+                                    let defH = b===3 ? '8px' : '3px';
+                                    let defOp = b===3 ? '0.4' : '1';
+                                    let defBorder = b===3 ? '3px dashed #463438' : 'none';
+                                    let startFrame = start === 0 ? '' : `0%, ${start-1}% { background: ${defBg}; box-shadow: none; height: ${defH}; z-index: 10; opacity: ${defOp}; border-top: ${defBorder}; }`;
+                                    css += `@keyframes ${animName} {
+                                        ${startFrame}
+                                        ${start}%, ${end}% { background: #99C44D; box-shadow: 0 0 15px rgba(153,196,77,0.8); height: ${b===3?'8px':'5px'}; z-index: 15; opacity: 1; border-top: none; }
+                                        ${end+1}%, 100% { background: ${defBg}; box-shadow: none; height: ${defH}; z-index: 10; opacity: ${defOp}; border-top: ${defBorder}; }
+                                    }`;
+                                    m8KeyframesAdded[b] = true;
+                                }
+                                animStyle = `animation: ${animName} 10s infinite;`;
+                            }
+                            
+                            let baseColor = b === 3 ? 'transparent' : '#463438';
+                            let borderTop = b === 3 ? '3px dashed #463438' : 'none';
+                            let h = b === 3 ? '8px' : '3px';
+                            let op = b === 3 ? '0.4' : '1';
+
+                            html += `<div class="preview-line" style="left:${p1.x}px; top:${p1.y}px; width:${len}px; transform:rotate(${ang}deg); transform-origin:0 50%; background:${baseColor}; border-top:${borderTop}; height:${h}; opacity:${op}; z-index:10; position:absolute; ${animStyle}"></div>`;
+                        }
+                    }
+                }
+                
+                for (let i = 0; i < 16; i++) {
+                    const p = getPos(i);
+                    const bin = i.toString(2).padStart(4, '0');
+                    const code = `0${bin.slice(2)}`;
+                    const isFaded = bin[0] === '1' ? 'filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72);' : '';
+                    
+                    const fishIdx = i ^ 8;
+                    const fishBin = fishIdx.toString(2).padStart(4, '0');
+                    const fishCode = `0${fishBin.slice(2)}`;
+                    const fishIsFaded = fishBin[0] === '1' ? 'filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72);' : '';
+
+                    html += `<div class="preview-node" style="left:${p.x}px; top:${p.y}px; width:40px; height:40px; border-width:3px; position:absolute; z-index:20; background:white; display:flex; align-items:center; justify-content:center; transform:translate(-50%,-50%); border-radius:50%; border-color:#463438; border-style:solid;">
+                                <img src="./svg/${code}-c.svg" style="width:30px; ${isFaded} position:absolute; z-index:21;">
+                                <img src="./svg/${fishCode}-f.svg" style="width:20px; position:absolute; z-index:25; filter: brightness(0) invert(1); transform: translate(0px, 5px);" alt="">
+                                <img src="./svg/${fishCode}-f.svg" style="width:20px; ${fishIsFaded} position:absolute; z-index:25; transform: translate(0px, 5px);" alt="">
+                             </div>`;
+                }
+
+                if (mode === 4) {
+                    html += `<div id="tut-ios-indicator-m4" style="top: 130px; left: 102px; padding: 4px 12px; z-index: 100; animation: syncIndicator4Bit 10s infinite; position:absolute; transform:translate(-50%,-50%); border-radius: 50px; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(15px); border: 1px solid rgba(70,52,56,0.35); display: flex; align-items: center; justify-content: center;">
+                                <span style="color: #463438; font-size: 13px; font-weight: 900;"></span>
+                             </div>`;
+                }
+
+                container.innerHTML = html;
+            };
+
+            renderCube('preview-container-m4', 4);
+            renderCube('preview-container-m8', 8);
+
+            const style = document.createElement('style');
+            style.innerHTML = css + `
+                @keyframes syncDif3 { 0%, 23% { opacity: 1; } 24%, 100% { opacity: 0; } }
+                @keyframes syncDif2 { 0%, 24% { opacity: 0; } 25%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+                @keyframes syncDif1 { 0%, 49% { opacity: 0; } 50%, 73% { opacity: 1; } 74%, 100% { opacity: 0; } }
+                @keyframes syncDif0 { 0%, 74% { opacity: 0; } 75%, 98% { opacity: 1; } 99%, 100% { opacity: 0; } }
+
+                #preview-container-m4 span::after {
+                    animation: syncFrac4Bit 10s infinite;
+                    content: "1 / 3";
+                }
+                @keyframes syncIndicator4Bit {
+                    0%, 19% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                    20%, 22% { transform: translate(-50%, -50%) scale(0.9); opacity: 1; }
+                    23%, 39% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+                    40%, 42% { transform: translate(-50%, -50%) scale(0.9); opacity: 1; }
+                    43%, 59% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+                    60%, 62% { transform: translate(-50%, -50%) scale(0.9); opacity: 1; }
+                    63%, 79% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+                    80%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                }
+                @keyframes syncFrac4Bit {
+                    0%, 19% { content: "1 / 3"; }
+                    20%, 39% { content: "1 / 3"; }
+                    40%, 59% { content: "2 / 3"; }
+                    60%, 100% { content: "3 / 3"; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
         let labelsOpen = false;
         const AVAILABLE_SKINS = ['default', 'rip', 'poto', 'mj'];
         const SKIN_STORAGE_KEY = 'meowtopiaSkin';
@@ -583,6 +788,7 @@
         let isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
         let lockedLineId = null;
         let hasScrolled = false;
+        let hasTimerStarted = false;
         let lastTiltDirection = 0;
         const TILT_THRESHOLD = 15;
         const RETURN_THRESHOLD = 10;
@@ -601,6 +807,7 @@
         let gateRectCache = null;
         window.activeDropUnit = null;
         window.activeDropLeft = null;
+        
         window.addEventListener('resize', () => {
             circuitRectCache = null;
             gateRectCache = null;
@@ -671,6 +878,65 @@
         function playPopSound() {
             if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
         }
+        
+        /* ---------------- 教學功能 ---------------- */
+        function openTutorial() {
+            if(typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            const modal = document.getElementById('tutorialModal');
+            const modalContent = document.querySelector('#tutorialModal .modal-content');
+            
+            document.getElementById('tut-page-1').classList.remove('hidden');
+            const page2 = document.getElementById('tut-page-2');
+            if (page2) page2.classList.add('hidden');
+
+            const btn = document.getElementById('help-btn');
+            if (btn && modalContent) {
+                const btnRect = btn.getBoundingClientRect();
+                const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
+                const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
+                modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
+            }
+            modal.style.display = 'flex';
+            modalContent.style.transform = 'scale(0)';
+            modalContent.style.opacity = '0';
+            void modalContent.offsetWidth; 
+            requestAnimationFrame(() => {
+                modalContent.style.transform = 'scale(1)';
+                modalContent.style.opacity = '1';
+            });
+        }
+        function closeTutorial() {
+            if(typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            const modal = document.getElementById('tutorialModal');
+            const modalContent = document.querySelector('#tutorialModal .modal-content');
+            const btn = document.getElementById('help-btn'); 
+            if (btn && modalContent) {
+                const btnRect = btn.getBoundingClientRect();
+                const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
+                const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
+                modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
+            }
+            modalContent.style.transform = 'scale(0)';
+            modalContent.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                if (!hasTimerStarted) {
+                    hasTimerStarted = true;
+                    timerInterval = setInterval(() => { time++; document.getElementById('timer').innerText = time; }, 1000);
+                }
+            }, 400);
+        }
+        function nextPage() {
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            document.getElementById('tut-page-1').classList.add('hidden');
+            document.getElementById('tut-page-2').classList.remove('hidden');
+        }
+        function prevPage() {
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            document.getElementById('tut-page-2').classList.add('hidden');
+            document.getElementById('tut-page-1').classList.remove('hidden');
+        }
+
         const baseOffsetY = 195;
         const side = 120;
         const hyperOffset = 400;
@@ -1085,8 +1351,6 @@
             }
             updateProgressBar(totalDist); 
         }
-        window.activeDropUnit = null;
-        window.activeDropLeft = null;
         function startMobileDrag(touch, el, idx) {
             if (lockedLineId) return;
             mobileDragging = true;
@@ -1483,7 +1747,9 @@
                 if ('vibrate' in navigator) navigator.vibrate(20);
             } else if (Math.abs(tilt) < RETURN_THRESHOLD) lastTiltDirection = 0;
         }
+        
         window.onload = () => {
+            generateTutPreviews();
             initGameLayout();
             initGates();
             drawStaticLines();
@@ -1491,7 +1757,18 @@
             updateCircuitLabels(); 
             updateUndoStatus();
             fetchLeaderboard();
-            timerInterval = setInterval(() => { time++; document.getElementById('timer').innerText = time; }, 1000);
+            
+            // 綁定教學按鈕並在開始時主動觸發
+            const btn = document.getElementById('help-btn');
+            const modalContent = document.querySelector('#tutorialModal .modal-content');
+            if (btn && modalContent) {
+                const btnRect = btn.getBoundingClientRect();
+                const originX = btnRect.left + btnRect.width/2 - (window.innerWidth/2);
+                const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
+                modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
+            }
+            openTutorial();
+
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             const gateScrollArea = document.getElementById('gate-scroll-area');
             const canvas = document.getElementById('main-canvas');
@@ -1680,7 +1957,7 @@
         }
         function replayCurrentLevel() {
             window.location.reload();
-        }    
+        }   
     </script>
 </body>
 </html>
