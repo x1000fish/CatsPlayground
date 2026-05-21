@@ -110,7 +110,7 @@
         #gate-scroll-area::-webkit-scrollbar { display: none; }        
         :root { --cube-offset-x: 175px; }
         .pro-active { --cube-offset-x: 42px; }   
-        .modal-overlay { position: fixed; inset: 0; background: rgba(70, 52, 56, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
         .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 850px; max-width: 95vw; box-shadow: 0 10px 0 #FFB7C5; color: #463438; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1) translate(0, 0); opacity: 1; }
         
         .tut-anim-box { height: 110px; background: #fffaf5; border: 3px dashed #463438; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin: 12px 0; }
@@ -525,8 +525,8 @@
         </div>
     </div>
     
-    <div id="tutorialModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content text-left">
+    <div id="tutorialModal" class="modal-overlay" style="display: flex;">
+        <div class="modal-content text-left" style="transform: scale(1); opacity: 1;">
             <div id="tut-page-1">
                 <h2 class="text-3xl font-black mb-10 flex justify-center items-center gap-3" style="color: #463438;">
                     How to Play 
@@ -1044,8 +1044,9 @@
                 const originY = btnRect.top + btnRect.height/2 - (window.innerHeight/2);
                 modalContent.style.transformOrigin = `calc(50% + ${originX}px) calc(50% + ${originY}px)`;
             }
-            // Auto open tutorial on start
-            openTutorial();
+            
+            // 已將預設開啟邏輯改為 HTML 預設顯示
+            // openTutorial(); 
 
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             const gateScrollArea = document.getElementById('gate-scroll-area');
