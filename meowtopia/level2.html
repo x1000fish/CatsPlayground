@@ -557,7 +557,10 @@
             <div class="text-sm font-bold mb-4" style="color: #629eed;">
                 ↔️ Scroll horizontally if the PATHS area is too long!
             </div>
-            <button onclick="nextTutPage(2)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">NEXT →</button>
+            <div class="mt-auto pt-4 flex justify-between w-full" style="transform: translateY(-30px);">
+                <div></div> <!-- 隱形佔位符，把 NEXT 擠到最右邊 -->
+                <button onclick="nextTutPage(2)" class="game-btn btn-blue w-48 py-2 text-xl" style="border-radius: 25px;">NEXT PAGE</button>
+            </div>
         </div>
 
         <!-- ==================== 教學 第二頁 (獨立 Mode 2) ==================== -->
@@ -576,10 +579,14 @@
                         <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
                             <div style="position: relative; width: 120px; height: 120px; transform: scale(2.2); transform-origin: center;">
                                 <!-- 框線 -->
-                                <div style="position: absolute; left: 13.5px; top: 15px; height: 90px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
-                                <div style="position: absolute; right: 13.5px; top: 15px; height: 90px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
-                                <div style="position: absolute; top: 13.5px; left: 15px; width: 90px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
-                                <div style="position: absolute; bottom: 13.5px; left: 15px; width: 90px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
+				<!-- 左垂直線 -->
+				<div style="position: absolute; left: 13.5px; top: 30px; height: 60px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
+				<!-- 右垂直線 -->
+				<div style="position: absolute; right: 13.5px; top: 30px; height: 60px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
+				<!-- 上水平線 -->
+				<div style="position: absolute; top: 13.5px; left: 30px; width: 60px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
+				<!-- 下水平線 -->
+				<div style="position: absolute; bottom: 13.5px; left: 30px; width: 60px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
 
                                 <!-- 節點貓咪 -->
                                 <div style="position: absolute; top: 0; left: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/000-c.svg" style="width: 20px;" alt=""></div>
@@ -588,10 +595,10 @@
                                 <div style="position: absolute; bottom: 0; right: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/011-c.svg" style="width: 20px;" alt=""></div>
 
                                 <!-- 魚群 -->
-                                <div style="position: absolute; top: 5px; left: 5px; z-index: 5; animation: tutM2FishTL 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/000-f.svg" style="width: 20px;" alt=""></div>
-                                <div style="position: absolute; top: 5px; right: 5px; z-index: 5; animation: tutM2FishTR 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/001-f.svg" style="width: 20px;" alt=""></div>
-                                <div style="position: absolute; bottom: 5px; left: 5px; z-index: 5; animation: tutM2FishBL 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/010-f.svg" style="width: 20px;" alt=""></div>
-                                <div style="position: absolute; bottom: 5px; right: 5px; z-index: 5; animation: tutM2FishBR 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/011-f.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; top: 13px; left: 7px; z-index: 5; animation: tutM2FishTL 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/000-f.svg" style="width: 15px;" alt=""></div>
+                                <div style="position: absolute; top: 13px; right: 7px; z-index: 5; animation: tutM2FishTR 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/001-f.svg" style="width: 15px;" alt=""></div>
+                                <div style="position: absolute; bottom: 7px; left: 7px; z-index: 5; animation: tutM2FishBL 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/010-f.svg" style="width: 15px;" alt=""></div>
+                                <div style="position: absolute; bottom: 7px; right: 7px; z-index: 5; animation: tutM2FishBR 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/011-f.svg" style="width: 15px;" alt=""></div>
                             </div>
                         </div>
 
@@ -605,8 +612,8 @@
                                 <div style="position: relative; width: 50px; height: 50px;">
                                     <div style="background: white; border: 2.5px solid #463438; border-radius: 8px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; overflow: hidden;">
                                         <!-- 特徵圖片交替 -->
-                                        <img src="./RIP/dif2.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop 10s infinite;" alt="feature1">
-                                        <img src="./RIP/dif3.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop_Inv 10s infinite;" alt="feature2">
+                                        <img src="./svg/dif2.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop 10s infinite;" alt="feature1">
+                                        <img src="./svg/dif3.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop_Inv 10s infinite;" alt="feature2">
                                     </div>
                                     <div style="position: absolute; right: -15px; bottom: -10px; font-size: 26px; animation: tutM2HandDouble 10s infinite; z-index: 10;">👆🏻</div>
                                 </div>
@@ -616,7 +623,10 @@
                     </div>
                 </div>
             </div>
-            <button onclick="nextTutPage(3)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">NEXT →</button>
+            <div class="mt-auto pt-4 flex justify-between w-full">
+                <button onclick="nextTutPage(1)" class="game-btn btn-red w-48 py-2 text-xl" style="border-radius: 25px;">BACK</button>
+                <button onclick="nextTutPage(3)" class="game-btn btn-blue w-48 py-2 text-xl" style="border-radius: 25px;">NEXT PAGE</button>
+            </div>
         </div>
 
         <!-- ==================== 教學 第三頁 ==================== -->
@@ -727,7 +737,10 @@
                     <div class="tut-text">Toggle to switch to real <b>Quantum Circuit</b>!</div>
                 </div>
             </div>
-            <button onclick="nextTutPage(4)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">NEXT →</button>
+            <div class="mt-auto pt-4 flex justify-between w-full">
+                <button onclick="nextTutPage(2)" class="game-btn btn-red w-48 py-2 text-xl" style="border-radius: 25px;">BACK</button>
+                <button onclick="nextTutPage(4)" class="game-btn btn-blue w-48 py-2 text-xl" style="border-radius: 25px;">NEXT PAGE</button>
+            </div>
         </div>
 
         <!-- ==================== 教學 第四頁 ==================== -->
@@ -857,7 +870,10 @@
             <div class="text-sm font-bold mb-4" style="color: #FFB800; text-align: center;">
                 💡 Find the shortest path using distance badges!
             </div>
-            <button onclick="closeTutorial()" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">LET'S GO!</button>
+           <div class="mt-auto pt-4 flex justify-between w-full" style="transform: translateY(-30px);">
+                <button onclick="nextTutPage(3)" class="game-btn btn-red w-48 py-2 text-xl" style="border-radius: 25px;">BACK</button>
+                <button onclick="closeTutorial()" class="game-btn btn-green w-48 py-2 text-xl" style="border-radius: 25px;">GOT IT!</button>
+            </div>
         </div>
     </div>
     
