@@ -425,6 +425,60 @@
         .skin-mj .fish-wrapper.large-node > img.fish-img, .skin-mj .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(14px, -30%) scale(0.92)!important; }
         .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-img, .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(14px, -18%) scale(1) !important; }
         .skin-mj .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 13px; right: 18px; }
+	
+                   /* === Mode 2 教學專用動畫 === */
+        @keyframes tutM2_Loop {
+            0%, 45% { opacity: 1; transform: scale(1); } /* 展示 dif2 */
+            50%, 95% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes tutM2_Loop_Inv {
+            0%, 45% { opacity: 0; transform: scale(0.8); }
+            50%, 95% { opacity: 1; transform: scale(1); } /* 展示 dif3 */
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+        
+        /* dif2 期間(0-50%)：左右交換 */
+        /* dif3 期間(50-100%)：上下交換 */
+        @keyframes tutM2FishTL { /* 00 位置 */
+            0%, 10% { transform: translate(0, 0); }
+            20%, 40% { transform: translate(90px, 0); } /* 跟 01(TR) 換 */
+            50%, 60% { transform: translate(0, 0); }
+            70%, 90% { transform: translate(0, 90px); } /* 跟 10(BL) 換 */
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes tutM2FishTR { /* 01 位置 */
+            0%, 10% { transform: translate(0, 0); }
+            20%, 40% { transform: translate(-90px, 0); } /* 跟 00(TL) 換 */
+            50%, 60% { transform: translate(0, 0); }
+            70%, 90% { transform: translate(0, 90px); } /* 跟 11(BR) 換 */
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes tutM2FishBL { /* 10 位置 */
+            0%, 10% { transform: translate(0, 0); }
+            20%, 40% { transform: translate(90px, 0); } /* 跟 11(BR) 換 */
+            50%, 60% { transform: translate(0, 0); }
+            70%, 90% { transform: translate(0, -90px); } /* 跟 00(TL) 換 */
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes tutM2FishBR { /* 11 位置 */
+            0%, 10% { transform: translate(0, 0); }
+            20%, 40% { transform: translate(-90px, 0); } /* 跟 10(BL) 換 */
+            50%, 60% { transform: translate(0, 0); }
+            70%, 90% { transform: translate(0, -90px); } /* 跟 01(TR) 換 */
+            100% { transform: translate(0, 0); }
+        }
+        /* 線條發亮對應 */
+        @keyframes lineGlowH {
+            0%, 10% { background: rgba(70,52,56,0.2); box-shadow: none; z-index: 2; }
+            20%, 40% { background: #99C44D; box-shadow: 0 0 10px #99C44D; z-index: 10; }
+            50%, 100% { background: rgba(70,52,56,0.2); box-shadow: none; z-index: 2; }
+        }
+        @keyframes lineGlowV {
+            0%, 60% { background: rgba(70,52,56,0.2); box-shadow: none; z-index: 1; }
+            70%, 90% { background: #99C44D; box-shadow: 0 0 10px #99C44D; z-index: 10; }
+            100% { background: rgba(70,52,56,0.2); box-shadow: none; z-index: 1; }
+        }
 </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels" id="body-root">
@@ -436,90 +490,138 @@
     </div>
     <div id="tutorialModal" class="modal-overlay">
         
-        <!-- ==================== 教學 第一頁 ==================== -->
-        <div class="modal-content" id="tut-page-1">
-            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (1/3)</h2>
+      <!-- ==================== 教學 第一頁 (基礎操作) ==================== -->
+        <div class="modal-content" id="tut-page-1" style="height: 640px; display: flex; flex-direction: column;">
+            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (1/4)</h2>
             <div class="tut-boxes">
-                <div class="tut-card">
-                    <div class="tut-title">1. ADD PATHS</div>
-                    <div class="tut-anim-area">
-                        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 45%;">
-                            <div class="tut-btn-cube">
-                                <div class="tut-sq-small">
-                                    <div class="ts-dot tl"></div><div class="ts-dot tr"></div>
-                                    <div class="ts-dot bl"></div><div class="ts-dot br"></div>
-                                    <div class="ts-line-h top"></div><div class="ts-line-h bot"></div>
-                                    <div class="ts-line-v left"></div><div class="ts-line-v right"></div>
-                                </div>
-                            </div>
-                            <div style="position: absolute; font-size: 24px; animation: c1HandLeft 3s infinite;">👆🏻</div>
-                        </div>
-                        <div style="font-weight:900; color: #463438;">=</div>
-                        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 45%;">
-                            <div class="tut-sq">
-                                <div class="t-dot tl"></div><div class="t-dot tr"></div>
-                                <div class="t-dot bl"></div><div class="t-dot br"></div>
-                                <div class="t-line-h top hl"></div><div class="t-line-h bot hl"></div>
-                                <div class="t-line-v left"></div><div class="t-line-v right"></div>
-                            </div>
-                            <div style="position: absolute; font-size: 24px; animation: c1HandRight 3s infinite;">👆🏻</div>
-                        </div>
-                    </div>
-                    <div class="tut-text">Click buttons = <b>Mode:</b> Select lines</div>
-                </div>
-                <div class="tut-card">
+                
+                <!-- 1. MOVE -->
+                <div class="tut-card" style="height: 200px;">
                     <div class="in-paths-tag">IN PATHS</div>
-                    <div class="tut-title">2. MOVE</div>
-                    <div class="tut-anim-area">
-                        <div class="c2-block"></div>
-                        <div class="c2-hand">👆🏻</div>
+                    <div class="tut-title">1. MOVE</div>
+                    <div class="tut-anim-area" style="flex: 1; height: auto;">
+                        <!-- 新增這層作比例放大 (scale) 並維持置中 -->
+                        <div style="transform: scale(1.25); height: 100px; width: 100%; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <div class="c2-block"></div>
+                            <div class="c2-hand">👆🏻</div>
+                        </div>
                     </div>
                     <div class="tut-text"><b>Drag & Drop</b> to move</div>
                 </div>
-                <div class="tut-card">
+
+                <!-- 2. DELETE -->
+                <div class="tut-card" style="height: 200px;">
                     <div class="in-paths-tag">IN PATHS</div>
-                    <div class="tut-title text-red-500">3. DELETE</div>
-                    <div class="tut-anim-area">
-                        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
-                            <div class="c3-pc-block"></div>
-                            <div class="css-mouse"><div class="m-l-click"></div></div>
-                            <div class="platform-tag">PC</div>
-                        </div>
-                        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
-                            <div class="c3-mob-block"></div>
-                            <div class="c3-mob-hand">👆🏻</div>
-                            <div class="platform-tag">MOBILE</div>
+                    <div class="tut-title text-red-500">2. DELETE</div>
+                    <div class="tut-anim-area" style="flex: 1; height: auto;">
+                        <!-- 新增這層作比例放大 (scale) 並維持置中 -->
+                        <div style="transform: scale(1.25); height: 100px; width: 100%; display: flex; align-items: center; justify-content: space-evenly;">
+                            <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
+                                <div class="c3-pc-block"></div>
+                                <div class="css-mouse"><div class="m-l-click"></div></div>
+                                <div class="platform-tag">PC</div>
+                            </div>
+                            <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
+                                <div class="c3-mob-block"></div>
+                                <div class="c3-mob-hand">👆🏻</div>
+                                <div class="platform-tag">MOBILE</div>
+                            </div>
                         </div>
                     </div>
                     <div class="tut-text">Left Click / Swipe Up</div>
                 </div>
-                <div class="tut-card">
+
+                <!-- 3. CHANGE (長度維持滿版 grid-column: 1 / -1，高度 200px) -->
+                <div class="tut-card" style="grid-column: 1 / -1; height: 200px;">
                     <div class="in-paths-tag">IN PATHS</div>
-                    <div class="tut-title" style="color: #629eed;">4. CHANGE</div>
-                    <div class="tut-anim-area">
-                        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
-                            <div class="c4-pc-block"></div>
-                            <div class="css-mouse"><div class="m-r-click"></div></div>
-                            <div class="platform-tag">PC</div>
-                        </div>
-                        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
-                            <div class="c4-mob-block"></div>
-                            <div class="c4-mob-hand">👆🏻</div>
-                            <div class="platform-tag">MOBILE</div>
+                    <div class="tut-title" style="color: #629eed;">3. CHANGE</div>
+                    <div class="tut-anim-area" style="flex: 1; height: auto;">
+                        <!-- 新增這層作比例放大 (scale) 並維持置中 -->
+                        <div style="transform: scale(1.25); height: 100px; width: 100%; display: flex; align-items: center; justify-content: space-evenly;">
+                            <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
+                                <div class="c4-pc-block"></div>
+                                <div class="css-mouse"><div class="m-r-click"></div></div>
+                                <div class="platform-tag">PC</div>
+                            </div>
+                            <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 50%;">
+                                <div class="c4-mob-block"></div>
+                                <div class="c4-mob-hand">👆🏻</div>
+                                <div class="platform-tag">MOBILE</div>
+                            </div>
                         </div>
                     </div>
                     <div class="tut-text">Right Click / Swipe Down</div>
                 </div>
+
             </div>
             <div class="text-sm font-bold mb-4" style="color: #629eed;">
                 ↔️ Scroll horizontally if the PATHS area is too long!
             </div>
-            <button onclick="nextTutPage(2)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px;">NEXT →</button>
+            <button onclick="nextTutPage(2)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">NEXT →</button>
         </div>
 
-        <!-- ==================== 教學 第二頁 ==================== -->
-        <div class="modal-content hidden" id="tut-page-2">
-            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (2/3)</h2>
+        <!-- ==================== 教學 第二頁 (獨立 Mode 2) ==================== -->
+        <div class="modal-content hidden" id="tut-page-2"style="height: 640px; display: flex; flex-direction: column;">
+            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (2/4)</h2>
+            <div class="tut-boxes">
+                <div class="tut-card" style="grid-column: 1 / -1; flex-direction: column;">
+                    <div style="display: flex; align-items: center; justify-content: center; width: 100%; gap: 15px; margin-bottom: 10px;">
+                        <div class="tut-title" style="color: #463438; width: auto; font-size: 24px; padding: 0; margin: 0; text-align: center;">How to Play</div>
+                        <div style="background: #9b59b6; border: 2.5px solid #463438; border-radius: 6px; padding: 2px 10px; font-weight: 900; font-size: 16px; color: white; box-shadow: 0 2.5px 0 #463438;">Mode: 2</div>
+                    </div>
+                    
+                    <div class="tut-anim-area" style="height: auto; padding: 40px 20px; background: transparent; border: 3px dashed #463438; border-radius: 16px; flex-direction: row; justify-content: center; gap: 20px;">
+                        
+                        <!-- 左側：Hypercube 區塊 (設定 flex:1 平分，並透過 transform 放大 1.6 倍) -->
+                        <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                            <div style="position: relative; width: 120px; height: 120px; transform: scale(2.2); transform-origin: center;">
+                                <!-- 框線 -->
+                                <div style="position: absolute; left: 13.5px; top: 15px; height: 90px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
+                                <div style="position: absolute; right: 13.5px; top: 15px; height: 90px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
+                                <div style="position: absolute; top: 13.5px; left: 15px; width: 90px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
+                                <div style="position: absolute; bottom: 13.5px; left: 15px; width: 90px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
+
+                                <!-- 節點貓咪 -->
+                                <div style="position: absolute; top: 0; left: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/000-c.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; top: 0; right: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/001-c.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; bottom: 0; left: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/010-c.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; bottom: 0; right: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/011-c.svg" style="width: 20px;" alt=""></div>
+
+                                <!-- 魚群 -->
+                                <div style="position: absolute; top: 5px; left: 5px; z-index: 5; animation: tutM2FishTL 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/000-f.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; top: 5px; right: 5px; z-index: 5; animation: tutM2FishTR 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/001-f.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; bottom: 5px; left: 5px; z-index: 5; animation: tutM2FishBL 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/010-f.svg" style="width: 20px;" alt=""></div>
+                                <div style="position: absolute; bottom: 5px; right: 5px; z-index: 5; animation: tutM2FishBR 10s infinite; filter: drop-shadow(1px 1px 0px rgba(70,52,56,0.5));"><img src="./svg/011-f.svg" style="width: 20px;" alt=""></div>
+                            </div>
+                        </div>
+
+                        <!-- 右側：說明文字區塊 (設定 flex:1 讓它與左側平分版面) -->
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; gap: 15px;">
+                            <div style="font-size: 20px; font-weight: 900; color: #463438; text-align: center; line-height: 1.4;">
+                                Moves <span style="color: #99C44D; font-size: 22px;">parallel paths</span><br>at the same time!
+                            </div>
+                            <div style="background: #fce4ec; border: 3px solid #463438; border-radius: 12px; padding: 12px 18px; text-align: center; font-weight: 900; font-size: 15px; color: #463438; box-shadow: 2px 2px 0px #FFB7C5; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                                <div>Swaps paths</div>
+                                <div style="position: relative; width: 50px; height: 50px;">
+                                    <div style="background: white; border: 2.5px solid #463438; border-radius: 8px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; overflow: hidden;">
+                                        <!-- 特徵圖片交替 -->
+                                        <img src="./RIP/dif2.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop 10s infinite;" alt="feature1">
+                                        <img src="./RIP/dif3.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop_Inv 10s infinite;" alt="feature2">
+                                    </div>
+                                    <div style="position: absolute; right: -15px; bottom: -10px; font-size: 26px; animation: tutM2HandDouble 10s infinite; z-index: 10;">👆🏻</div>
+                                </div>
+                                <div>with & without the feature!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="nextTutPage(3)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">NEXT →</button>
+        </div>
+
+        <!-- ==================== 教學 第三頁 ==================== -->
+        <div class="modal-content hidden" id="tut-page-3" style="height: 640px; display: flex; flex-direction: column;">
+            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (3/4)</h2>
             <div class="tut-boxes">
                 <!-- 1. LEADERBOARD -->
                 <div class="tut-card">
@@ -625,12 +727,12 @@
                     <div class="tut-text">Toggle to switch to real <b>Quantum Circuit</b>!</div>
                 </div>
             </div>
-            <button onclick="nextTutPage(3)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px;">NEXT →</button>
+            <button onclick="nextTutPage(4)" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">NEXT →</button>
         </div>
 
-        <!-- ==================== 教學 第三頁 ==================== -->
-        <div class="modal-content hidden" id="tut-page-3">
-            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (3/3)</h2>
+        <!-- ==================== 教學 第四頁 ==================== -->
+        <div class="modal-content hidden" id="tut-page-4" style="height: 640px; display: flex; flex-direction: column;">
+            <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (4/4)</h2>
             <div class="tut-boxes">
                 <!-- 1. FILTER TRAITS -->
                 <div class="tut-card">
@@ -755,7 +857,7 @@
             <div class="text-sm font-bold mb-4" style="color: #FFB800; text-align: center;">
                 💡 Find the shortest path using distance badges!
             </div>
-            <button onclick="closeTutorial()" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px;">LET'S GO!</button>
+            <button onclick="closeTutorial()" class="game-btn btn-green w-full" style="font-size: 20px; border-radius: 25px; margin-top: auto;">LET'S GO!</button>
         </div>
     </div>
     
@@ -1262,16 +1364,19 @@
         }
         function nextTutPage(pageNum) {
             pop.currentTime = 0; pop.play();
-            document.getElementById('tut-page-1').classList.add('hidden');
-            document.getElementById('tut-page-2').classList.add('hidden');
-            document.getElementById('tut-page-3').classList.add('hidden');
+            for(let i=1; i<=4; i++) {
+                const p = document.getElementById('tut-page-' + i);
+                if(p) p.classList.add('hidden');
+            }
             document.getElementById('tut-page-' + pageNum).classList.remove('hidden');
         }
         function openTutorial() {
             pop.currentTime = 0; pop.play();
+            for(let i=1; i<=4; i++) {
+                const p = document.getElementById('tut-page-' + i);
+                if(p) p.classList.add('hidden');
+            }
             document.getElementById('tut-page-1').classList.remove('hidden');
-            document.getElementById('tut-page-2').classList.add('hidden');
-            document.getElementById('tut-page-3').classList.add('hidden');
             const modal = document.getElementById('tutorialModal');
             modal.style.display = 'flex';  
             document.querySelectorAll('.modal-content').forEach(p => {
@@ -1325,9 +1430,12 @@
             setTimeout(() => b.classList.remove('no-fish-anim'), 50);
             document.getElementById('mode-toggle').innerText = isPro ? "⚡" : "👁️";
             if (isPro && !tutorialShown) {
+                // 改成跑迴圈隱藏所有分頁
+                for(let i=1; i<=4; i++) {
+                    const p = document.getElementById('tut-page-' + i);
+                    if(p) p.classList.add('hidden');
+                }
                 document.getElementById('tut-page-1').classList.remove('hidden');
-                document.getElementById('tut-page-2').classList.add('hidden');
-                document.getElementById('tut-page-3').classList.add('hidden');
                 document.getElementById('tutorialModal').style.display = 'flex';
                 tutorialShown = true;
             }
