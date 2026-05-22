@@ -98,13 +98,20 @@
       document.getElementById('meow-display-username').innerText = user;
       document.getElementById('meow-display-level').innerText    = `LV. ${meowLv}`;
       renderPlayerPhoto();
+      
       const grid = document.getElementById('level-grid');
       grid.innerHTML = '';
-      for (let i = 1; i <= 12; i++) {
+      
+      // 更新迴圈至 18 關
+      for (let i = 1; i <= 18; i++) {
         const node = document.createElement('a');
         node.className = 'level-node';
-        node.innerText = i === 12 ? '?' : i;
-        if ((i === 1 || i <= meowLv) && i < 12) {
+        
+        // 第 18 關顯示 '?'
+        node.innerText = i === 18 ? '?' : i;
+        
+        // 判斷是否解鎖且未滿 18 關
+        if ((i === 1 || i <= meowLv) && i < 18) {
           node.href = `level${i}.html`;
         } else {
           node.classList.add('locked');
