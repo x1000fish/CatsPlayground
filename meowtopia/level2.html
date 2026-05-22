@@ -563,30 +563,30 @@
             </div>
         </div>
 
-        <!-- ==================== 教學 第二頁 (獨立 Mode 2) ==================== -->
-        <div class="modal-content hidden" id="tut-page-2"style="height: 640px; display: flex; flex-direction: column;">
+       <!-- ==================== 教學 第二頁 (獨立 Mode 2) ==================== -->
+        <div class="modal-content hidden" id="tut-page-2" style="height: 640px; display: flex; flex-direction: column;">
             <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (2/4)</h2>
             <div class="tut-boxes">
-                <div class="tut-card" style="grid-column: 1 / -1; flex-direction: column;">
-                    <div style="display: flex; align-items: center; justify-content: center; width: 100%; gap: 15px; margin-bottom: 10px;">
+                <!-- 設定 height: 415px，完美切齊第一頁/第四頁的雙層高度 -->
+                <div class="tut-card" style="grid-column: 1 / -1; display: flex; flex-direction: column; height: 415px;">
+                    
+                    <!-- 標題區 -->
+                    <div style="display: flex; align-items: center; justify-content: center; width: 100%; gap: 15px; margin-bottom: 15px;">
                         <div class="tut-title" style="color: #463438; width: auto; font-size: 24px; padding: 0; margin: 0; text-align: center;">How to Play</div>
                         <div style="background: #9b59b6; border: 2.5px solid #463438; border-radius: 6px; padding: 2px 10px; font-weight: 900; font-size: 16px; color: white; box-shadow: 0 2.5px 0 #463438;">Mode: 2</div>
                     </div>
                     
-                    <div class="tut-anim-area" style="height: auto; padding: 40px 20px; background: transparent; border: 3px dashed #463438; border-radius: 16px; flex-direction: row; justify-content: center; gap: 20px;">
+                    <!-- 動畫與文字內容區 (移除外層虛線框) -->
+                    <div class="tut-anim-area" style="height: 100%; padding: 0; background: transparent; border: none; flex-direction: row; justify-content: center; gap: 20px; flex: 1; overflow: visible;">
                         
-                        <!-- 左側：Hypercube 區塊 (設定 flex:1 平分，並透過 transform 放大 1.6 倍) -->
-                        <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                            <div style="position: relative; width: 120px; height: 120px; transform: scale(2.2); transform-origin: center;">
-                                <!-- 框線 -->
-				<!-- 左垂直線 -->
-				<div style="position: absolute; left: 13.5px; top: 30px; height: 60px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
-				<!-- 右垂直線 -->
-				<div style="position: absolute; right: 13.5px; top: 30px; height: 60px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
-				<!-- 上水平線 -->
-				<div style="position: absolute; top: 13.5px; left: 30px; width: 60px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
-				<!-- 下水平線 -->
-				<div style="position: absolute; bottom: 13.5px; left: 30px; width: 60px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
+                        <!-- 左側：Hypercube 區塊 (在此加上虛線框，並佔一半版面) -->
+                        <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: #fffaf5; border: 3px dashed #463438; border-radius: 16px; height: 100%;">
+                            <div style="position: relative; width: 120px; height: 120px; transform: scale(2.4); transform-origin: center;">
+                                <!-- 框線 (縮短置中版) -->
+                                <div style="position: absolute; left: 13.5px; top: 30px; height: 60px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
+                                <div style="position: absolute; right: 13.5px; top: 30px; height: 60px; width: 3px; background: rgba(70,52,56,0.2); animation: lineGlowV 10s infinite; z-index: 1;"></div>
+                                <div style="position: absolute; top: 13.5px; left: 30px; width: 60px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
+                                <div style="position: absolute; bottom: 13.5px; left: 30px; width: 60px; height: 3px; background: rgba(70,52,56,0.2); animation: lineGlowH 10s infinite; z-index: 2;"></div>
 
                                 <!-- 節點貓咪 -->
                                 <div style="position: absolute; top: 0; left: 0; width: 30px; height: 30px; border: 3px solid #463438; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3;"><img src="./svg/000-c.svg" style="width: 20px;" alt=""></div>
@@ -602,20 +602,20 @@
                             </div>
                         </div>
 
-                        <!-- 右側：說明文字區塊 (設定 flex:1 讓它與左側平分版面) -->
-                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; gap: 15px;">
-                            <div style="font-size: 20px; font-weight: 900; color: #463438; text-align: center; line-height: 1.4;">
-                                Moves <span style="color: #99C44D; font-size: 22px;">parallel paths</span><br>at the same time!
+                        <!-- 右側：說明文字區塊 (上下置中) -->
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; gap: 30px; height: 100%; padding: 0 10px;">
+                            <div style="font-size: 22px; font-weight: 900; color: #463438; text-align: center; line-height: 1.4;">
+                                Moves <span style="color: #99C44D; font-size: 26px;">parallel paths</span><br>at the same time!
                             </div>
-                            <div style="background: #fce4ec; border: 3px solid #463438; border-radius: 12px; padding: 12px 18px; text-align: center; font-weight: 900; font-size: 15px; color: #463438; box-shadow: 2px 2px 0px #FFB7C5; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                            <div style="background: #fce4ec; border: 3px solid #463438; border-radius: 12px; padding: 20px; text-align: center; font-weight: 900; font-size: 16px; color: #463438; box-shadow: 2px 2px 0px #FFB7C5; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 280px;">
                                 <div>Swaps paths</div>
-                                <div style="position: relative; width: 50px; height: 50px;">
+                                <div style="position: relative; width: 55px; height: 55px;">
                                     <div style="background: white; border: 2.5px solid #463438; border-radius: 8px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: absolute; overflow: hidden;">
                                         <!-- 特徵圖片交替 -->
-                                        <img src="./svg/dif2.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop 10s infinite;" alt="feature1">
-                                        <img src="./svg/dif3.png" style="width: 34px; height: 34px; object-fit: contain; position: absolute; animation: tutM2_Loop_Inv 10s infinite;" alt="feature2">
+                                        <img src="./svg/dif2.png" style="width: 38px; height: 38px; object-fit: contain; position: absolute; animation: tutM2_Loop 10s infinite;" alt="feature1">
+                                        <img src="./svg/dif3.png" style="width: 38px; height: 38px; object-fit: contain; position: absolute; animation: tutM2_Loop_Inv 10s infinite;" alt="feature2">
                                     </div>
-                                    <div style="position: absolute; right: -15px; bottom: -10px; font-size: 26px; animation: tutM2HandDouble 10s infinite; z-index: 10;">👆🏻</div>
+                                    <div style="position: absolute; right: -15px; bottom: -10px; font-size: 28px; animation: tutM2HandDouble 10s infinite; z-index: 10;">👆🏻</div>
                                 </div>
                                 <div>with & without the feature!</div>
                             </div>
@@ -623,12 +623,11 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-auto pt-4 flex justify-between w-full">
+            <div class="mt-auto pt-4 flex justify-between w-full" style="transform: translateY(-30px);">
                 <button onclick="nextTutPage(1)" class="game-btn btn-red w-48 py-2 text-xl" style="border-radius: 25px;">BACK</button>
                 <button onclick="nextTutPage(3)" class="game-btn btn-blue w-48 py-2 text-xl" style="border-radius: 25px;">NEXT PAGE</button>
             </div>
         </div>
-
         <!-- ==================== 教學 第三頁 ==================== -->
         <div class="modal-content hidden" id="tut-page-3" style="height: 640px; display: flex; flex-direction: column;">
             <h2 class="text-3xl font-black mb-4" style="color: #463438;">HOW TO PLAY (3/4)</h2>
@@ -803,7 +802,7 @@
                 </div>
 
                 <!-- 3. TOTAL DISTANCE -->
-                <div class="tut-card">
+                <div class="tut-card"style="height: 200px;">
                     <div class="tut-title text-[#FFB800]">3. TOTAL DISTANCE</div>
                     <div class="tut-anim-area">
                         <div style="display:flex; align-items:center; justify-content:center; gap:4px; width:100%;">
@@ -842,7 +841,7 @@
                 </div>
 
                 <!-- 4. GOAL: FILL THE BAR -->
-                <div class="tut-card">
+                <div class="tut-card"style="height: 200px;">
                     <div class="tut-title" style="color: #629eed;">4. GOAL: FILL THE BAR</div>
                     <div class="tut-anim-area" style="flex-direction: column; padding: 5px 0; gap: 8px;">
                         <!-- PROGRESS BAR -->
