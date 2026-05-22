@@ -353,16 +353,17 @@
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">MEOW!</h2>
             <h2 class="text-5xl font-black mb-4" style="color: #463438;">🐾</h2>
             <p id="victoryMsg" class="text-xl font-bold mb-6"></p>
+            <div class="victory-actions">
+                <button onclick="location.href='index.html'" class="game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
+                <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
+            </div>
             <div class="victory-progress-actions">
                 <button onclick="location.reload()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="#fff">
                         <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-3.06c-.77 1.76-2.54 3-4.67 3c-2.76 0-5-2.24-5-5s2.24-5 5-5c1.38 0 2.63.56 3.54 1.46L12 12h8V4z" />
                     </svg>
                 </button>
-                <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1;">LAB</button>
-            </div>
-            <div class="victory-actions">
-                <button onclick="location.href='index.html'" class="w-full game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
+                <button onclick="location.href='level12.html'" class="game-btn btn-green keep-going-btn">KEEP GOING</button>
             </div>
         </div>
     </div>
