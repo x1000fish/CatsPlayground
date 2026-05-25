@@ -18,7 +18,7 @@
         .bookmark-tab {position: absolute;right: -45px;  top: 40px; width: 45px; height: 130px;background: #463438;border: 5px solid #463438; border-left: none; border-radius: 0 15px 15px 0; cursor: pointer; display: flex; align-items: center;justify-content: center;transition: background 0.2s, right 0.2s, width 0.2s; z-index: 1;}
         .bookmark-tab:hover {background: #FFB7C5; width: 55px;right: -55px;}  
         .bookmark-text { writing-mode: vertical-lr; color: white; font-weight: 900;font-size: 20px;text-shadow: 2px 2px 0 #463438;letter-spacing: 4px; user-select: none; }
-        #rankList { padding-top: 10px; }
+        #rankList { padding-top: 18px; }
         #rankList::-webkit-scrollbar { width: 6px; }
         #rankList::-webkit-scrollbar-thumb { background-color: #FFB7C5; border-radius: 10px; }
         .rank-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 2px dashed #fce4ec; font-weight: 900; font-size: 14px; color: #463438; }
@@ -36,7 +36,7 @@
         .rank-crown { position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-8deg); font-size: 18px; line-height: 1; filter: drop-shadow(0 2px 0 rgba(70,52,56,0.35)); pointer-events: none; }
         .rank-champion-backdrop { position: fixed; inset: 0; background: rgba(255, 249, 240, 0.46); opacity: 0; z-index: 120; pointer-events: none; transition: opacity 0.2s ease; }
         .rank-champion-backdrop.show { opacity: 1; }
-        .rank-champion-toast { position: fixed; left: 12px; top: 108px; transform: translate(0, -50%) scale(0.82); opacity: 0; z-index: 3000; background: #fffaf5; border: 6px solid #463438; border-radius: 22px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; pointer-events: none; transform-origin: left center; box-sizing: border-box; overflow: hidden; }
+        .rank-champion-toast { position: fixed; left: 12px; top: 108px; transform: translate(0, -50%) scale(0.82); opacity: 0; z-index: 3000; background: #fffaf5; border: 6px solid #463438; border-radius: 22px; padding: 18px 14px 10px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 0 #FFB7C5; color: #463438; pointer-events: none; transform-origin: left center; box-sizing: border-box; overflow: visible; }
         .rank-champion-toast.show { animation: rankChampionPop 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .rank-champion-toast .rank-avatar-sm { width: 58px; height: 58px; flex-basis: 58px; border-width: 4px; }
         .rank-champion-text { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; flex: 1 1 auto; overflow: hidden; }
@@ -110,7 +110,7 @@
         #gate-scroll-area::-webkit-scrollbar { display: none; }        
         :root { --cube-offset-x: 175px; }
         .pro-active { --cube-offset-x: 42px; }   
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(70, 52, 56, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.4s ease; }
         .modal-content { background: #FFF9F0; border: 8px solid #463438; border-radius: 40px; padding: 30px; text-align: center; width: 850px; max-width: 95vw; box-shadow: 0 10px 0 #FFB7C5; color: #463438; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1) translate(0, 0); opacity: 1; }
         
         .tut-anim-box { height: 110px; background: #fffaf5; border: 3px dashed #463438; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin: 12px 0; }
@@ -304,7 +304,7 @@
         @keyframes stripeMove { 0% { background-position: 0 0; } 100% { background-position: 30px 0; } }
         
         .rank-item { gap: 8px; align-items: center; }
-        .rank-player-main { flex: 1 1 0; overflow: hidden; }
+        .rank-player-main { flex: 1 1 0; overflow: visible; }
         .rank-value { flex: 0 0 auto; max-width: 62px; text-align: right; color: #5ba4cf; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .feature-toggle-row .qubit-label { position: relative; left: auto; top: auto; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; z-index: 5; }
         .feature-toggle-row .qubit-label:hover { transform: translateY(-2px) scale(1.05); z-index: 50; }
@@ -746,7 +746,7 @@
             updateCircuitLabels();
             updateFeatureToggleLabels();
         }
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv3aQZO44pLQ7rr10pv0cOeJs-vdZehlABjrcJhQNQi9AWsGUutM7KXNFKPbFliqjWLA/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsOdnjfzdpZPaLEojtMJFNjs8t2EJaoPYib4kVj6GrCXKMwt9Fj6iV6swJbicaM28QOw/exec';
         let steps = 0, time = 0, isPro = false, isQuantumMode = false, timerInterval, gateHistory = [], isSolved = false;
         let selectedIndices = [];
         let actionStack = [];
@@ -1894,7 +1894,21 @@
                     if(typeof meow !== 'undefined') { meow.currentTime = 0; meow.play(); }
                     document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`;
                     document.getElementById('victoryModal').style.display = 'flex';
-                }, 800);
+                const wrapper = document.getElementById('leaderboard-wrapper');
+            if (wrapper) {
+                setSidePanel('rank'); 
+                if (!wrapper.classList.contains('expanded')) {
+                    wrapper.classList.add('expanded');
+                    setTimeout(() => showRankChampion(activeRankType), 380); 
+                }
+                wrapper.style.zIndex = '3001'; // 確保在通關畫面 (3000) 之上
+            }
+            const skinBookmark = document.getElementById('skin-bookmark');
+            if (skinBookmark) {
+                skinBookmark.style.pointerEvents = 'none'; // 讓它無法被點擊
+                skinBookmark.style.filter = 'brightness(0.7)'; // 稍微變暗給予視覺提示
+            }
+                    }, 800);
                 if (u && sessionStorage.getItem('isGuest') !== 'true') {
                     fetch(SCRIPT_URL, {
                         method: 'POST',
@@ -1908,11 +1922,14 @@
                             circuit: gateHistory.join(',')
                         })
                     }).then(() => {
-                        setTimeout(fetchLeaderboard, 1200);
-                    });
-                }
-            }
+                        setTimeout(async () => {
+                    await fetchLeaderboard();
+                    showRankChampion(activeRankType);
+                }, 1200); 
+            }); 
         }
+    }
+}
         function viewInLab() { if (gateHistory.length === 0) { alert("Current circuit is empty!"); return; } window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}`; }
         function initGameLayout() { const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer'); nL.innerHTML = ''; fL.innerHTML = ''; for (let i = 0; i < 8; i++) { let bin = i.toString(2).padStart(3, '0'); nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catLayerHtml(`./svg/${bin}-c.svg`, "encoded-img", `${bin} cat`)}</div>`; const fishSrc = `./svg/${bin}-f.svg`; fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="${fishSrc}" class="fish-bg-shape"><img src="${fishSrc}" class="fish-img"></div>`; } }
             var activeRankType = 'steps';
@@ -1983,6 +2000,7 @@
                 toast.className = 'rank-champion-toast';
                 document.body.appendChild(toast);
             }
+	    toast.style.zIndex = '4000';
             const label = type === 'time' ? 'TIME CHAMPION' : 'STEPS CHAMPION';
             const anchor = document.querySelector('#rankList .rank-item.rank-champion') || document.querySelector('#rankList .rank-item');
             const rect = anchor ? anchor.getBoundingClientRect() : { left: 12, top: 110, width: 210, height: 42 };
