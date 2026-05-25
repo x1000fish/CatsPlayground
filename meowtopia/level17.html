@@ -1372,18 +1372,22 @@
                     if(typeof meow !== 'undefined') { meow.currentTime = 0; meow.play(); }
                     document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`;
                     document.getElementById('victoryModal').style.display = 'flex';
-		    const wrapper = document.getElementById('leaderboard-wrapper');
-            		if (wrapper) {
-                		setSidePanel('rank'); // 確保切換到排行榜分頁
-                		if (!wrapper.classList.contains('expanded')) {
-                		    wrapper.classList.add('expanded');
-                    // 延遲一點時間播放冠軍皇冠動畫，視覺效果更好
-                		    setTimeout(() => showRankChampion(activeRankType), 380); 
-                		}
-                // 將排行榜的層級拉到 3001，確保它顯示在通關畫面 (3000) 之上
-                		wrapper.style.zIndex = '3001';
-            		}
-                }, 800);
+                const wrapper = document.getElementById('leaderboard-wrapper');
+            if (wrapper) {
+                setSidePanel('rank'); 
+                if (!wrapper.classList.contains('expanded')) {
+                    wrapper.classList.add('expanded');
+                    setTimeout(() => showRankChampion(activeRankType), 380); 
+                }
+                wrapper.style.zIndex = '3001'; // 確保在通關畫面 (3000) 之上
+            }
+            const skinBookmark = document.getElementById('skin-bookmark');
+            if (skinBookmark) {
+                skinBookmark.style.pointerEvents = 'none'; // 讓它無法被點擊
+                skinBookmark.style.filter = 'brightness(0.7)'; // 稍微變暗給予視覺提示
+            }
+            
+        }, 800);
                 if (u && sessionStorage.getItem('isGuest') !== 'true') {
                     fetch(SCRIPT_URL, {
                         method: 'POST',
@@ -1397,14 +1401,14 @@
                             circuit: gateHistory.join(',')
                         })
                     }).then(() => {
-                       setTimeout(async () => {
-                    	await fetchLeaderboard();
-                    	showRankChampion(activeRankType); 
-                	}, 1200);
-                    }); 
-                } 
-            } 
+                        setTimeout(async () => {
+                    await fetchLeaderboard();
+                    showRankChampion(activeRankType);
+                }, 1200); 
+            }); 
         }
+    }
+}
         function viewInLab() { if (gateHistory.length === 0) { alert("Current circuit is empty!"); return; } window.location.href = `lab4.html?circuit=${encodeURIComponent(gateHistory.join(','))}`; }
         function toggleLeaderboard() { toggleSidePanel('rank'); }
         async function fetchLeaderboard() { 
@@ -1670,7 +1674,6 @@
                 backdrop.className = 'rank-champion-backdrop';
                 document.body.appendChild(backdrop);
             }
-	   
             let toast = document.getElementById('rankChampionToast');
             if (!toast) {
                 toast = document.createElement('div');
