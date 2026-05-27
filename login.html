@@ -134,7 +134,7 @@
     .player-avatar { width: 112px; height: 112px; background: #FFF9F0; border: 6px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden; flex-shrink: 0; }
     .player-avatar img { width: 100%; height: 100%; object-fit: cover; transform-origin: center; }
     .player-actions { display: flex; gap: 12px; align-items: center; }
-    .game-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; width: 100%; justify-content: center; max-width: 1210px; }
+    .game-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; width: 100%; max-width: 1210px; }
     
     .game-card {
       width: 280px;
@@ -164,7 +164,20 @@
     .game-card:nth-child(4) { background: #ddf6e5; }
     .game-card:nth-child(4):hover { box-shadow: 7px 11px 0 var(--mint); }
 
-    .game-card .card-title { font-family: 'Titan One', cursive; font-size: 1.6rem; font-weight: 100; letter-spacing: 1px; text-align: center; margin-top: 8px; color: var(--dark); }
+    .game-card .card-title { 
+  	font-family: 'Titan One', cursive; 
+  	font-size: 1.6rem; 
+  	font-weight: 100; 
+  	letter-spacing: 1px; 
+  	text-align: center; 
+  	margin-top: 8px; 
+ 	color: var(--dark); 
+    	display: flex;
+  	align-items: center;
+  	justify-content: center;
+  	min-height: 4rem; /* 預留給兩行文字的高度 */
+  	line-height: 1.1; /* 稍微縮小行距讓兩行字看起來更緊湊 */
+	}
     .game-card .card-desc { font-size: 0.75rem; font-weight: 700; color: #888; letter-spacing: 1px; text-align: center; text-transform: uppercase; }
     .card-badge { background: white; border: 3px solid var(--dark); border-radius: 30px; padding: 4px 14px; font-size: 0.8rem; font-weight: 900; color: var(--dark); margin-top: 10px; }
     .stamp { position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; border: 4px solid var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-15deg); color: var(--green); font-weight: 900; font-size: 12px; pointer-events: none; opacity: 0.7; }
@@ -480,23 +493,7 @@
         <div class="card-badge">OPEN</div>
       </a>
 
-      <!-- Quantum Computing Verification card -->
-      <a class="game-card" id="quantum-verification-card" href="#">
-        <div class="css-icon-wrapper">
-          <!-- 放大鏡主體 -->
-          <div class="css-q-verify">
-            <div class="css-v-orbit deg1"></div>
-            <div class="css-v-orbit deg2"></div>
-            <div class="css-v-core"></div>
-            <div class="css-v-handle"></div>
-          </div>
-          <!-- 綠色打勾標章 -->
-          <div class="css-v-badge"></div>
-        </div>
-        <div class="card-title">Quantum Verification</div>
-        <div class="card-desc">Link reserved for validation!</div>
-        <div class="card-badge">COMING SOON</div>
-      </a>
+      
     </div>
   </div>
 
