@@ -25,6 +25,7 @@
     #auth-gate { position: fixed; inset: 0; background: rgba(255,250,240,0.95); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 18px; font-family: Arial, sans-serif; }
     #auth-gate h2 { font-size: 2rem; font-weight: 900; color: #463438; }
     #auth-gate p  { color: #463438; font-weight: bold; font-size: 1.2rem; }
+    @media (min-width: 1024px) {body {zoom: 0.95;} }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -50,9 +51,12 @@
       </div>
     </div>
     <div class="map-container" id="level-grid"></div>
-    <div class="flex justify-center gap-6 mt-6">
+    <div class="flex justify-center -space-x-4 mt-4">
       <button onclick="playPopThen(() => location.href='../login.html')" class="game-btn btn-blue px-10" style="font-size:18px">Hub</button>
-      <button onclick="playPopThen(handleLogout)" class="game-btn btn-red px-10" style="font-size:18px">LOGOUT</button>
+      
+            <button onclick="playPopThen(handleLogout)" class="game-btn btn-red px-10" style="font-size:18px">LOGOUT</button>
+      
+            <button onclick="playPopThen(() => location.href='lab2.html')" class="game-btn btn-green px-10" style="font-size:18px">LAB</button>
     </div>
   </div>
   <script>
