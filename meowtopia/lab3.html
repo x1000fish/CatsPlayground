@@ -77,6 +77,7 @@
         #tt-body td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
         #tt-body tr:hover td { background-color: rgba(0, 0, 0, 0.05); cursor: pointer; }
         #tt-body tr.active-trace td { background-color: #a3cd5a9f !important; color: #463438 !important; }
+        #tt-body tr.row-correct:not(.active-trace) td { background-color: #ebceff !important; }
         #tt-view-container { padding: 0; }
         #tt-view-container .panel-section-title { margin-bottom: 10px; }
         #circuit-content { padding-right: 40px; }
@@ -110,18 +111,7 @@
         .circuit-unit:hover .hyper-line-hi, .circuit-unit.selected-gate .hyper-line-hi { stroke: #99C44D !important; }
         .mini-mode .circuit-unit { min-width: 120px !important; width: 120px !important; max-width: 120px !important; flex: 0 0 120px !important; height: 140px; padding: 0 5px; }
         body:not(.mini-mode) #circuit-content { background-image: none !important; }
-        .drag-target::before {
-            content: '';
-            position: absolute;
-            left: -3px;
-            top: 10px;
-            bottom: 10px;
-            width: 4px;
-            background-color: #FFB7C5;
-            border-radius: 4px;
-            z-index: 200;
-            pointer-events: none;
-        }
+        .drag-target::before { content: ''; position: absolute; left: -3px; top: 10px; bottom: 10px; width: 4px; background-color: #FFB7C5; border-radius: 4px; z-index: 200; pointer-events: none; }
         .drag-target { position: relative; }
         .drag-target.right { margin-left: 0; margin-right: 0; }
         .mode-toggle-inline { width: 44px; height: 44px; background: #ffffff; border: 3px solid #463438; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 3px 0 #463438; transition: all 0.1s; color: #463438; text-shadow: none; padding: 0; }
@@ -211,7 +201,19 @@
     </style>
 </head>
 <body id="body-root" class="mini-mode">
-    <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 105px; right: 25px; font-size: 26px;">⚛️</div>
+    <div id="input-modal" class="hidden-el fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-sm bg-black/30 transition-opacity">
+        <div class="bg-[#fffaf5] p-6 rounded-[30px] border-[6px] border-[#463438] shadow-[10px_10px_0_#FFB7C5] w-96 flex flex-col gap-4">
+            <h3 class="text-2xl font-black text-[#463438] text-center mb-2">Edit Input</h3>
+            <p class="text-sm font-bold text-[#463438] text-center mb-2">Enter order (0-7, comma-separated):</p>
+            <input type="text" id="initial-input-field" class="border-4 border-[#463438] rounded-2xl p-3 text-xl font-black text-center text-[#463438] outline-none focus:border-[#99C44D] bg-white transition-colors" onkeydown="if(event.key === 'Enter') saveInitialInput()" />
+            <div class="flex gap-4 justify-center mt-4">
+                <button onclick="closeInputModal()" class="func-btn flex-1 text-white" style="background: #5BA4CF; border-width: 4px; border-color: #463438;">Cancel</button>
+                <button onclick="saveInitialInput()" class="func-btn flex-1 text-white border-[#463438]" style="background: #99C44D; border-width: 4px;">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 105px; right: 25px; font-size: 26px;" title="Quantum Mode">⚛️</div>
     <div id="edit-input-btn" class="mode-toggle-fixed" onclick="editInitialInput()" style="top: 185px; right: 25px; font-size: 26px; background: #fff;" title="Edit Input">&#9999;&#65039;</div>
     <div id="rainbow-btn" class="mode-toggle-fixed" onclick="toggleRainbowMode()" style="top: 265px; right: 25px; font-size: 26px; background: #fff;" title="Rainbow Mode">&#127752;</div>
     <button onclick="navWithSound('lab4.html')" class="nav-fab" title="Go to 4-Bit">4</button>
@@ -281,10 +283,8 @@
                 </div>
                 <div id="tt-view-container" class="w-full flex-col hidden-el h-full flex" style="max-height: 100%; overflow: hidden;">
                     <div class="panel-section-title shrink-0 mt-2">Truth Table</div>
-                    <div class="text-lg text-gray-400 text-center mb-2 font-bold flex justify-between px-2 shrink-0 border-b border-black-100 pb-2">
-                        <span id="tt-head-left" class="w-1/2 text-center text-black">CAT</span>
-                        <span id="tt-head-right" class="w-1/2 text-center text-black">FISH</span>
-                    </div>
+                    <div id="tt-header-row" class="text-lg text-gray-400 text-center mb-2 font-bold flex justify-between px-2 shrink-0 border-b border-black-100 pb-2">
+                        </div>
                     <div class="overflow-y-auto w-full flex-grow px-2 mb-2 custom-scrollbar" style="scrollbar-width: none;">
                         <table class="w-full text-center text-lg border-separate border-spacing-y-1">
                             <tbody id="tt-body" class="font-bold"></tbody>
@@ -370,8 +370,22 @@
         function editInitialInput() {
             playPopSound();
             const current = initialFishAtNode.join(', ');
-            const res = prompt(`Enter the initial fish order (0-${LAB_TOTAL - 1}, comma-separated):`, current);
-            if (res === null) return;
+            const modal = document.getElementById('input-modal');
+            const inputField = document.getElementById('initial-input-field');
+            inputField.value = current;
+            modal.classList.remove('hidden-el');
+        }
+
+        function closeInputModal() {
+            playPopSound();
+            document.getElementById('input-modal').classList.add('hidden-el');
+        }
+
+        function saveInitialInput() {
+            playPopSound();
+            const inputField = document.getElementById('initial-input-field');
+            const res = inputField.value;
+            if (!res) return;
             const parsed = res.replace(/\s/g, '').split(',').map(Number);
             const isValid = parsed.length === LAB_TOTAL &&
                 new Set(parsed).size === LAB_TOTAL &&
@@ -385,6 +399,7 @@
             currentTraceStep = 0;
             refreshSkinAssets();
             recalculate();
+            closeInputModal();
         }
 
         function toggleRainbowMode() {
@@ -488,7 +503,7 @@
             for (let i = 0; i < LAB_TOTAL; i++) {
                 const node = document.getElementById('node-' + i);
                 const fish = document.getElementById('fish-' + i);
-                const catId = initialFishAtNode[i]; 
+                const catId = i; 
                 
                 const isMjLarge = currentSkin === 'mj' && catId % 2 === 1 && !isRainbowMode;
                 if (node) {
@@ -520,10 +535,10 @@
             let outBin = null;
             
             if (isTraceMode && activeTraceInput !== null) {
-                const initialVal = initialFishAtNode[activeTraceInput];
-                const finalVal = fishAtNode.indexOf(initialVal);
-                inBin = initialVal.toString(2).padStart(LAB_BITS, '0');
-                outBin = finalVal.toString(2).padStart(LAB_BITS, '0');
+                const startNode = initialFishAtNode.indexOf(activeTraceInput);
+                const currNode = fishAtNode.indexOf(activeTraceInput);
+                inBin = startNode.toString(2).padStart(LAB_BITS, '0');
+                outBin = currNode.toString(2).padStart(LAB_BITS, '0');
             }
 
             for (let i = 0; i < LAB_BITS; i++) {
@@ -1135,9 +1150,9 @@
                 setQuantumMode(isQuantumMode);
             }
         }
-        function startTrace(inputIndex) {
+        function startTrace(catId) {
             if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
-            activeTraceInput = inputIndex;
+            activeTraceInput = catId;
             currentTraceStep = 0;
             document.getElementById('trace-controls').classList.remove('opacity-50');
             updateTruthTable();
@@ -1167,14 +1182,17 @@
         }
         function renderTraceStep() {
             if (activeTraceInput === null) return;
-            let prevNode = activeTraceInput;
-            let currNode = activeTraceInput;
+            const trackedCatId = activeTraceInput;
+            let startNode = initialFishAtNode.indexOf(trackedCatId);
+            let prevNode = startNode;
+            let currNode = startNode;
+            
             for (let k = 0; k < currentTraceStep; k++) {
                 prevNode = currNode;
                 currNode = getPermutationForGate(gateHistory[k])[currNode];
             }
-            const trackedFishId = initialFishAtNode[activeTraceInput];
-            const f = document.getElementById(`fish-${trackedFishId}`);
+            
+            const f = document.getElementById(`fish-${trackedCatId}`);
             const n = nodePositions[currNode];
             if (f && n) {
                 f.style.top = `${n.t + 55}px`; 
@@ -1202,8 +1220,8 @@
                 const f = document.getElementById(`fish-${i}`);
                 if (!f) continue;
                 if (activeTraceInput !== null) {
-                    const trackedFishId = initialFishAtNode[activeTraceInput];
-                    if (i === trackedFishId) {
+                    const trackedCatId = activeTraceInput;
+                    if (i === trackedCatId) {
                         f.style.setProperty('opacity', '1', 'important');
                         f.style.zIndex = 40;
                     } else {
@@ -1217,44 +1235,93 @@
             }
         }
         function updateTruthTable() {
-            const headLeft = document.getElementById('tt-head-left');
-            const headRight = document.getElementById('tt-head-right');
-            if (headLeft) headLeft.innerText = labelsOpen ? 'INPUT' : 'CAT';
-            if (headRight) headRight.innerText = labelsOpen ? 'OUTPUT' : 'FISH';
+            const isCustom = initialFishAtNode.some((val, idx) => val !== idx);
+            const headerRow = document.getElementById('tt-header-row');
+            if (headerRow) {
+                if (isCustom) {
+                    headerRow.innerHTML = `
+                        <span class="w-1/3 text-center text-black">${labelsOpen ? 'IN' : 'FISH'}</span>
+                        <span class="w-1/3 text-center text-black">${labelsOpen ? 'OUT' : 'CAT'}</span>
+                        <span class="w-1/3 text-center text-black">${labelsOpen ? 'TARGET' : 'HOME'}</span>
+                    `;
+                } else {
+                    headerRow.innerHTML = `
+                        <span class="w-1/2 text-center text-black">${labelsOpen ? 'IN' : 'FISH'}</span>
+                        <span class="w-1/2 text-center text-black">${labelsOpen ? 'OUT' : 'CAT'}</span>
+                    `;
+                }
+            }
             
             const tbody = document.getElementById('tt-body');
             tbody.innerHTML = '';
             
             for (let i = 0; i < 8; i++) {
-                const initialVal = initialFishAtNode[i];
-                const finalVal = fishAtNode.indexOf(initialVal);
+                // i 代表 Cat/Fish ID
+                const startNode = initialFishAtNode.indexOf(i);
+                const currNode = fishAtNode.indexOf(i);
+                const targetNode = i;
                 
-                const inStr = initialVal.toString(2).padStart(3, '0');
-                const outStr = finalVal.toString(2).padStart(3, '0');
+                const inStr = i.toString(2).padStart(3, '0');
+                const targetStr = targetNode.toString(2).padStart(3, '0');
+                const currStr = currNode.toString(2).padStart(3, '0');
+                
                 const isActive = activeTraceInput === i;
-                const isChanged = initialVal !== finalVal;
-                const outColor = isActive ? '' : (isChanged ? 'text-[#99C44D] font-bold' : 'text-gray-300');
-                const rowClass = isActive ? 'active-trace' : '';
+                const isSuccess = currNode === targetNode;
+                const isChanged = startNode !== currNode;
                 
-                const inputCell = labelsOpen ? inStr : truthSpriteHtml('cat', initialVal);
-                const outputCell = labelsOpen ? outStr : truthSpriteHtml('fish', finalVal);
+                let outColor = 'text-gray-300';
+                if (!isActive) {
+                    outColor = isChanged ? 'text-[#99C44D] font-bold' : 'text-gray-400';
+                }
+
+                let rowClasses = [];
+                if (isActive) rowClasses.push('active-trace');
+                if (isCustom && isSuccess) rowClasses.push('row-correct');
+                const rowClass = rowClasses.join(' ');
                 
-                tbody.innerHTML += `
-                    <tr class="${rowClass}" onclick="startTrace(${i})">
-                        <td class="py-2 text-base w-1/2 text-center align-middle">${inputCell}</td>
-                        <td class="py-2 text-base w-1/2 text-center align-middle ${outColor}">${outputCell}</td>
-                    </tr>`;
+                let inContent, outContent, targetContent;
+                if (labelsOpen) {
+                    inContent = inStr;
+                    outContent = currStr;
+                    targetContent = targetStr;
+                } else {
+                    inContent = truthSpriteHtml('fish', i);
+                    outContent = truthSpriteHtml('cat', currNode);
+                    targetContent = truthSpriteHtml('cat', targetNode);
+                }
+                
+                if (isCustom) {
+                    tbody.innerHTML += `
+                        <tr class="${rowClass}" onclick="startTrace(${i})">
+                            <td class="py-2 text-base w-1/3 text-center align-middle">${inContent}</td>
+                            <td class="py-2 text-base w-1/3 text-center align-middle ${outColor}">${outContent}</td>
+                            <td class="py-2 text-base w-1/3 text-center align-middle font-bold text-gray-400">${targetContent}</td>
+                        </tr>`;
+                } else {
+                    tbody.innerHTML += `
+                        <tr class="${rowClass}" onclick="startTrace(${i})">
+                            <td class="py-2 text-base w-1/2 text-center align-middle">${inContent}</td>
+                            <td class="py-2 text-base w-1/2 text-center align-middle ${outColor}">${outContent}</td>
+                        </tr>`;
+                }
             }
         }
         
         function initGameLayout() {
             const nL = document.getElementById('nodes-layer');
             const fL = document.getElementById('fishes-layer');
+            nL.innerHTML = '';
+            fL.innerHTML = '';
             for (let i = 0; i < 8; i++) {
                 const bin = i.toString(2).padStart(3, '0');
                 const n = nodePositions[i];
-                const catId = initialFishAtNode[i];
+                const catId = i;
                 nL.innerHTML += `<div class="node" id="node-${i}" style="top:${n.t}px; left:${n.l}px;"><div class="fixed-number">${bin}</div><img src="./image/Cat${catId + 1}.svg"></div>`;
+            }
+            for (let i = 0; i < 8; i++) {
+                const bin = i.toString(2).padStart(3, '0');
+                const startNode = initialFishAtNode.indexOf(i);
+                const n = nodePositions[startNode];
                 fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper" style="top:${n.t + 55}px; left:${n.l + 22}px;"><div class="fish-label">${bin}</div><img src="./image/Fish${i + 1}.svg"></div>`;
             }
         }
@@ -1383,7 +1450,10 @@
             isQuantumMode = value;
             document.getElementById('body-root').classList.toggle('mini-mode', !isQuantumMode);
             const qToggle = document.getElementById('quantum-toggle');
-            if (qToggle) qToggle.innerText = isQuantumMode ? '🧊' : '⚛️';
+            if (qToggle) {
+                qToggle.innerText = isQuantumMode ? '🧊' : '⚛️';
+                qToggle.title = isQuantumMode ? 'Mini Hypercube Mode' : 'Quantum Mode';
+            }
             const title = document.getElementById('panel-gate-title');
             if (title) title.innerText = isQuantumMode ? 'Quantum Gates' : 'Transformations';
             const cTitle = document.getElementById('circuit-diagram-title');
@@ -1833,8 +1903,9 @@
             const wrapper = document.getElementById('circuit-content-wrapper');
             c.innerHTML = '';
             let states = [];
+            
             if (activeTraceInput !== null) {
-                let curr = activeTraceInput;
+                let curr = initialFishAtNode.indexOf(activeTraceInput);
                 states.push(curr);
                 for (let k = 0; k < gateHistory.length; k++) {
                     curr = getPermutationForGate(gateHistory[k])[curr];
