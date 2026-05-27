@@ -14,14 +14,16 @@
         .node img { width: 100px; height: auto; pointer-events: none; }
         .fixed-number { position: absolute; bottom: -4px; right: 41px; font-size: 20px; font-weight: 900; color: #463438; pointer-events: none; z-index: 25; }
         .connection-line { position: absolute; background: #463438; z-index: 10; cursor: pointer; transition: all 0.2s ease; opacity: 1; }
+        .connection-line::after { content: ''; position: absolute; top: -18px; bottom: -18px; left: -18px; right: -18px; background: transparent; pointer-events: auto; }
         @media (hover: hover) {.connection-line:hover { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8); height: 10px !important; z-index: 16; }}
         .line-highlight { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15; }
         .fish-wrapper { position: absolute; width: 80px; pointer-events: none; z-index: 30; display: flex; flex-direction: column; align-items: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .fish-wrapper img { width: 70px; height: auto; }
+        .node.node-correct { background: #ebceff; }
         .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; margin-bottom: -45px; z-index: 5; position: relative; top: -8px; }
         .trace-line-active { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 16 !important; opacity: 1 !important; border-top: none !important; }
         .trace-fish-active { filter: drop-shadow(0 0 12px #FFB7C5) drop-shadow(0 0 20px #FFB7C5) !important; transform: scale(1.15) !important; z-index: 45 !important; }
-        #pro-panel { width: 280px; opacity: 1; height: 628px; background: #fff; border: 8px solid #463438; border-radius: 40px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; box-sizing: border-box; box-shadow: 10px 10px 0px #99C44D; }
+        #pro-panel { width: 0; opacity: 1; height: 628px; background: #fff; border: 8px solid #463438; border-radius: 40px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; box-sizing: border-box; box-shadow: 10px 10px 0px #99C44D; }
         .panel-section-title { font-weight: 900; font-size: 18px; margin: 5px 0; color: #463438; text-align: center; white-space: nowrap; }
         .game-btn { cursor: pointer; border: 5px solid #463438; border-radius: 60px; padding: 12px; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 2px 2px 0 #463438; box-shadow: 0 4px 0 #463438; position: relative; transition: all 0.1s; display: inline-block; }
         .game-btn:active { top: 6px; box-shadow: 0 2px 0 #463438; }
@@ -38,29 +40,26 @@
         .btn-reset { background: #FFF9F0; color: #463438; }
         .btn-undo { background: #FFB7C5 !important; color: #fff !important; border: 2.5px solid #463438 !important; opacity: 0.6; cursor: not-allowed; pointer-events: none; }
         .btn-undo.active { background: #FFB7C5 !important; border-color: #463438 !important; color: #fff !important; opacity: 1; cursor: pointer; box-shadow: 0 4px 0 #463438; pointer-events: auto; }
-        .gate-btn-v2:hover, .func-btn:hover { background-color: #FFB7C5 !important; border-color: #463438 !important; transform: translateY(-2px); box-shadow: 0 3px 0 #463438; }
+        .func-btn:hover { background-color: #FFB7C5 !important; border-color: #463438 !important; transform: translateY(-2px); box-shadow: 0 3px 0 #463438; }
         .btn-undo.active:hover { background-color: #ff9fb2 !important; }
         #circuit-area { width: 1024px; height: 210px; opacity: 1; background: #fff; border: 8px solid #463438; border-radius: 30px; padding: 15px; margin-top: 20px; position: relative; overflow: hidden; box-shadow: 10px 10px 0px #FFB7C5; }
-        #circuit-content-wrapper { position: relative; height: 180px; overflow-x: auto; margin-left: 45px; margin-right: 12px; scrollbar-width: none; }
+        #circuit-content-wrapper { position: relative; height: 180px; overflow-x: auto; margin-left: 45px; margin-right: 25px; scrollbar-width: none; }
         #circuit-content { display: flex; height: 100%; padding: 0 10px; min-width: 100%; width: max-content; position: relative; }
-        .qubit-label { position: absolute; left: 19px; font-weight: 900; font-size: 18px; color: #463438; width: 25px; text-align: center; }
-        .qubit-label.right-side { left: auto !important; right: 16px !important; color: rgb(255, 151, 172) !important; font-weight: 900; }
+        .qubit-label { position: absolute; left: 8px; font-weight: 900; font-size: 22px; color: #463438; width: 48px; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .qubit-label.right-side { left: auto !important; right: 5px !important; color: rgb(255, 151, 172) !important; font-weight: 900; }
         .circuit-unit { min-width: 55px; height: 140px; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: all 0.2s; }
-        .circuit-unit:hover { background: rgba(239, 68, 68, 0.15); border-radius: 12px; }
-        .circuit-unit.selected-gate { background: rgba(153, 196, 77, 0.3) !important; border-radius: 12px; box-shadow: inset 0 0 0 2px #99C44D; }
+        .circuit-unit:hover { background-color: var(--gate-bg-color, rgba(239, 68, 68, 0.15)) !important; border-radius: 12px; }
+        .circuit-unit.selected-gate { background-color: var(--gate-bg-color, rgba(153, 196, 77, 0.3)) !important; border-radius: 12px; box-shadow: inset 0 0 0 3px var(--gate-border-color, #99C44D) !important; }
         .circuit-unit.trace-active { background: #bdfc507a !important; box-shadow: inset 0 0 0 3px #99C44D; border-radius: 12px; z-index: 100 !important; }
         .control-dot { width: 14px; height: 14px; background: #463438; border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); }
         .connection-v-line { position: absolute; width: 2.5px; background: #463438; left: 50%; transform: translateX(-50%); }
         .circuit-target { position: absolute; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2.5px solid #463438; left: 50%; transform: translate(-50%, -50%); }
         .circuit-target::before { content: ""; position: absolute; width: 2.5px; height: 100%; background: #463438; left: 50%; transform: translateX(-50%); }
         .circuit-target::after { content: ""; position: absolute; width: 100%; height: 2.5px; background: #463438; top: 50%; transform: translateY(-50%); }
-        #gate-scroll-area { margin-top: 5px; max-height: 400px; overflow-y: auto; width: 100%; padding: 5px; scrollbar-width: none; }
         #ios-indicator { position: absolute; top: 0; left: 0; transform: translate(-50%, -120%) scale(0.8); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border-radius: 50px; padding: 6px 18px; display: flex; align-items: center; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); opacity: 0; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000; pointer-events: none; border: 1px solid rgba(255, 255, 255, 0.3); }
         #ios-indicator.active { opacity: 1; transform: translate(-50%, -120%) scale(1); }
         .ind-fraction { color: #463438; font-size: 16px; font-weight: 900; }
-        .ind-label { display: none !important; }
-        .gate-btn-v2 { position: relative; height: 60px; width: 45px; display: flex; align-items: center; justify-content: center; background-image: linear-gradient(#463438, #463438), linear-gradient(#463438, #463438), linear-gradient(#463438, #463438); background-size: 60% 1.5px; background-repeat: no-repeat; background-position: center 15px, center 30px, center 45px; padding: 0; border: 2px solid #463438; cursor: pointer; transition: all 0.2s; border-radius: 8px; margin: auto; }
-        .gate-btn-v2:hover { background-color: #f0f0f0; transform: scale(1.05); z-index: 10; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); }
+        .ind-label { display: none; padding-left: 10px; margin-left: 10px; border-left: 2px solid #ccc; color: #463438; font-weight: bold; }
         .gate-v-line { position: absolute; width: 1.5px; background: #463438; left: 50%; transform: translateX(-50%); z-index: 1; }
         .gate-dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #463438; left: 50%; transform: translate(-50%, -50%); z-index: 2; }
         .gate-dot.fill { background: #463438; }
@@ -81,8 +80,8 @@
         #tt-view-container { padding: 0; }
         #tt-view-container .panel-section-title { margin-bottom: 10px; }
         #circuit-content { padding-right: 40px; }
-        #trace-controls { display: flex; align-items: center; justify-content: space-between; background: #e7e5dc; border-radius: 40px; padding: 10px 4px; gap: 4px; margin-top: 8px; margin-bottom: 15px; border: 2.5px solid #463438; }
-        #trace-controls .func-btn { margin: 0; padding: 15px 13px; font-size: 16px; border-radius: 50px; background: #e7e5dc; color: white; }
+        #trace-controls { display: flex; align-items: center; justify-content: space-between; background: #e7e5dc; border-radius: 40px; padding: 10px 4px; gap: 4px; margin-top: 8px; margin-bottom: 15px; border: 2.5px solid #463438; transition: opacity 0.3s; }
+        #trace-controls .func-btn { margin: 0; padding: 8px 10px; font-size: 16px; border-radius: 50px; background: #e7e5dc; color: white; }
         #trace-controls .btn-red { background: #FFB7C5; border-color: #463438; }
         #trace-step-text { color: #463438; font-family: 'Courier New', monospace; font-size: 24px; }
         #trace-controls span.text-green-700 { color: #99C44D; font-size: 14px; }
@@ -91,34 +90,177 @@
         .nav-fab { position: fixed; top: 25px; right: 25px; width: 65px; height: 65px; background: #89CFF0; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: white; cursor: pointer; box-shadow: 0 4px 0 #463438; z-index: 1000; transition: all 0.1s; text-shadow: 2px 2px 0 #463438; }
         .nav-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #463438; }
         .nav-fab:active { transform: translateY(4px); box-shadow: 0 0 0 #463438; }
-        .game-canvas, .node, .gate-btn-v2 { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
-        .circuit-unit {
-            -webkit-user-select: none;
-            user-select: none;
-            -webkit-touch-callout: none;
-            touch-action: none;
+        .game-canvas, .node, .gate-btn-v2 { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation;transition: all 0.2s ease, margin 0.2s ease; }
+        .circuit-unit { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: none; }
+        .swap-active { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 15 !important; border-top: none !important; opacity: 1 !important; }
+        .mode-toggle-fixed { position: fixed; top: 20px; right: 20px; width: 70px; height: 70px; background: #fff; border: 5px solid #463438; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 4px 0 #463438; z-index: 500; transition: all 0.1s; }
+        .mode-toggle-fixed:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #463438; }
+        .mode-toggle-fixed:active { transform: translateY(2px); box-shadow: 0 2px 0 #463438; }
+        #pro-panel {width: 280px !important; height: 628px !important;padding: 20px !important;border: 8px solid #463438;border-radius: 40px; box-shadow: 10px 10px 0px #99C44D;}
+        #gate-scroll-area { flex: 1; min-height: 0; padding: 10px !important; overflow-y: auto; scrollbar-width: none; scroll-behavior: smooth; }
+        #gate-scroll-area::-webkit-scrollbar { display: none; }
+        .gate-btn-v2 { position: relative; height: 75px; width: 60px; display: flex; align-items: center; justify-content: center; padding: 0; border: 2px solid #463438; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); background-size: 60% 1.5px; background-repeat: no-repeat; background-position: center 18px, center 36.5px, center 55px; margin: auto;}
+        .gate-btn-v2:hover { background-color: #FFB7C5 !important; filter: brightness(1.05); transform: scale(1.05); z-index: 10; }
+        .btn-highlight { transform: scale(1.15) !important; box-shadow: 0 0 10px rgba(0,0,0,0.3) !important; border: 4px solid #99C44D !important; z-index: 10; filter: brightness(1.1); background-color: #FFB7C5 !important; }
+        .hyper-line { stroke: #463438; stroke-width: 0.6; opacity: 0.3; }
+        .hyper-line-hi { stroke: #FFB7C5; stroke-width: 2.5; opacity: 1; transition: stroke 0.2s; }
+        .gate-btn-v2 .hyper-line-hi { stroke: #f78790; }
+        .gate-btn-v2:hover .hyper-line-hi { stroke: #ffffff !important; }
+        .btn-highlight .hyper-line-hi { stroke: #ffffff !important; }
+        .circuit-unit:hover .hyper-line-hi, .circuit-unit.selected-gate .hyper-line-hi { stroke: #99C44D !important; }
+        .mini-mode .circuit-unit { min-width: 120px !important; width: 120px !important; max-width: 120px !important; flex: 0 0 120px !important; height: 140px; padding: 0 5px; }
+        body:not(.mini-mode) #circuit-content { background-image: none !important; }
+        .drag-target::before {
+            content: '';
+            position: absolute;
+            left: -3px;
+            top: 10px;
+            bottom: 10px;
+            width: 4px;
+            background-color: #FFB7C5;
+            border-radius: 4px;
+            z-index: 200;
+            pointer-events: none;
         }
-        .swap-active {
-            background: #99C44D !important;
-            box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important;
-            height: 8px !important;
-            z-index: 15 !important;
-            border-top: none !important;
-            opacity: 1 !important;
-        }
-        #shake-toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%) scale(0.8); background: #99C44D; color: #463438; padding: 15px 40px; border-radius: 50px; font-weight: 900; font-size: 24px; z-index: 10000; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; border: 4px solid #463438; box-shadow: 0 0 20px rgba(153, 196, 77, 0.6), 0 8px 0 #463438; }
-        #shake-toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
-        @keyframes pulse-toast { 0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 20px rgba(153, 196, 77, 0.6), 0 8px 0 #463438; } 50% { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 30px #99C44D, 0 8px 0 #463438; } }
-        .toast-highlight { animation: pulse-toast 1s infinite !important; background: #99C44D !important; color: white !important; }
+        .drag-target { position: relative; }
+        .drag-target.right { margin-left: 0; margin-right: 0; }
+        .mode-toggle-inline { width: 44px; height: 44px; background: #ffffff; border: 3px solid #463438; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 3px 0 #463438; transition: all 0.1s; color: #463438; text-shadow: none; padding: 0; }
+        .mode-toggle-inline:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #463438; }
+        .mode-toggle-inline:active { transform: translateY(2px); box-shadow: 0 1px 0 #463438; }
+        .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
+        .hide-labels .fixed-number, .hide-labels .fish-label { opacity: 0; transform: translateY(1px); pointer-events: none; }
+        .node img, .fish-wrapper img.fish-img, .fish-wrapper img.fish-bg-shape, .hat-img { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        body:not(.hide-labels) .node > img.encoded-img:not(.hat-img), body:not(.hide-labels) .node > img.skin-cat { transform: translate(-2px, -5px) scale(0.95); }
+        body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translate(-2px, -50px) scale(0.90); }
+        body.skin-poto:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) translateY(-7%) scale(0.94); }
+        body.skin-mj:not(.hide-labels) .node > img.skin-cat { transform: translateX(-3px) translateY(-6px) scale(0.95); }
+        #lab-side-wrapper { position: fixed; left: -220px; top: 80px; display: flex; z-index: 700; transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        #lab-side-wrapper.expanded { left: 0; }
+        .side-panel-content { width: 220px; height: 450px; max-height: calc(100vh - 110px); background: white; border: 6px solid #463438; border-left: none; border-radius: 0 30px 30px 0; padding: 15px; display: flex; flex-direction: column; position: relative; z-index: 2; }
+        .bookmark-tab { position: absolute; right: -45px; top: 40px; width: 45px; height: 118px; background: #7d6961; border: 5px solid #463438; border-left: none; border-radius: 0 15px 15px 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, right 0.2s, width 0.2s; z-index: 1; }
+        .bookmark-tab:hover, #lab-side-wrapper.expanded .bookmark-tab { background: #FFB7C5; width: 55px; right: -55px; }
+        .bookmark-text { writing-mode: vertical-lr; color: white; font-weight: 900; font-size: 20px; text-shadow: 2px 2px 0 #463438; letter-spacing: 4px; user-select: none; }
+        .skin-gallery { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; align-content: start; gap: 10px; overflow-y: auto; padding: 2px 2px 8px 0; }
+        .skin-card { min-height: 106px; border: 3px solid #463438; border-radius: 12px; background: #fffaf5; color: #463438; cursor: pointer; font-size: 12px; font-weight: 900; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; box-shadow: 0 4px 0 rgba(70,52,56,0.18); transition: transform 0.12s, background 0.12s, box-shadow 0.12s; }
+        .skin-card:hover { background: #fce4ec; transform: translateY(-2px); box-shadow: 0 6px 0 rgba(70,52,56,0.22); }
+        .skin-card.active { background: #FFB7C5; color: #fff; box-shadow: 0 4px 0 #463438; }
+        .skin-preview { width: 64px; height: 64px; border: 3px solid #463438; border-radius: 50%; background: #fff; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .skin-preview img.preview-cat { max-width: 54px; max-height: 54px; object-fit: contain; pointer-events: none; }
+        .skin-preview img.preview-cat-mj { max-width: 60px; max-height: 64px; transform: scale(1.12); }
+        .skin-preview img.preview-hat { position: absolute; width: 22px; top: 7px; left: 32px; transform: translateX(-50%); z-index: 2; pointer-events: none; }
+        .skin-card.active .skin-preview { border-color: #fff; }
+        .node img.skin-cat, .fish-wrapper img.fish-img, .fish-wrapper img.fish-bg-shape { object-fit: contain; }
+        .skin-rip .node img.skin-cat { width: 108px; }
+        .skin-rip:not(.hide-labels) .node img.skin-cat { width: 108px; transform: translateY(-5%) scale(0.9); }
+        .skin-rip .fish-wrapper img.fish-img { width: 86px; }
+        .skin-poto .node img.skin-cat { width: 110px; transform: translateX(-3px); }
+        .skin-poto .fish-wrapper img.fish-img, .skin-poto .fish-wrapper img.fish-bg-shape { width: 86px; transform: translateY(-38%); }
+        .skin-mj .node img.skin-cat { width: 112px; transform: translateX(-3px); }
+        .skin-mj .large-node img.skin-cat { width: 120px; transform: translateX(-3px); }
+        .fish-wrapper { height: 80px; justify-content: center; }
+        .fish-wrapper img.fish-bg-shape { width: 70px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; top: 50%; transform: translateY(-50%); }
+        .fish-wrapper img.fish-img { width: 70px; height: auto; position: absolute; z-index: 2; top: 50%; transform: translateY(-50%); }
+        .node img.cat-bg-shape { position: absolute; filter: brightness(0) invert(1); opacity: 1; z-index: 19; pointer-events: none; }
+        .node img.cat-bg-shape + img { position: relative; z-index: 20; }
+        .bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
+        .feature-toggle-row .qubit-label { position: relative; left: auto; top: auto; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; cursor: pointer; user-select: none; z-index: 5; }
+        .feature-toggle-row .qubit-label:hover { transform: translateY(-2px) scale(1.05); z-index: 50; }
+        .feature-toggle-row .qubit-label:active { transform: translateY(2px) scale(0.95); }
+        .feature-state-1 { border-color: #FFB800 !important; background-color: rgba(255, 184, 0, 0.2); box-shadow: 0 0 10px rgba(255, 184, 0, 0.8); transform: scale(1.1); transition: all 0.2s; }
+        .feature-state-0 { border-color: #463438 !important; background-color: rgba(70, 52, 56, 0.2); box-shadow: 0 0 8px rgba(70, 52, 56, 0.8); filter: grayscale(1) brightness(0.85); transform: scale(1.1); transition: all 0.2s; }
+        .node-dist-badge { position: absolute; top: -6px; right: -6px; background: #FFB800; color: #463438; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #463438; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; box-shadow: 2px 2px 0 rgba(70,52,56,0.5); pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 60; }
+        .node.feature-highlight { border-color: #FFB800 !important; box-shadow: 3px 3px 0 #FFB800 !important; z-index: 45 !important; }
+        .node.feature-dimmed { background-color: #fff !important; }
+        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div:not(.node-dist-badge):not(.fixed-number) { opacity: 0.25 !important; }
+        .node.feature-dimmed > .fixed-number { opacity: 0 !important; visibility: hidden !important; }
+        .node.feature-dimmed > img.hat-bg-shape, .node.feature-dimmed > img.cat-bg-shape { opacity: 1 !important; }
+        .fish-wrapper.feature-highlight { z-index: 55 !important; }
+        .feature-filter-active #fishes-layer { z-index: 90 !important; }
+        .feature-filter-active .fish-wrapper { z-index: 90 !important; }
+        .fish-wrapper.feature-dimmed { opacity: 1 !important; }
+        .fish-wrapper.feature-dimmed img.fish-bg-shape { opacity: 1 !important; }
+        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape), .fish-wrapper.feature-dimmed > img:not(.fish-bg-shape):not(.hat-bg-shape) { opacity: 0.25 !important; }
+        .fish-wrapper.feature-dimmed .fish-label { opacity: 0 !important; visibility: hidden !important; }
+        .fish-label { width: 32px; height: 22px; border-radius: 10px; font-size: 11px; position: absolute; top: 10px; right: auto; margin-bottom: 0; pointer-events: none; }
+        .hide-labels .fish-wrapper > img.fish-img, .hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-80%) scale(1) !important; }
+        .skin-rip .fish-wrapper img.fish-bg-shape { width: 86px; }
+        body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-rip:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translateY(-90%); }
+        .skin-rip.hide-labels .fish-wrapper > img.fish-img, .skin-rip.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translateY(-75%) scale(1.15) !important; }
+        .skin-rip .fish-label, .skin-poto .fish-label, .skin-mj .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; }
+        .skin-rip .fish-label { top: 2px; right: 32px; }
+        body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-poto:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translate(5px, -81%) scale(1.1); }
+        .skin-poto.hide-labels .fish-wrapper > img.fish-img, .skin-poto.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translate(8px, -60%) scale(1.15) !important; }
+        .skin-poto .fish-label { top: 10px; right: 29px; }
+        body.skin-mj:not(.hide-labels) .fish-wrapper > img.fish-img, body.skin-mj:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translate(0px, -85%) scale(1.05); }
+        .skin-mj.hide-labels .fish-wrapper > img.fish-img, .skin-mj.hide-labels .fish-wrapper > img.fish-bg-shape { transform: translate(-1px, -70%) scale(1.1) !important; }
+        .skin-mj .fish-wrapper.large-node > img.fish-img, .skin-mj .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(12px,  -75%) scale(0.95) !important; }
+        .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-img, .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(12px, -62%) scale(1) !important; }
+        .skin-mj .fish-label { top: 15px; right: 25px; }
+        .skin-mj .fish-wrapper.large-node .fish-label { top: 15px !important; right: 15px !important; }
+        .truth-sprite { width: 58px; height: 46px; display: inline-flex; align-items: center; justify-content: center; position: relative; vertical-align: middle; }
+        .truth-sprite img { max-width: 56px; max-height: 46px; object-fit: contain; pointer-events: none; }
+        .truth-sprite img.cat-bg-shape, .truth-sprite img.fish-bg-shape { display: none !important; } 
+        .skin-mj .truth-sprite.large-node img { transform: scale(1.25); } 
+        .skin-mj .truth-sprite.large-node img.fish-img { transform: scale(0.98); }
+        body.skin-rainbow .fish-label { top: 12px; right: 22px; background: rgba(70, 52, 56, 0.85); }
+        body.skin-rainbow img.fish-img { width: 70px; height: auto; position: relative; z-index: 2; }
+        body.skin-rainbow .node img.skin-cat { width: 110px; height: auto; }
+        body.skin-rainbow:not(.hide-labels) .fish-wrapper > img.fish-img { transform: translateY(-123%) scale(1.1); }
+        body.skin-rainbow.hide-labels .fish-wrapper > img.fish-img { transform: translateY(-108%) scale(1.1) !important; }
+        @media (min-width: 1024px) {body {zoom: 0.8;} }
     </style>
 </head>
-<body id="body-root">
-    <div id="shake-toast">Ctrl Mode: ON</div>
+<body id="body-root" class="mini-mode">
+    <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 105px; right: 25px; font-size: 26px;">⚛️</div>
+    <div id="edit-input-btn" class="mode-toggle-fixed" onclick="editInitialInput()" style="top: 185px; right: 25px; font-size: 26px; background: #fff;" title="Edit Input">&#9999;&#65039;</div>
+    <div id="rainbow-btn" class="mode-toggle-fixed" onclick="toggleRainbowMode()" style="top: 265px; right: 25px; font-size: 26px; background: #fff;" title="Rainbow Mode">&#127752;</div>
     <button onclick="navWithSound('lab4.html')" class="nav-fab" title="Go to 4-Bit">4</button>
+    <div id="lab-side-wrapper">
+        <div class="side-panel-content">
+            <h2 class="text-xl font-black mb-3 text-center" style="color: #463438;">SKINS</h2>
+            <div class="skin-gallery">
+                <button id="skin-option-default" class="skin-card active" onclick="selectSkin('default')">
+                    <div class="skin-preview">
+                        <img src="./svg/hat-c.svg" class="preview-hat" alt="">
+                        <img src="./svg/011-c.svg" class="preview-cat" alt="Default cat">
+                    </div>
+                    <span>DEFAULT</span>
+                </button>
+                <button id="skin-option-rip" class="skin-card" onclick="selectSkin('rip')">
+                    <div class="skin-preview">
+                        <img src="./RIP/Cat16.png" class="preview-cat" alt="RIP cat">
+                    </div>
+                    <span>RIP</span>
+                </button>
+                <button id="skin-option-poto" class="skin-card" onclick="selectSkin('poto')">
+                    <div class="skin-preview">
+                        <img src="./poto/cat15.png" class="preview-cat" alt="POTO cat">
+                    </div>
+                    <span>POTO</span>
+                </button>
+                <button id="skin-option-mj" class="skin-card" onclick="selectSkin('mj')">
+                    <div class="skin-preview">
+                        <img src="./mj/Cat15.png" class="preview-cat preview-cat-mj" alt="MJ cat">
+                    </div>
+                    <span>MJ</span>
+                </button>
+            </div>
+            <h3 class="text-xl font-black text-center text-[#463438] mb-3 mt-3">FEATURES</h3>
+            <div class="feature-toggle-row flex justify-center gap-3 w-full pb-2">
+                <div id="feat-toggle-0" class="qubit-label" onclick="toggleFeature(0)">d1</div>
+                <div id="feat-toggle-1" class="qubit-label" onclick="toggleFeature(1)">d2</div>
+                <div id="feat-toggle-2" class="qubit-label" onclick="toggleFeature(2)">d3</div>
+            </div>
+        </div>
+        <div class="bookmark-tab" onclick="toggleSidePanel()">
+            <div class="bookmark-text">SKIN</div>
+        </div>
+    </div>
     <div class="w-full max-w-5xl">
         <div class="flex w-full px-4 mb-4 items-center">
             <div class="text-3xl font-black">GATE COUNT: <span id="step-count">0</span></div>
             <div class="flex items-center gap-6 ml-auto">
+                <button id="label-toggle-btn" class="mode-toggle-inline" onclick="toggleLabels()" title="Toggle labels" aria-label="Toggle labels">&#128683;</button>
                 <button id="view-toggle-btn" class="multi-toggle-btn view-btn" onclick="toggleTraceMode()">Trace: OFF</button>
                 <button id="mode-btn" class="multi-toggle-btn" onclick="cycleLineMode()">Mode: 1</button>
                 <div class="text-3xl font-black" style="color: #7bc202;">LAB MODE</div>
@@ -127,9 +269,9 @@
         <div class="main-layout">
             <div id="pro-panel">
                 <div id="gate-view-container" class="w-full flex-col flex h-full min-h-0">
-                    <div class="panel-section-title">Quantum Gates</div>
+                    <div id="panel-gate-title" class="panel-section-title">Transformations</div>
                     <div id="gate-scroll-area">
-                        <div class="grid grid-cols-4 gap-1 w-full" id="gate-grid"></div>
+                        <div class="flex flex-col gap-2 w-full" id="gate-grid"></div>
                     </div>
                     <div class="mt-auto w-full">
                         <div class="panel-section-title">Control</div>
@@ -139,9 +281,9 @@
                 </div>
                 <div id="tt-view-container" class="w-full flex-col hidden-el h-full flex" style="max-height: 100%; overflow: hidden;">
                     <div class="panel-section-title shrink-0 mt-2">Truth Table</div>
-                    <div class="text-lg text-gray-400 text-center mb-2 font-bold flex justify-between px-8 shrink-0 border-b border-black-100 pb-2">
-                        <span class="w-1/2 text-left text-black">INPUT</span>
-                        <span class="w-1/2 text-right text-black">OUTPUT</span>
+                    <div class="text-lg text-gray-400 text-center mb-2 font-bold flex justify-between px-2 shrink-0 border-b border-black-100 pb-2">
+                        <span id="tt-head-left" class="w-1/2 text-center text-black">CAT</span>
+                        <span id="tt-head-right" class="w-1/2 text-center text-black">FISH</span>
                     </div>
                     <div class="overflow-y-auto w-full flex-grow px-2 mb-2 custom-scrollbar" style="scrollbar-width: none;">
                         <table class="w-full text-center text-lg border-separate border-spacing-y-1">
@@ -149,7 +291,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="trace-controls" class="hidden-el shrink-0 w-full mt-auto flex gap-1 items-center bg-gray-100 p-2 rounded-2xl border-4 border-black shadow-[0_4px_0_0_rgba(0,0,0,0.1)] opacity-50 pointer-events-none transition-opacity">
+                <div id="trace-controls" class="hidden-el shrink-0 w-full mt-auto flex gap-1 items-center bg-gray-100 p-2 rounded-2xl border-4 border-black shadow-[0_4px_0_0_rgba(0,0,0,0.1)] opacity-50 transition-opacity">
                     <button class="func-btn btn-reset m-0 py-2 px-1 text-xs hover:bg-yellow-200 flex-1" style="box-shadow: 0 2px 0 #463438;" onclick="traceMove(-1)">◀</button>
                     <div class="flex flex-col items-center justify-center px-1 min-w-[50px]">
                         <span class="text-[15px] font-black leading-none" style="color:#99C44D;">STEP</span>
@@ -170,10 +312,10 @@
             </div>
         </div>
         <div id="circuit-area" class="mx-auto">
-            <div class="circuit-title font-black text-xl text-center">Circuit Diagram</div>
-            <div id="q-in-0" class="qubit-label" style="top: 60px;">q0</div>
-            <div id="q-in-1" class="qubit-label" style="top: 100px;">q1</div>
-            <div id="q-in-2" class="qubit-label" style="top: 140px;">q2</div>
+            <div id="circuit-diagram-title" class="circuit-title font-black text-xl text-center">Paths</div>
+            <div id="q-in-0" class="qubit-label" style="top: 60px;">d1</div>
+            <div id="q-in-1" class="qubit-label" style="top: 100px;">d2</div>
+            <div id="q-in-2" class="qubit-label" style="top: 140px;">d3</div>
             <div id="q-out-0" class="qubit-label right-side hidden-el" style="top: 60px;"></div>
             <div id="q-out-1" class="qubit-label right-side hidden-el" style="top: 100px;"></div>
             <div id="q-out-2" class="qubit-label right-side hidden-el" style="top: 140px;"></div>
@@ -186,17 +328,17 @@
     </div>
     <script>
         let initialFishAtNode = Array.from({ length: 8 }, (_, i) => i);
+        let isQuantumMode = false;
         let isTraceMode = false;
+        let isRainbowMode = false;
         let activeTraceInput = null;
         let currentTraceStep = 0;
         let gateCount = 0, gateHistory = [];
         let selectedIndices = [], actionStack = [];
         let fishAtNode = [];
         let lineMode = 1, hoverLine = null;
+        let lockedLineId = null;
         let currentOptionIndex = 0, currentOptions = [], draggedIndex = null;
-        let isShakeCtrlActive = false;
-        let lastShakeTime = 0;
-        let shakePermissionRequested = false;
         let mobileDragging = false;
         let mDragIndex = null;
         let dragGhost = null;
@@ -206,10 +348,362 @@
         let touchStartY = 0;
         let lastSwipeTime = 0;
         let lastTiltDirection = 0;
+        let canvasTouchStartX = 0, canvasTouchStartY = 0;
+        let lastCanvasX = 0, lastCanvasY = 0;
+        let isCanvasSwiping = false;
         const TILT_THRESHOLD = 15;
         const RETURN_THRESHOLD = 10;
         let gyroPermissionGranted = false;
         const pop = new Audio('pop.m4a');
+        let labelsOpen = true;
+        const LAB_TOTAL = 8;
+        const LAB_BITS = 3;
+        const SKIN_STORAGE_KEY = 'meowtopiaSkin';
+        const AVAILABLE_SKINS = ['default', 'rip', 'poto', 'mj'];
+        let currentSkin = 'default';
+        let featureStates = Array(LAB_BITS).fill(null);
+
+        function playPopSound() {
+            if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
+        }
+
+        function editInitialInput() {
+            playPopSound();
+            const current = initialFishAtNode.join(', ');
+            const res = prompt(`Enter the initial fish order (0-${LAB_TOTAL - 1}, comma-separated):`, current);
+            if (res === null) return;
+            const parsed = res.replace(/\s/g, '').split(',').map(Number);
+            const isValid = parsed.length === LAB_TOTAL &&
+                new Set(parsed).size === LAB_TOTAL &&
+                parsed.every(n => Number.isInteger(n) && n >= 0 && n < LAB_TOTAL);
+            if (!isValid) {
+                alert(`Invalid format. Enter ${LAB_TOTAL} unique numbers from 0 to ${LAB_TOTAL - 1}, for example: ${Array.from({ length: LAB_TOTAL }, (_, i) => i).join(',')}`);
+                return;
+            }
+            initialFishAtNode = parsed;
+            activeTraceInput = null;
+            currentTraceStep = 0;
+            refreshSkinAssets();
+            recalculate();
+        }
+
+        function toggleRainbowMode() {
+            playPopSound();
+            isRainbowMode = !isRainbowMode;
+            if (isRainbowMode) featureStates.fill(null);
+            updateFeatureToggleLabels();
+            updateFeatureHighlights();
+            refreshSkinAssets();
+            updateTruthTable();
+            updateFishUI();
+        }
+
+        function getSkinBits(index, count = LAB_TOTAL) {
+            return index.toString(2).padStart(count > 8 ? 4 : count > 4 ? 3 : 2, '0');
+        }
+
+        function defaultSkinCode(index, count = LAB_TOTAL) {
+            const bits = getSkinBits(index, count);
+            if (count > 8) return '0' + bits.slice(2);
+            if (count > 4) return bits;
+            return '0' + bits;
+        }
+
+        function defaultSkinHat(kind, index, count = LAB_TOTAL) {
+            if (count <= 8) return '';
+            const bits = getSkinBits(index, count);
+            if (bits[1] !== '1') return '';
+            const asset = kind === 'cat' ? 'hat-c' : 'hat-f';
+            const cls = kind === 'cat' ? 'cat-hat' : 'fish-hat';
+            return '<img src="./svg/' + asset + '.svg" class="hat-img ' + cls + ' hat-bg-shape" alt=""><img src="./svg/' + asset + '.svg" class="hat-img ' + cls + '" alt="">';
+        }
+
+        function defaultSkinFaded(index, count = LAB_TOTAL) {
+            return count > 8 && getSkinBits(index, count)[0] === '1' ? ' bit-faded' : '';
+        }
+
+        function catLayerHtml(src, className, alt) {
+            return '<img src="' + src + '" class="' + className + ' cat-bg-shape" alt=""><img src="' + src + '" class="' + className + '" alt="' + alt + '">';
+        }
+
+        function fishLayerHtml(src, faded, alt) {
+            return '<img src="' + src + '" class="fish-bg-shape encoded-img' + faded + '" alt=""><img src="' + src + '" class="fish-img encoded-img' + faded + '" alt="' + alt + '">';
+        }
+
+        function skinAssetHtml(kind, index, count = LAB_TOTAL, label) {
+            const text = label || getSkinBits(index, count);
+            if (isRainbowMode) {
+                const src = './image/' + (kind === 'cat' ? 'Cat' : 'Fish') + ((index % 8) + 1) + '.svg';
+                const hat = count > 8 ? defaultSkinHat(kind, index, count) : '';
+                return kind === 'cat'
+                    ? hat + '<img src="' + src + '" class="skin-cat" alt="' + text + ' cat">'
+                    : hat + '<img src="' + src + '" class="fish-img" alt="' + text + ' fish">';
+            }
+            if (currentSkin === 'rip') {
+                const src = './RIP/' + (kind === 'cat' ? 'Cat' : 'Fish') + (index + 1) + '.png';
+                return kind === 'cat' ? catLayerHtml(src, 'skin-cat encoded-img', text + ' cat') : fishLayerHtml(src, '', text + ' fish');
+            }
+            if (currentSkin === 'poto') {
+                const src = './poto/' + (kind === 'cat' ? 'cat' : 'fish') + index + '.png';
+                return kind === 'cat' ? catLayerHtml(src, 'skin-cat encoded-img', text + ' cat') : fishLayerHtml(src, '', text + ' fish');
+            }
+            if (currentSkin === 'mj') {
+                const src = './mj/' + (kind === 'cat' ? 'Cat' : 'Fish') + index + '.png';
+                return kind === 'cat' ? catLayerHtml(src, 'skin-cat encoded-img', text + ' cat') : fishLayerHtml(src, '', text + ' fish');
+            }
+            const code = defaultSkinCode(index, count);
+            const faded = defaultSkinFaded(index, count);
+            if (kind === 'cat') {
+                return defaultSkinHat('cat', index, count) + catLayerHtml('./svg/' + code + '-c.svg', 'skin-cat encoded-img' + faded, text + ' cat');
+            }
+            return defaultSkinHat('fish', index, count) + fishLayerHtml('./svg/' + code + '-f.svg', faded, text + ' fish');
+        }
+
+        function truthSpriteHtml(kind, index) {
+            const isMjLarge = currentSkin === 'mj' && index % 2 === 1 && !isRainbowMode;
+            const extraClass = isMjLarge ? ' large-node' : '';
+            return '<span class="truth-sprite' + extraClass + '">' + skinAssetHtml(kind, index, LAB_TOTAL, getSkinBits(index)) + '</span>';
+        }
+
+        function initSkinFromUser(urlParams) {
+            const passedSkin = urlParams.get('skin') || sessionStorage.getItem(SKIN_STORAGE_KEY);
+            currentSkin = AVAILABLE_SKINS.includes(passedSkin) ? passedSkin : 'default';
+            sessionStorage.setItem(SKIN_STORAGE_KEY, currentSkin);
+        }
+
+        function applySkinClass() {
+            const root = document.getElementById('body-root') || document.body;
+            root.classList.toggle('skin-rip', !isRainbowMode && currentSkin === 'rip');
+            root.classList.toggle('skin-poto', !isRainbowMode && currentSkin === 'poto');
+            root.classList.toggle('skin-mj', !isRainbowMode && currentSkin === 'mj');
+            root.classList.toggle('skin-rainbow', isRainbowMode);
+            AVAILABLE_SKINS.forEach(skin => {
+                const option = document.getElementById('skin-option-' + skin);
+                if (option) option.classList.toggle('active', currentSkin === skin);
+            });
+        }
+
+        function refreshSkinAssets() {
+            applySkinClass();
+            for (let i = 0; i < LAB_TOTAL; i++) {
+                const node = document.getElementById('node-' + i);
+                const fish = document.getElementById('fish-' + i);
+                const catId = initialFishAtNode[i]; 
+                
+                const isMjLarge = currentSkin === 'mj' && catId % 2 === 1 && !isRainbowMode;
+                if (node) {
+                    node.classList.toggle('large-node', isMjLarge);
+                    node.innerHTML = '<div class="fixed-number">' + getSkinBits(i) + '</div>' + skinAssetHtml('cat', catId);
+                }
+                if (fish) {
+                    const isMjFishLarge = currentSkin === 'mj' && i % 2 === 1 && !isRainbowMode;
+                    fish.classList.toggle('large-node', isMjFishLarge);
+                    fish.innerHTML = '<div class="fish-label">' + getSkinBits(i) + '</div>' + skinAssetHtml('fish', i);
+                }
+            }
+            ensureDistanceBadges();
+        }
+
+        function getFeatureImageIndex(index) {
+            return LAB_BITS === 2 ? index + 2 : index + 1;
+        }
+
+        function getFeatureSkinFolder() {
+            if (currentSkin === 'rip') return './RIP/';
+            if (currentSkin === 'poto') return './poto/';
+            if (currentSkin === 'mj') return './mj/';
+            return './svg/';
+        }
+
+        function updateCircuitLabels() {
+            let inBin = null;
+            let outBin = null;
+            
+            if (isTraceMode && activeTraceInput !== null) {
+                const initialVal = initialFishAtNode[activeTraceInput];
+                const finalVal = fishAtNode.indexOf(initialVal);
+                inBin = initialVal.toString(2).padStart(LAB_BITS, '0');
+                outBin = finalVal.toString(2).padStart(LAB_BITS, '0');
+            }
+
+            for (let i = 0; i < LAB_BITS; i++) {
+                const qIn = document.getElementById(`q-in-${i}`);
+                const qOut = document.getElementById(`q-out-${i}`);
+                if (!qIn) continue;
+
+                if (isTraceMode && isQuantumMode) {
+                    if (labelsOpen) {
+                        if (inBin && outBin) {
+                            const inColor = inBin[i] === '1' ? '#FFB7C5' : '#7d6961';
+                            const outColor = outBin[i] === '1' ? '#FFB7C5' : '#7d6961';
+                            qIn.innerHTML = `<span style="color: ${inColor}; font-weight: 900; font-size: 24px;">${inBin[i]}</span>`;
+                            if (qOut) {
+                                qOut.innerHTML = `<span style="color: ${outColor}; font-weight: 900; font-size: 24px;">${outBin[i]}</span>`;
+                                qOut.classList.remove('hidden-el');
+                            }
+                        } else {
+                            qIn.innerHTML = `q${i}`;
+                            if (qOut) qOut.classList.add('hidden-el');
+                        }
+                    } else {
+                        const imgIndex = getFeatureImageIndex(i);
+                        if (inBin && outBin) {
+                            const inBorderColor = inBin[i] === '1' ? '#FFB7C5' : '#7d6961';
+                            const outBorderColor = outBin[i] === '1' ? '#FFB7C5' : '#7d6961';
+                            qIn.innerHTML = `<img src="${getFeatureSkinFolder()}dif${imgIndex}.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px; border: 3px solid ${inBorderColor}; border-radius: 8px; box-sizing: border-box;" alt="dif${imgIndex}">`;
+                            if (qOut) {
+                                qOut.innerHTML = `<img src="${getFeatureSkinFolder()}dif${imgIndex}.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px; border: 3px solid ${outBorderColor}; border-radius: 8px; box-sizing: border-box;" alt="dif${imgIndex}">`;
+                                qOut.classList.remove('hidden-el');
+                            }
+                        } else {
+                            qIn.innerHTML = `<img src="${getFeatureSkinFolder()}dif${imgIndex}.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px; border: 3px solid transparent; border-radius: 8px; box-sizing: border-box;" alt="dif${imgIndex}">`;
+                            if (qOut) qOut.classList.add('hidden-el');
+                        }
+                    }
+                } else {
+                    if (labelsOpen) {
+                        qIn.innerHTML = isQuantumMode ? `q${i}` : `d${i + 1}`;
+                    } else {
+                        const imgIndex = getFeatureImageIndex(i);
+                        qIn.innerHTML = `<img src="${getFeatureSkinFolder()}dif${imgIndex}.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px; border: 3px solid transparent; border-radius: 8px; box-sizing: border-box;" alt="dif${imgIndex}">`;
+                    }
+                    if (qOut) qOut.classList.add('hidden-el');
+                }
+            }
+        }
+
+        function updateFeatureToggleLabels() {
+            for (let i = 0; i < LAB_BITS; i++) {
+                const label = document.getElementById(`feat-toggle-${i}`);
+                if (!label) continue;
+                let badge = '';
+                let styleClass = '';
+                if (featureStates[i] === 1) {
+                    styleClass = 'feature-state-1';
+                    badge = `<div style="position:absolute; top:-6px; right:-6px; background:#FFB800; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">1</div>`;
+                } else if (featureStates[i] === 0) {
+                    styleClass = 'feature-state-0';
+                    badge = `<div style="position:absolute; top:-6px; right:-6px; background:#463438; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">0</div>`;
+                }
+                if (labelsOpen) {
+                    label.innerHTML = `<div style="position:relative;"><span class="${styleClass}" style="padding: 2px 6px; display: inline-block; border-radius: 6px; border:2px solid transparent;">d${i + 1}</span>${badge}</div>`;
+                } else {
+                    const imgIndex = getFeatureImageIndex(i);
+                    label.innerHTML = `<div style="position:relative;"><img src="${getFeatureSkinFolder()}dif${imgIndex}.png" class="${styleClass}" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; padding: 2px; border:3px solid transparent;" alt="dif${imgIndex}">${badge}</div>`;
+                }
+            }
+        }
+
+        function toggleLabels() {
+            playPopSound();
+            labelsOpen = !labelsOpen;
+            const root = document.getElementById('body-root') || document.body;
+            const btn = document.getElementById('label-toggle-btn');
+            root.classList.toggle('hide-labels', !labelsOpen);
+            if (btn) btn.innerHTML = labelsOpen ? '&#128683;' : '&#127991;&#65039;';
+            updateCircuitLabels();
+            updateFeatureToggleLabels();
+            updateTruthTable();
+        }
+
+        function toggleSidePanel() {
+            playPopSound();
+            const wrapper = document.getElementById('lab-side-wrapper');
+            if (wrapper) wrapper.classList.toggle('expanded');
+        }
+
+        function selectSkin(skin) {
+            playPopSound();
+            if (isRainbowMode) isRainbowMode = false;
+            if (!AVAILABLE_SKINS.includes(skin)) skin = 'default';
+            currentSkin = skin;
+            sessionStorage.setItem(SKIN_STORAGE_KEY, skin);
+            refreshSkinAssets();
+            updateCircuitLabels();
+            updateFeatureToggleLabels();
+            updateFeatureHighlights();
+            updateTruthTable();
+            updateFishUI();
+        }
+
+        function getHammingDistance(a, b) {
+            const s1 = a.toString(2).padStart(LAB_BITS, '0');
+            const s2 = b.toString(2).padStart(LAB_BITS, '0');
+            let dist = 0;
+            for (let i = 0; i < LAB_BITS; i++) if (s1[i] !== s2[i]) dist++;
+            return dist;
+        }
+
+        function ensureDistanceBadges() {
+            for (let i = 0; i < LAB_TOTAL; i++) {
+                const node = document.getElementById(`node-${i}`);
+                if (!node || document.getElementById(`dist-badge-${i}`)) continue;
+                node.insertAdjacentHTML('beforeend', `<div class="node-dist-badge hidden-el" id="dist-badge-${i}"></div>`);
+            }
+        }
+
+        function toggleFeature(qIndex) {
+            playPopSound();
+            if (isRainbowMode) {
+                isRainbowMode = false;
+                refreshSkinAssets();
+                updateTruthTable();
+                updateFishUI();
+            }
+            if (featureStates[qIndex] === null) featureStates[qIndex] = 1;
+            else if (featureStates[qIndex] === 1) featureStates[qIndex] = 0;
+            else featureStates[qIndex] = null;
+            updateCircuitLabels();
+            updateFeatureToggleLabels();
+            updateFeatureHighlights();
+        }
+
+        function updateFeatureHighlights() {
+            ensureDistanceBadges();
+            const anyActive = featureStates.some(f => f !== null);
+            const root = document.getElementById('body-root') || document.body;
+            root.classList.toggle('feature-filter-active', anyActive);
+            for (let i = 0; i < LAB_TOTAL; i++) {
+                const node = document.getElementById(`node-${i}`);
+                const fish = document.getElementById(`fish-${i}`);
+                const badge = document.getElementById(`dist-badge-${i}`);
+                if (!node) continue;
+                if (!anyActive) {
+                    node.classList.remove('feature-highlight', 'feature-dimmed');
+                    if (fish) fish.classList.remove('feature-highlight', 'feature-dimmed');
+                    if (badge) badge.classList.add('hidden-el');
+                    continue;
+                }
+                const bits = i.toString(2).padStart(LAB_BITS, '0');
+                let match = true;
+                for (let q = 0; q < LAB_BITS; q++) {
+                    if (featureStates[q] === 1 && bits[q] !== '1') match = false;
+                    if (featureStates[q] === 0 && bits[q] !== '0') match = false;
+                }
+                if (match) {
+                    node.classList.add('feature-highlight');
+                    node.classList.remove('feature-dimmed');
+                    if (fish) {
+                        fish.classList.add('feature-highlight');
+                        fish.classList.remove('feature-dimmed');
+                    }
+                    if (badge) {
+                        const fishNodeIndex = fishAtNode.indexOf(i);
+                        badge.innerText = getHammingDistance(i, fishNodeIndex < 0 ? i : fishNodeIndex);
+                        badge.classList.remove('hidden-el');
+                    }
+                } else {
+                    node.classList.remove('feature-highlight');
+                    node.classList.add('feature-dimmed');
+                    if (fish) {
+                        fish.classList.remove('feature-highlight');
+                        fish.classList.add('feature-dimmed');
+                    }
+                    if (badge) badge.classList.add('hidden-el');
+                }
+            }
+        }
+
         const baseOffsetY = 130;
         const side = 220;
         const offsetPro = 165;
@@ -224,46 +718,182 @@
             Object.defineProperty(pos, 'l', { get: () => pos.relX + offsetPro });
             return pos;
         });
-        function handleMotion(event) {
-            const acc = event.accelerationIncludingGravity;
-            if (!acc) return;
-            const threshold = 20;
-            const delta = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
-            if (delta > threshold) {
-                const now = Date.now();
-                if (now - lastShakeTime > 1000) {
-                    isShakeCtrlActive = !isShakeCtrlActive;
-                    lastShakeTime = now;
-                    if (navigator.vibrate) navigator.vibrate([100]);
-                    const toast = document.getElementById('shake-toast');
-                    if (toast) {
-                        toast.style.background = isShakeCtrlActive ? "#99C44D" : "#FFB7C5";
-                        toast.style.color = isShakeCtrlActive ? "white" : "#463438";
-                        toast.innerText = isShakeCtrlActive ? "CTRL MODE: ON" : "CTRL MODE: OFF";
-                        toast.classList.add('show');
-                        setTimeout(() => { 
-                            if(tutorialPhase !== 0.5) toast.classList.remove('show'); 
-                        }, 4000);
-                    }
+
+        let autoScrollRAF = null;
+        let scrollDirection = 0;
+        let autoScrollWrapper = null;
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        let circuitEdgeScrollRAF = null;
+        let circuitEdgeScrollDirection = 0;
+        let circuitEdgeScrollWrapper = null;
+        const CIRCUIT_EDGE_THRESHOLD = 85;
+        const CIRCUIT_EDGE_SCROLL_SPEED = 4;
+
+        function handleAutoScroll() {
+            if (!autoScrollWrapper || scrollDirection === 0) {
+                autoScrollRAF = null;
+                return;
+            }
+            autoScrollWrapper.scrollLeft += scrollDirection * 8; 
+            let targetEl = document.elementFromPoint(lastTouchX, lastTouchY);
+            let dropUnit = targetEl ? targetEl.closest('.circuit-unit') : null;
+            document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+            let isDraggedEl = false;
+            if (draggedIndex !== null && dropUnit && dropUnit.dataset.index !== undefined) {
+                if (parseInt(dropUnit.dataset.index) === draggedIndex) {
+                    isDraggedEl = true;
                 }
             }
+            if (dropUnit && dropUnit !== originalDragEl && !isDraggedEl && dropUnit.dataset.index !== undefined) {
+                dropUnit.classList.add('drag-target');
+            }
+            autoScrollRAF = requestAnimationFrame(handleAutoScroll);
         }
-        function requestShakePermission() {
-            if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission()
-                    .then(state => {
-                        if (state === 'granted') {
-                            window.addEventListener('devicemotion', handleMotion);
-                        }
-                    })
-                    .catch(console.error);
-            } else {
-                window.addEventListener('devicemotion', handleMotion);
+
+        function runCircuitEdgeScroll() {
+            if (!circuitEdgeScrollWrapper || circuitEdgeScrollDirection === 0) {
+                circuitEdgeScrollRAF = null;
+                return;
+            }
+            const maxScroll = circuitEdgeScrollWrapper.scrollWidth - circuitEdgeScrollWrapper.clientWidth;
+            if (maxScroll <= 0) {
+                stopCircuitEdgeScroll();
+                return;
+            }
+            const before = circuitEdgeScrollWrapper.scrollLeft;
+            circuitEdgeScrollWrapper.scrollLeft = Math.max(
+                0,
+                Math.min(maxScroll, before + circuitEdgeScrollDirection * CIRCUIT_EDGE_SCROLL_SPEED)
+            );
+            circuitEdgeScrollRAF = requestAnimationFrame(runCircuitEdgeScroll);
+        }
+
+        function startCircuitEdgeScroll(direction) {
+            const wrapper = document.getElementById('circuit-content-wrapper');
+            if (!wrapper) return;
+            circuitEdgeScrollWrapper = wrapper;
+            circuitEdgeScrollDirection = direction;
+            if (!circuitEdgeScrollRAF) {
+                circuitEdgeScrollRAF = requestAnimationFrame(runCircuitEdgeScroll);
             }
         }
+
+        function stopCircuitEdgeScroll() {
+            circuitEdgeScrollDirection = 0;
+            circuitEdgeScrollWrapper = null;
+            if (circuitEdgeScrollRAF) {
+                cancelAnimationFrame(circuitEdgeScrollRAF);
+                circuitEdgeScrollRAF = null;
+            }
+        }
+
+        function clearCircuitDragState() {
+            scrollDirection = 0;
+            autoScrollWrapper = null;
+            if (autoScrollRAF) {
+                cancelAnimationFrame(autoScrollRAF);
+                autoScrollRAF = null;
+            }
+            draggedIndex = null;
+            document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+            document.querySelectorAll('.gate-visuals').forEach(v => v.style.opacity = '1');
+            document.querySelectorAll('.circuit-unit').forEach(u => { u.style.opacity = '1'; });
+        }
+
+        function updateCircuitEdgeScroll(e) {
+            if (mobileDragging || draggedIndex !== null) return;
+            const area = document.getElementById('circuit-area');
+            if (!area) return;
+            const rect = area.getBoundingClientRect();
+            if (e.clientX < rect.left + CIRCUIT_EDGE_THRESHOLD) {
+                startCircuitEdgeScroll(-1);
+            } else if (e.clientX > rect.right - CIRCUIT_EDGE_THRESHOLD) {
+                startCircuitEdgeScroll(1);
+            } else {
+                stopCircuitEdgeScroll();
+            }
+        }
+
+        function initCircuitEdgeAutoScroll() {
+            const area = document.getElementById('circuit-area');
+            if (!area) return;
+            area.addEventListener('mousemove', updateCircuitEdgeScroll);
+            area.addEventListener('mouseenter', updateCircuitEdgeScroll);
+            area.addEventListener('mouseleave', stopCircuitEdgeScroll);
+            window.addEventListener('blur', stopCircuitEdgeScroll);
+        }
+
+        document.addEventListener('dragover', (e) => {
+            if (draggedIndex === null) return;
+            const wrapper = document.getElementById('circuit-content-wrapper');
+            if (wrapper && wrapper.contains(e.target)) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            }
+            lastTouchX = e.clientX;
+            lastTouchY = e.clientY;
+            if (!wrapper) return;
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const threshold = 60;
+            if (lastTouchX < wrapperRect.left + threshold) {
+                scrollDirection = -1;
+                autoScrollWrapper = wrapper;
+                if (!autoScrollRAF) autoScrollRAF = requestAnimationFrame(handleAutoScroll);
+            } else if (lastTouchX > wrapperRect.right - threshold) {
+                scrollDirection = 1;
+                autoScrollWrapper = wrapper;
+                if (!autoScrollRAF) autoScrollRAF = requestAnimationFrame(handleAutoScroll);
+            } else {
+                scrollDirection = 0;
+                if (autoScrollRAF) {
+                    cancelAnimationFrame(autoScrollRAF);
+                    autoScrollRAF = null;
+                }
+            }
+        });
+
+        document.addEventListener('dragend', () => { clearCircuitDragState(); });
+        document.addEventListener('drop', () => { clearCircuitDragState(); });
+
+        function handleOrientation(event) {
+            if (!lockedLineId || lineMode === 1 || lineMode === 4) return;
+            let tilt = event.gamma; 
+            const orientation = (screen.orientation || {}).type || window.orientation;
+            if (orientation === 90 || orientation === "landscape-primary") {
+                tilt = event.beta;
+            } else if (orientation === -90 || orientation === "landscape-secondary") {
+                tilt = -event.beta;
+            } else if (orientation === 180 || orientation === "portrait-secondary") {
+                tilt = -event.gamma;
+            }
+            const now = Date.now();
+            if (now - lastSwipeTime < 400) return;
+            if (tilt > TILT_THRESHOLD && lastTiltDirection <= 0) {
+                currentOptionIndex = (currentOptionIndex + 1) % currentOptions.length;
+                lastTiltDirection = 1;
+                lastSwipeTime = now;
+                hasScrolled = true;
+                showIndicator();
+                if ('vibrate' in navigator) navigator.vibrate(20);
+            } else if (tilt < -TILT_THRESHOLD && lastTiltDirection >= 0) {
+                currentOptionIndex = (currentOptionIndex - 1 + currentOptions.length) % currentOptions.length;
+                lastTiltDirection = -1;
+                lastSwipeTime = now;
+                hasScrolled = true;
+                showIndicator();
+                if ('vibrate' in navigator) navigator.vibrate(20);
+            } else if (Math.abs(tilt) < RETURN_THRESHOLD) {
+                lastTiltDirection = 0;
+            }
+        }
+
         window.onload = () => {
             initLabData();
             initGameLayout();
+            refreshSkinAssets();
+            updateCircuitLabels();
+            updateFeatureToggleLabels();
             initGates();
             drawStaticLines();
             recalculate();
@@ -274,88 +904,114 @@
                         if (permission === 'granted') gyroPermissionGranted = true;
                     } catch (error) { console.log("Gyro permission denied:", error); }
                 } else { gyroPermissionGranted = true; }
-                requestShakePermission();
                 window.removeEventListener('click', requestPermissions);
                 window.removeEventListener('touchstart', requestPermissions);
             };
             window.addEventListener('click', requestPermissions);
             window.addEventListener('touchstart', requestPermissions);
             window.addEventListener('touchstart', () => { isTouchDevice = true; }, {once: true});
-            window.addEventListener('deviceorientation', (e) => {
-                if (!isTouchDevice || !activeMobileLine || lineMode === 1) return;
-                let orientation = window.orientation || (screen.orientation && screen.orientation.angle) || 0;
-                let tilt = 0;
-                if (orientation === 0) tilt = e.gamma;
-                else if (orientation === 90) tilt = e.beta;
-                else if (orientation === -90 || orientation === 270) tilt = -e.beta;
-                else if (orientation === 180) tilt = -e.gamma;
-                if (tilt === null) return;
-                if (lastTiltDirection === 0) {
-                    if (tilt > TILT_THRESHOLD) {
-                        lastTiltDirection = 1;
-                        currentOptionIndex = (currentOptionIndex + 1) % currentOptions.length;
-                        showIndicator();
-                        if ('vibrate' in navigator) navigator.vibrate(20);
-                    } else if (tilt < -TILT_THRESHOLD) {
-                        lastTiltDirection = -1;
-                        currentOptionIndex = (currentOptionIndex - 1 + currentOptions.length) % currentOptions.length;
-                        showIndicator();
-                        if ('vibrate' in navigator) navigator.vibrate(20);
-                    }
-                } else {
-                    if (Math.abs(tilt) < RETURN_THRESHOLD) lastTiltDirection = 0;
-                }
-            });
+            window.addEventListener('deviceorientation', handleOrientation);
+
             const canvas = document.getElementById('main-canvas');
-            canvas.addEventListener('touchstart', (e) => {
-                if (!e.target.classList.contains('connection-line')) {
-                    activeMobileLine = null;
-                    hoverLine = null;
-                    hideIndicator();
+            
+            canvas.addEventListener('mousedown', (e) => {
+                if (lockedLineId && !isTouchDevice) {
+                    if (e.button === 0 && !e.target.classList.contains('connection-line')) { 
+                        cancelLock(); 
+                    }
                 }
             });
+
+            canvas.addEventListener('contextmenu', (e) => {
+                if (lockedLineId && !isTouchDevice) {
+                    e.preventDefault(); 
+                    if (currentOptions[currentOptionIndex]) {
+                        applyGate(currentOptions[currentOptionIndex].gateType);
+                    }
+                }
+            });
+
             canvas.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1 && activeMobileLine) {
-                    touchStartY = e.touches[0].clientY;
+                if (lockedLineId && e.touches.length >= 2) {
+                    e.preventDefault();
+                    if (currentOptions[currentOptionIndex]) {
+                        applyGate(currentOptions[currentOptionIndex].gateType);
+                    }
+                }
+            }, { passive: false });
+
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    canvasTouchStartX = e.touches[0].clientX;
+                    canvasTouchStartY = e.touches[0].clientY;
+                    lastCanvasX = canvasTouchStartX;
+                    lastCanvasY = canvasTouchStartY;
+                    isCanvasSwiping = false;
                 }
             }, { passive: true });
 
             canvas.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1 && activeMobileLine) {
-                    if (lineMode === 1) return;
-                    if (e.cancelable) e.preventDefault();
-
+                if (e.touches.length === 1 && lockedLineId && lineMode !== 1) {
+                    const currentX = e.touches[0].clientX;
                     const currentY = e.touches[0].clientY;
-                    const diff = currentY - touchStartY;
-                    const now = Date.now();
-
-                    if (Math.abs(diff) > 25 && (now - lastSwipeTime > 250)) {
-                        if (diff > 0) currentOptionIndex = (currentOptionIndex + 1) % currentOptions.length;
-                        else currentOptionIndex = (currentOptionIndex - 1 + currentOptions.length) % currentOptions.length;
-
-                        showIndicator();
-                        if ('vibrate' in navigator) navigator.vibrate(20);
-
-                        touchStartY = currentY;
-                        lastSwipeTime = now;
+                    const diffX = currentX - lastCanvasX;
+                    const diffY = currentY - lastCanvasY;
+                    if (Math.abs(currentX - canvasTouchStartX) > 8 || Math.abs(currentY - canvasTouchStartY) > 8) {
+                        isCanvasSwiping = true;
+                        if (e.cancelable) e.preventDefault();
+                    }
+                    if (isCanvasSwiping && currentOptions.length > 0) {
+                        if (Math.abs(diffX) > Math.abs(diffY)) {
+                            const steps = Math.floor(Math.abs(diffX) / 80);
+                            if (steps > 0) {
+                                const dir = diffX > 0 ? 1 : -1;
+                                const shift = (dir * steps) % currentOptions.length;
+                                currentOptionIndex = (((currentOptionIndex + shift) % currentOptions.length) + currentOptions.length) % currentOptions.length;
+                                lastCanvasX += dir * steps * 80;
+                                hasScrolled = true;
+                                showIndicator();
+                            }
+                        } else {
+                            const steps = Math.floor(Math.abs(diffY) / 80);
+                            if (steps > 0) {
+                                const dir = diffY > 0 ? 1 : -1;
+                                const shift = (dir * steps) % currentOptions.length;
+                                currentOptionIndex = (((currentOptionIndex + shift) % currentOptions.length) + currentOptions.length) % currentOptions.length;
+                                lastCanvasY += dir * steps * 80;
+                                hasScrolled = true;
+                                showIndicator();
+                            }
+                        }
                     }
                 }
             }, { passive: false });
 
-            canvas.addEventListener('touchend', () => {
-                touchStartY = 0;
+            canvas.addEventListener('touchend', (e) => {
+                if (!isCanvasSwiping && lockedLineId && e.changedTouches.length === 1) {
+                    const target = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                    if (target && !target.classList.contains('connection-line')) cancelLock();
+                }
+                isCanvasSwiping = false;
             });
+
             document.getElementById('circuit-content-wrapper').addEventListener('wheel', e => {
                 e.preventDefault();
                 e.currentTarget.scrollLeft += e.deltaY;
             });
+            initCircuitEdgeAutoScroll();
             document.addEventListener('wheel', e => {
-                if (!hoverLine || lineMode === 1) return;
+                if (!lockedLineId || lineMode !== 2 || isTouchDevice) return;
+                const target = e.target;
+                if (target.closest('#gate-scroll-area') || target.closest('#circuit-content-wrapper')) return;
                 e.preventDefault();
-                if (e.deltaY > 0) currentOptionIndex = (currentOptionIndex + 1) % currentOptions.length;
-                else currentOptionIndex = (currentOptionIndex - 1 + currentOptions.length) % currentOptions.length;
+                if (e.deltaY > 0) {
+                    currentOptionIndex = (currentOptionIndex + 1) % currentOptions.length;
+                } else {
+                    currentOptionIndex = (currentOptionIndex - 1 + currentOptions.length) % currentOptions.length;
+                }
                 showIndicator();
             }, { passive: false });
+
             const indicator = document.getElementById('ios-indicator');
             canvas.addEventListener('mousemove', e => {
                 if (!indicator.classList.contains('active') || isTouchDevice) return;
@@ -364,11 +1020,9 @@
                 indicator.style.top = `${e.clientY - rect.top - 15}px`;
             });
         };
+        
         function startMobileDrag(touch, el, index) {
-            if (dragGhost) {
-                dragGhost.remove();
-                dragGhost = null;
-            }
+            if (dragGhost) { dragGhost.remove(); dragGhost = null; }
             mobileDragging = true;
             mDragIndex = index;
             originalDragEl = el;
@@ -383,18 +1037,16 @@
             dragGhost.style.animation = 'none';
             dragGhost.style.transform = 'translateZ(0)';
             dragGhost.style.willChange = 'left, top';
-            dragGhost.style.background = 'rgba(255, 183, 197, 0.3)';
+            const style = getComputedStyle(el);
+            const gateBg = style.getPropertyValue('--gate-bg-color');
+            dragGhost.style.backgroundColor = gateBg;
             dragGhost.style.borderRadius = '12px';
             dragGhost.style.boxShadow = 'none';
             dragGhost.style.border = 'none';
             const rect = el.getBoundingClientRect();
             dragGhost.style.left = (touch.clientX - rect.width / 2) + 'px';
             dragGhost.style.top = (touch.clientY - rect.height / 2) + 'px';
-            dragGhost.querySelectorAll('*').forEach(node => {
-                node.style.transition = 'none';
-                node.style.animation = 'none';
-                node.style.pointerEvents = 'none';
-            });
+            dragGhost.querySelectorAll('*').forEach(node => { node.style.transition = 'none'; node.style.animation = 'none'; node.style.pointerEvents = 'none'; });
             document.body.appendChild(dragGhost);
             el.style.opacity = '0.35';
         }
@@ -407,49 +1059,44 @@
         }
         function endMobileDrag(touch) {
             mobileDragging = false;
-            if (dragGhost) {
-                dragGhost.remove();
-                dragGhost = null;
-            }
+            if (dragGhost) { dragGhost.remove(); dragGhost = null; }
             document.querySelectorAll('.gate-visuals').forEach(v => v.style.opacity = '1');
             document.querySelectorAll('.circuit-unit').forEach(u => u.style.opacity = '1');
+            document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+            
             const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
             let dropUnit = targetEl ? targetEl.closest('.circuit-unit') : null;
-            if (dropUnit) {
-                let children = Array.from(document.getElementById('circuit-content').children);
-                let targetIndex = children.indexOf(dropUnit) - 1;
-                if (targetIndex >= 0 && targetIndex < gateHistory.length && targetIndex !== mDragIndex) {
-                    if (typeof pop !== 'undefined' && pop.play) {
-                        pop.currentTime = 0;
-                        pop.play().catch(e => {});
-                    }
+            
+            if (dropUnit && dropUnit !== originalDragEl && dropUnit.dataset.index !== undefined) {
+                let targetIdx = parseInt(dropUnit.dataset.index);
+                if (targetIdx === -1) targetIdx = 0;
+                if (targetIdx !== mDragIndex) {
+                    if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
                     const oldHistory = [...gateHistory];
                     const movedItem = gateHistory.splice(mDragIndex, 1)[0];
-                    gateHistory.splice(targetIndex, 0, movedItem);
-                    actionStack.push({
-                        type: 'replace',
-                        index: 0,
-                        oldGates: oldHistory,
-                        newGate: null
-                    });
-                    selectedIndices = [];
-                    recalculate();
+                    gateHistory.splice(targetIdx, 0, movedItem);
+                    actionStack.push({ type: 'replace', index: 0, oldGates: oldHistory, newGate: null });
+                    selectedIndices = []; recalculate();
                 }
             }
-            originalDragEl = null;
-            mDragIndex = null;
+            originalDragEl = null; mDragIndex = null;
         }
         function navWithSound(url) {
-            if (typeof pop !== 'undefined') {
-                pop.currentTime = 0;
-                pop.play();
-            }
-            setTimeout(() => {
-                window.location.href = url;
-            }, 150);
+            if (typeof pop !== 'undefined') { pop.currentTime = 0; pop.play(); }
+            setTimeout(() => { window.location.href = url; }, 150);
         }
         function initLabData() {
             const urlParams = new URLSearchParams(window.location.search);
+            initSkinFromUser(urlParams);
+            const sharedInput = urlParams.get('input');
+            if (sharedInput) {
+                const parsed = sharedInput.split(',').map(Number);
+                if (parsed.length === LAB_TOTAL &&
+                    new Set(parsed).size === LAB_TOTAL &&
+                    parsed.every(n => Number.isInteger(n) && n >= 0 && n < LAB_TOTAL)) {
+                    initialFishAtNode = parsed;
+                }
+            }
             const sharedCircuit = urlParams.get('circuit');
             try {
                 if (sharedCircuit) gateHistory = sharedCircuit.split(',').filter(g => g !== '');
@@ -457,9 +1104,7 @@
                     const savedCircuit = sessionStorage.getItem('labCircuit');
                     if (savedCircuit) gateHistory = savedCircuit.split(',').filter(g => g !== '');
                 }
-            } catch (e) {
-                console.log('Initialization failed. Opening an empty lab instead.');
-            }
+            } catch (e) { console.log('Initialization failed. Opening an empty lab instead.'); }
         }
         function toggleTraceMode() {
             pop.currentTime = 0;
@@ -470,57 +1115,53 @@
             const tView = document.getElementById('tt-view-container');
             const tCtrl = document.getElementById('trace-controls');
             if (isTraceMode) {
+                document.body.classList.add('is-tracing');
                 btn.innerText = 'Trace: ON';
                 btn.classList.add('mode-3');
                 gView.classList.add('hidden-el');
                 tView.classList.remove('hidden-el');
-                tCtrl.classList.remove('hidden-el', 'opacity-50', 'pointer-events-none');
+                tCtrl.classList.remove('hidden-el', 'pointer-events-none');
+                tCtrl.classList.add('opacity-50');
+                updateCircuitLabels();
                 updateTruthTable();
             } else {
+                document.body.classList.remove('is-tracing');
                 btn.innerText = 'Trace: OFF';
                 btn.classList.remove('mode-3');
                 gView.classList.remove('hidden-el');
                 tView.classList.add('hidden-el');
                 tCtrl.classList.add('hidden-el', 'opacity-50', 'pointer-events-none');
                 exitTrace();
+                setQuantumMode(isQuantumMode);
             }
         }
         function startTrace(inputIndex) {
-            if (typeof pop !== 'undefined' && pop.play) {
-                pop.currentTime = 0;
-                pop.play().catch(e => {});
-            }
+            if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
             activeTraceInput = inputIndex;
             currentTraceStep = 0;
-            document.getElementById('trace-controls').classList.remove('opacity-50', 'pointer-events-none');
+            document.getElementById('trace-controls').classList.remove('opacity-50');
             updateTruthTable();
             renderTraceStep();
         }
         function traceMove(delta) {
-            if (typeof pop !== 'undefined' && pop.play) {
-                pop.currentTime = 0;
-                pop.play().catch(e => {});
+            if (activeTraceInput === null) {
+                exitTrace();
+                return;
             }
+            if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
             currentTraceStep += delta;
             if (currentTraceStep < 0) currentTraceStep = 0;
             if (currentTraceStep > gateHistory.length) currentTraceStep = gateHistory.length;
             renderTraceStep();
         }
         function exitTrace() {
-            if (typeof pop !== 'undefined' && pop.play) {
-                pop.currentTime = 0;
-                pop.play().catch(e => {});
-            }
+            if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
             activeTraceInput = null;
-            document.getElementById('trace-controls').classList.add('opacity-50', 'pointer-events-none');
+            document.getElementById('trace-controls').classList.remove('pointer-events-none');
+            document.getElementById('trace-controls').classList.add('opacity-50');
             document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
             document.querySelectorAll('.trace-fish-active').forEach(el => el.classList.remove('trace-fish-active'));
-            for (let i = 0; i < 3; i++) {
-                const labelIn = document.getElementById(`q-in-${i}`);
-                const labelOut = document.getElementById(`q-out-${i}`);
-                if (labelIn) labelIn.innerText = `q${i}`;
-                if (labelOut) labelOut.classList.add('hidden-el');
-            }
+            updateCircuitLabels();
             updateTruthTable();
             if (typeof finishMove === 'function') finishMove();
         }
@@ -536,7 +1177,7 @@
             const f = document.getElementById(`fish-${trackedFishId}`);
             const n = nodePositions[currNode];
             if (f && n) {
-                f.style.top = `${n.t + 78}px`;
+                f.style.top = `${n.t + 55}px`; 
                 f.style.left = `${n.l + 22}px`;
             }
             document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
@@ -548,23 +1189,13 @@
                 if (lineEl) lineEl.classList.add('trace-line-active');
             }
             updateFishVisibility();
-            const inBin = activeTraceInput.toString(2).padStart(3, '0');
-            let finalNode = activeTraceInput;
-            for (let k = 0; k < gateHistory.length; k++) finalNode = getPermutationForGate(gateHistory[k])[finalNode];
-            const outBin = finalNode.toString(2).padStart(3, '0');
-            for (let i = 0; i < 3; i++) {
-                const qIn = document.getElementById(`q-in-${i}`);
-                const qOut = document.getElementById(`q-out-${i}`);
-                if (qIn) qIn.innerText = inBin[i];
-                if (qOut) {
-                    qOut.innerText = outBin[i];
-                    qOut.classList.remove('hidden-el');
-                }
-            }
+            
+            updateCircuitLabels();
             document.getElementById('trace-step-text').innerText = currentTraceStep;
             if (typeof renderCircuit === 'function') renderCircuit();
             const activeGate = document.querySelector('.circuit-unit.trace-active');
             if (activeGate) activeGate.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            updateFeatureHighlights();
         }
         function updateFishVisibility() {
             for (let i = 0; i < 8; i++) {
@@ -573,39 +1204,45 @@
                 if (activeTraceInput !== null) {
                     const trackedFishId = initialFishAtNode[activeTraceInput];
                     if (i === trackedFishId) {
-                        f.style.opacity = 1;
+                        f.style.setProperty('opacity', '1', 'important');
                         f.style.zIndex = 40;
                     } else {
-                        f.style.opacity = 0;
+                        f.style.setProperty('opacity', '0', 'important');
                         f.style.zIndex = 30;
                     }
                 } else {
-                    f.style.opacity = 1;
+                    f.style.removeProperty('opacity');
                     f.style.zIndex = 30;
                 }
             }
         }
         function updateTruthTable() {
-            let stateMap = Array.from({ length: 8 }, (_, i) => i);
-            gateHistory.forEach(type => {
-                const pm = getPermutationForGate(type);
-                const nextMap = new Array(8);
-                for (let i = 0; i < 8; i++) nextMap[i] = pm[stateMap[i]];
-                stateMap = nextMap;
-            });
+            const headLeft = document.getElementById('tt-head-left');
+            const headRight = document.getElementById('tt-head-right');
+            if (headLeft) headLeft.innerText = labelsOpen ? 'INPUT' : 'CAT';
+            if (headRight) headRight.innerText = labelsOpen ? 'OUTPUT' : 'FISH';
+            
             const tbody = document.getElementById('tt-body');
             tbody.innerHTML = '';
+            
             for (let i = 0; i < 8; i++) {
-                const inStr = i.toString(2).padStart(3, '0');
-                const outStr = stateMap[i].toString(2).padStart(3, '0');
+                const initialVal = initialFishAtNode[i];
+                const finalVal = fishAtNode.indexOf(initialVal);
+                
+                const inStr = initialVal.toString(2).padStart(3, '0');
+                const outStr = finalVal.toString(2).padStart(3, '0');
                 const isActive = activeTraceInput === i;
-                const isChanged = i !== stateMap[i];
+                const isChanged = initialVal !== finalVal;
                 const outColor = isActive ? '' : (isChanged ? 'text-[#99C44D] font-bold' : 'text-gray-300');
                 const rowClass = isActive ? 'active-trace' : '';
+                
+                const inputCell = labelsOpen ? inStr : truthSpriteHtml('cat', initialVal);
+                const outputCell = labelsOpen ? outStr : truthSpriteHtml('fish', finalVal);
+                
                 tbody.innerHTML += `
                     <tr class="${rowClass}" onclick="startTrace(${i})">
-                        <td class="py-2 text-base w-1/2 text-left pl-6">${inStr}</td>
-                        <td class="py-2 text-base w-1/2 text-right pr-6 ${outColor}">${outStr}</td>
+                        <td class="py-2 text-base w-1/2 text-center align-middle">${inputCell}</td>
+                        <td class="py-2 text-base w-1/2 text-center align-middle ${outColor}">${outputCell}</td>
                     </tr>`;
             }
         }
@@ -616,30 +1253,13 @@
             for (let i = 0; i < 8; i++) {
                 const bin = i.toString(2).padStart(3, '0');
                 const n = nodePositions[i];
-                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${n.t}px; left:${n.l}px;"><div class="fixed-number">${bin}</div><img src="./image/Cat${i + 1}.svg"></div>`;
-                fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper" style="top:${n.t + 78}px; left:${n.l + 22}px;"><div class="fish-label">${bin}</div><img src="./image/Fish${i + 1}.svg"></div>`;
+                const catId = initialFishAtNode[i];
+                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${n.t}px; left:${n.l}px;"><div class="fixed-number">${bin}</div><img src="./image/Cat${catId + 1}.svg"></div>`;
+                fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper" style="top:${n.t + 55}px; left:${n.l + 22}px;"><div class="fish-label">${bin}</div><img src="./image/Fish${i + 1}.svg"></div>`;
             }
         }
         function flashGateLines(type) {
-            let pairs = [];
-            if (type.startsWith('X')) {
-                pairs = getAllPairs(3 - parseInt(type.substring(1)));
-            } else if (type.startsWith('CX')) {
-                let ctrlVal = parseInt(type[2]), c = parseInt(type[3]), t = parseInt(type[4]);
-                let bit = 1 << (3 - t), cBit = 1 << (3 - c);
-                for (let k = 0; k < 16; k++) {
-                    if ((k & bit) === 0 && ((k & cBit) >> (3 - c)) === ctrlVal) pairs.push([k, k ^ bit]);
-                }
-            } else if (type.startsWith('TOF')) {
-                let cv1 = parseInt(type[3]), cv2 = parseInt(type[4]), c1 = parseInt(type[5]), c2 = parseInt(type[6]), t = parseInt(type[7]);
-                let bit = 1 << (3 - t), b1 = 1 << (3 - c1), b2 = 1 << (3 - c2);
-                for (let k = 0; k < 16; k++) {
-                    if ((k & bit) === 0 && ((k & b1) >> (3 - c1)) === cv1 && ((k & b2) >> (3 - c2)) === cv2) pairs.push([k, k ^ bit]);
-                }
-            } else if (type.startsWith('SWAP_')) {
-                let p = type.split('_');
-                pairs.push([parseInt(p[1]), parseInt(p[2])]);
-            }
+            const pairs = getHighlightPairsForGate(type);
             pairs.forEach(([a, b]) => {
                 const el = document.getElementById(`line-${Math.min(a,b)}-${Math.max(a,b)}`);
                 if (el) el.classList.add('swap-active');
@@ -653,82 +1273,180 @@
             }, 500);
         }
         function highlightByGate(type) {
-            clearHighlight();
-            const { ctrl, target, zero } = parseGateSpec(type);
-            let pairs = [];
-            if (target !== -1) {
-                const targetMask = 1 << (2 - target);
-                for (let k = 0; k < 8; k++) {
-                    if ((k & targetMask) !== 0) continue;
-                    const ok = ctrl.every(bit => {
-                        const bitMask = 1 << (2 - bit);
-                        const val = (k & bitMask) ? 1 : 0;
-                        return zero.includes(bit) ? val === 0 : val === 1;
-                    });
-                    if (ok) pairs.push([k, k ^ targetMask]);
+            highlightPairs(getHighlightPairsForGate(type));
+            highlightGateButton(type);
+        }
+        function getRgba(hex, alpha) {
+            hex = hex.replace('#', '');
+            const r = parseInt(hex.substring(0,2), 16);
+            const g = parseInt(hex.substring(2,4), 16);
+            const b = parseInt(hex.substring(4,6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+        function getGateColorMap(type) {
+            const g = normalizeGateType(type);
+            if (g.startsWith('SWAP')) return '#e2de6e';
+            if (g.startsWith('TOF')) return '#e2de6e';
+            if (g.startsWith('CX') || g.startsWith('C0X')) return '#629eed';
+            if (g.startsWith('X')) return '#b583e5';
+            return '#fff';
+        }
+        function getHighlightPairsForGate(type) {
+            const { ctrl, target, zero, swap } = parseGateSpec(type);
+            const pairs = [];
+            if (swap) return [swap];
+            if (target === -1) return pairs;
+            const targetMask = 1 << (2 - target);
+            for (let k = 0; k < 8; k++) {
+                if ((k & targetMask) !== 0) continue;
+                const ok = ctrl.every(bit => {
+                    const bitMask = 1 << (2 - bit);
+                    const val = (k & bitMask) ? 1 : 0;
+                    return zero.includes(bit) ? val === 0 : val === 1;
+                });
+                if (ok) pairs.push([k, k ^ targetMask]);
+            }
+            return pairs;
+        }
+        function getMiniHypercubeSVG(type, activeState = null) {
+            const pairs = getHighlightPairsForGate(type);
+            const xs = nodePositions.map(n => n.relX);
+            const ys = nodePositions.map(n => n.t);
+            const minX = Math.min(...xs), maxX = Math.max(...xs);
+            const minY = Math.min(...ys), maxY = Math.max(...ys);
+            const miniNodes = nodePositions.map(n => ({
+                x: ((n.relX - minX) / (maxX - minX)) * 70 + 15,
+                y: ((n.t - minY) / (maxY - minY)) * 70 + 15
+            }));
+            let svg = `<svg viewBox="0 0 100 100" style="width:100%; height:100%; pointer-events:none; display:block;" preserveAspectRatio="xMidYMid meet">`;
+            for (let i = 0; i < 8; i++) {
+                for (let b = 0; b < 3; b++) {
+                    const j = i ^ (1 << b);
+                    if (j > i) {
+                        const n1 = miniNodes[i], n2 = miniNodes[j];
+                        const hi = pairs.some(p => (p[0] === i && p[1] === j) || (p[0] === j && p[1] === i));
+                        svg += `<line x1="${n1.x}" y1="${n1.y}" x2="${n2.x}" y2="${n2.y}" class="${hi ? 'hyper-line-hi' : 'hyper-line'}" style="stroke-width:${hi ? 5 : 1.2}" stroke-linecap="round"/>`;
+                    }
                 }
             }
-            highlightPairs(pairs);
+            for (let i = 0; i < 8; i++) {
+                const n = miniNodes[i];
+                const isActive = (i === activeState);
+                if (isActive) {
+                    svg += `<circle cx="${n.x}" cy="${n.y}" r="6" fill="#f78790" stroke="#ffffff" stroke-width="2"/>`;
+                } else {
+                    svg += `<circle cx="${n.x}" cy="${n.y}" r="3.5" fill="#463438"/>`;
+                }
+            }
+            svg += `</svg>`;
+            return svg;
+        }
+        function getGateIcon(type) {
+            let { ctrl, target, zero } = parseGateSpec(type);
+            let content = '';
+            const getY = q => 19 + q * 18.5;
+            if (ctrl.length > 0) {
+                const allQs = [target, ...ctrl];
+                const minQ = Math.min(...allQs), maxQ = Math.max(...allQs);
+                content += `<div class="gate-v-line" style="top:${getY(minQ)}px; height:${(maxQ - minQ) * 18.5}px;"></div>`;
+            }
+            ctrl.forEach(q => {
+                const isZero = zero.includes(q);
+                content += `<div class="gate-dot ${isZero ? 'empty' : 'fill'}" style="top:${getY(q)}px;"></div>`;
+            });
+            if (target !== -1) content += `<div class="gate-target-circle" style="top:${getY(target)}px;"></div>`;
+            return content;
+        }
+        function getGateContent(type) {
+            return isQuantumMode ? getGateIcon(type) : getMiniHypercubeSVG(type);
+        } 
+        function highlightGateButton(type) {
+            document.querySelectorAll('.gate-btn-v2').forEach(btn => btn.classList.remove('btn-highlight'));
+            if(type) {
+                const btn = document.getElementById(`gate-btn-${getGateButtonId(type)}`);
+                if(btn) {
+                    btn.classList.add('btn-highlight');
+                    const container = document.getElementById('gate-scroll-area');
+                    if (container) {
+                        const btnRect = btn.getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+                        if (btnRect.top < containerRect.top) {
+                            container.scrollTop -= (containerRect.top - btnRect.top + 10);
+                        } else if (btnRect.bottom > containerRect.bottom) {
+                            container.scrollTop += (btnRect.bottom - containerRect.bottom + 10);
+                        }
+                    }
+                }
+            }
+        }
+        function setQuantumMode(value) {
+            isQuantumMode = value;
+            document.getElementById('body-root').classList.toggle('mini-mode', !isQuantumMode);
+            const qToggle = document.getElementById('quantum-toggle');
+            if (qToggle) qToggle.innerText = isQuantumMode ? '🧊' : '⚛️';
+            const title = document.getElementById('panel-gate-title');
+            if (title) title.innerText = isQuantumMode ? 'Quantum Gates' : 'Transformations';
+            const cTitle = document.getElementById('circuit-diagram-title');
+            if (cTitle) cTitle.innerText = isQuantumMode ? 'Circuit Diagram' : 'Paths';
+            updateCircuitLabels();
+            updateFeatureToggleLabels();
+            updateTruthTable();
+            initGates();
+            renderCircuit();
+        }
+        function toggleQuantumMode() {
+            pop.currentTime = 0;
+            pop.play().catch(e => {});
+            setQuantumMode(!isQuantumMode);
         }
         function initGates() {
             const grid = document.getElementById('gate-grid');
             let html = '';
-            const getGateIcon = type => {
-                let ctrl = [], target = -1, zero = [];
-                const parts = type.split('_');
-                if (parts[0] === 'X') {
-                    target = parseInt(parts[1]);
-                } else if (parts[0] === 'CX') {
-                    const cv = parseInt(parts[1]);
-                    const c = parseInt(parts[2]);
-                    target = parseInt(parts[3]);
-                    ctrl.push(c);
-                    if (cv === 0) zero.push(c);
-                } else if (parts[0] === 'TOF') {
-                    const cv1 = parseInt(parts[1]);
-                    const cv2 = parseInt(parts[2]);
-                    const c1 = parseInt(parts[3]);
-                    const c2 = parseInt(parts[4]);
-                    target = parseInt(parts[5]);
-                    ctrl.push(c1, c2);
-                    if (cv1 === 0) zero.push(c1);
-                    if (cv2 === 0) zero.push(c2);
-                }
-                let content = '';
-                const getY = q => 15 + q * 15;
-                if (ctrl.length > 0) {
-                    const allQs = [target, ...ctrl];
-                    const minQ = Math.min(...allQs);
-                    const maxQ = Math.max(...allQs);
-                    content += `<div class="gate-v-line" style="top:${getY(minQ)}px; height:${(maxQ - minQ) * 15}px;"></div>`;
-                }
-                ctrl.forEach(q => {
-                    const isZero = zero.includes(q);
-                    content += `<div class="gate-dot ${isZero ? 'empty' : 'fill'}" style="top:${getY(q)}px;"></div>`;
-                });
-                if (target !== -1) content += `<div class="gate-target-circle" style="top:${getY(target)}px;"></div>`;
-                return content;
+            const wrapBtn = (type) => {
+                const hex = getGateColorMap(type);
+                const rgbaLight = getRgba(hex, 0.35);
+                const bgImage = isQuantumMode ? `linear-gradient(#463438,#463438), linear-gradient(#463438,#463438), linear-gradient(#463438,#463438)` : `none`;
+                return `<button id="gate-btn-${type}" class="gate-btn-v2" style="background-color:${rgbaLight}; background-image:${bgImage};" onmouseenter="highlightByGate('${type}')" onmouseleave="clearHighlight()" oncontextmenu="handleGateRightClick(event, '${type}')" onclick="applyGate('${type}')">${getGateContent(type)}</button>`;
             };
-            const wrapBtn = (type, extraClass = '') => `<button class="gate-btn-v2 ${extraClass}" onmouseenter="highlightByGate('${type}')" onmouseleave="hideIndicator()" onclick="applyGate('${type}')">${getGateIcon(type)}</button>`;
-            for (let i = 0; i < 3; i++) html += wrapBtn(`X_${i}`, 'bg-pink-100');
-            html += `<div style="width: 45px"></div>`;
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    if (i !== j) {
-                        html += wrapBtn(`CX_1_${i}_${j}`, 'bg-white');
-                        html += wrapBtn(`CX_0_${i}_${j}`, 'bg-white');
-                    }
-                }
-            }
-            const tofs = [[0, 1, 2], [0, 2, 1], [1, 2, 0]];
-            tofs.forEach(([c1, c2, t]) => {
-                html += wrapBtn(`TOF_1_1_${c1}_${c2}_${t}`, 'bg-green-50');
-                html += wrapBtn(`TOF_0_0_${c1}_${c2}_${t}`, 'bg-green-50');
-                html += wrapBtn(`TOF_0_1_${c1}_${c2}_${t}`, 'bg-green-50');
-                html += wrapBtn(`TOF_1_0_${c1}_${c2}_${t}`, 'bg-green-50');
-            });
-            grid.innerHTML = html;
+            const row = arr => `<div class="flex justify-center gap-2 w-full">${arr.map(wrapBtn).join('')}</div>`;
+            const rows = [];
+            const targets = [0, 1, 2];
+            const getOthers = (t) => [0, 1, 2].filter(b => b !== t);
+            rows.push(targets.map(t => `X_${t}`));
+            rows.push(targets.map(t => `CX_1_${getOthers(t)[0]}_${t}`));
+            rows.push(targets.map(t => `CX_0_${getOthers(t)[0]}_${t}`));
+            rows.push(targets.map(t => `CX_1_${getOthers(t)[1]}_${t}`));
+            rows.push(targets.map(t => `CX_0_${getOthers(t)[1]}_${t}`));
+            rows.push(targets.map(t => `TOF_1_1_${getOthers(t)[0]}_${getOthers(t)[1]}_${t}`));
+            rows.push(targets.map(t => `TOF_0_0_${getOthers(t)[0]}_${getOthers(t)[1]}_${t}`));
+            rows.push(targets.map(t => `TOF_0_1_${getOthers(t)[0]}_${getOthers(t)[1]}_${t}`));
+            rows.push(targets.map(t => `TOF_1_0_${getOthers(t)[0]}_${getOthers(t)[1]}_${t}`));
+            grid.innerHTML = rows.map(r => row(r)).join('');
         }
+        function handleGateRightClick(event, type) {
+            event.preventDefault(); 
+            if (mobileDragging) return;     
+            if (selectedIndices.length > 0) {
+                selectedIndices.sort((a, b) => a - b);
+                const start = selectedIndices[0];
+                const count = selectedIndices.length;
+                const oldOnes = gateHistory.slice(start, start + count);
+                gateHistory.splice(start, count, type);
+                actionStack.push({
+                    type: 'replace',
+                    index: start,
+                    oldGates: oldOnes,
+                    newGate: type
+                });
+                selectedIndices = [];
+                if (typeof pop !== 'undefined' && pop.play) {
+                    pop.currentTime = 0;
+                    pop.play().catch(e => {});
+                }
+                recalculate();
+            }
+        }
+        
         function drawStaticLines() {
             const layer = document.getElementById('lines-layer');
             layer.innerHTML = '';
@@ -739,6 +1457,32 @@
                 }
             }
         }
+
+        function showIndicatorLockedPrompt() {
+            const pill = document.getElementById('ios-indicator');
+            const frac = document.getElementById('ind-fraction');
+            const label = document.getElementById('ind-label');
+            frac.innerText = isTouchDevice ? `↔ TILT/SWIPE & 2-FINGERS` : `↕ SCROLL & R-CLICK`;
+            label.innerText = ''; 
+            label.style.display = 'none';
+            pill.classList.add('active');
+            
+            clearHighlight();
+            const opt = currentOptions[currentOptionIndex];
+            if (opt) {
+                highlightPairs(opt.highlightPairs);
+                highlightGateButton(opt.gateType);
+            }
+        }
+
+        function cancelLock() {
+            lockedLineId = null;
+            hoverLine = null;
+            hasScrolled = false;
+            hideIndicator();
+            clearHighlight();
+        }
+
         function createLine(i, j, dim) {
             const n1 = nodePositions[i];
             const n2 = nodePositions[j];
@@ -752,29 +1496,38 @@
             line.className = 'connection-line';
             line.id = `line-${Math.min(i, j)}-${Math.max(i, j)}`;
             line.style.cssText = `width:${len}px; height:4px; background:#463438; left:${x1}px; top:${y1}px; transform:rotate(${ang}deg); transform-origin:0 50%;`;
+            
             line.onmouseenter = () => {
-                if (isTouchDevice || isTraceMode) return;
+                if (isTouchDevice || lockedLineId) return;
                 hoverLine = { i, j, dim };
-                if (lineMode === 1) {
+                
+                if (lineMode === 4) {
+                    const targetBit = 2 - dim;
+                    highlightPairs(getAllPairs(dim));
+                    highlightGateButton(`X_${targetBit}`);
+                } else if (lineMode === 1) {
+                    const targetBit = 2 - dim;
+                    const otherBits = [0, 1, 2].filter(b => b !== targetBit);
+                    const cv1 = (i & (1 << (2 - otherBits[0]))) ? 1 : 0;
+                    const cv2 = (i & (1 << (2 - otherBits[1]))) ? 1 : 0;
+                    const gateType = `TOF_${cv1}_${cv2}_${otherBits[0]}_${otherBits[1]}_${targetBit}`;
+
                     highlightPairs([[i, j]]);
+                    highlightGateButton(gateType);
                 } else {
-                    currentOptions = buildGateOptions(i, j, dim);
-                    currentOptionIndex = 0;
-                    const pill = document.getElementById('ios-indicator');
-                    if (pill) {
-                        pill.classList.remove('hidden-el');
-                        showIndicator();
-                    }
+                    highlightPairs([[i, j]]);
                 }
             };
+            
             line.onmouseleave = () => {
-                if (isTouchDevice) return;
+                if (isTouchDevice || lockedLineId) return;
                 hoverLine = null;
                 hideIndicator();
             };
+
             line.onclick = e => {
                 e.stopPropagation();
-                if (isTraceMode) return;
+
                 if (lineMode === 1) {
                     const targetBit = 2 - dim;
                     const otherBits = [0, 1, 2].filter(b => b !== targetBit);
@@ -783,45 +1536,46 @@
                     applyGate(`TOF_${cv1}_${cv2}_${otherBits[0]}_${otherBits[1]}_${targetBit}`);
                     return;
                 }
-                if (isTouchDevice) {
-                    const lineId = line.id;
-                    if (activeMobileLine !== lineId) {
-                        activeMobileLine = lineId;
-                        hoverLine = { i, j, dim };
-                        currentOptions = buildGateOptions(i, j, dim);
-                        currentOptionIndex = 0;
 
-
-                        const canvasRect = document.getElementById('main-canvas').getBoundingClientRect();
-                        const indicator = document.getElementById('ios-indicator');
-                        indicator.classList.remove('hidden-el');
-                        indicator.style.left = (e.clientX - canvasRect.left) + 'px';
-                        indicator.style.top = (e.clientY - canvasRect.top - 25) + 'px';
-
-
-                        showIndicator();
-                    } else {
-                        if (currentOptions[currentOptionIndex]) applyGate(currentOptions[currentOptionIndex].gateType);
-                        activeMobileLine = null;
-                        hideIndicator();
-                    }
-                } else {
-                    if (currentOptions[currentOptionIndex]) applyGate(currentOptions[currentOptionIndex].gateType);
+                if (lineMode === 4 && !isTouchDevice) {
+                    const targetBit = 2 - dim;
+                    applyGate(`X_${targetBit}`);
+                    return;
                 }
+
+                if (lockedLineId === line.id) {
+                    cancelLock();
+                    return;
+                }
+
+                lockedLineId = line.id;
+                hoverLine = { i, j, dim };
+                currentOptions = buildGateOptions(i, j, dim);
+                currentOptionIndex = 0;
+                hasScrolled = false;
+
+                const canvasRect = document.getElementById('main-canvas').getBoundingClientRect();
+                const indicator = document.getElementById('ios-indicator');
+                indicator.classList.remove('hidden-el');
+                indicator.style.left = (e.clientX - canvasRect.left) + 'px';
+                indicator.style.top = (e.clientY - canvasRect.top - 25) + 'px';
+
+                showIndicatorLockedPrompt();
             };
             document.getElementById('lines-layer').appendChild(line);
         }
+
         function cycleLineMode() {
             pop.currentTime = 0;
             pop.play();
-            requestShakePermission();
             const modes = [1, 2, 4];
             lineMode = modes[(modes.indexOf(lineMode) + 1) % modes.length];
             const btn = document.getElementById('mode-btn');
             btn.innerText = `Mode: ${lineMode}`;
             btn.className = `multi-toggle-btn mode-${lineMode}`;
-            hideIndicator();
+            cancelLock();
         }
+
         function showIndicator() {
             const pill = document.getElementById('ios-indicator');
             const frac = document.getElementById('ind-fraction');
@@ -830,10 +1584,13 @@
             if (!opt) return;
             frac.innerText = `${currentOptionIndex + 1} / ${currentOptions.length}`;
             label.innerText = opt.label;
+            label.style.display = 'none';
             pill.classList.add('active');
             clearHighlight();
             highlightPairs(opt.highlightPairs);
+            highlightGateButton(opt.gateType);
         }
+
         function hideIndicator() {
             const ind = document.getElementById('ios-indicator');
             if(ind) ind.classList.remove('active');
@@ -845,7 +1602,7 @@
             const otherBits = [0, 1, 2].filter(b => b !== targetBit);
             const options = [];
             if (lineMode === 4) {
-                options.push({ gateType: `X_${targetBit}`, label: `X Gate: q${targetBit}`, highlightPairs: getAllPairs(2 - targetBit) });
+                options.push({ gateType: `X_${targetBit}`, label: `X Gate: q${targetBit}`, highlightPairs: getAllPairs(dim) });
             } else if (lineMode === 2) {
                 otherBits.forEach(ctrlBit => {
                     const ctrlMask = 1 << (2 - ctrlBit);
@@ -874,14 +1631,14 @@
                 if (el) el.classList.add('line-highlight');
             });
         }
-        function clearHighlight() {
+        
+        window.clearHighlight = function() {
             document.querySelectorAll('.connection-line').forEach(l => l.classList.remove('line-highlight'));
+            document.querySelectorAll('.gate-btn-v2').forEach(b => b.classList.remove('btn-highlight'));
         }
+        
         function applyGate(type) {
-            hideIndicator();
-            clearHighlight();
-            activeMobileLine = null;
-            hoverLine = null;
+            cancelLock();
             if (selectedIndices.length > 0) {
                 selectedIndices.sort((a, b) => a - b);
                 const start = selectedIndices[0];
@@ -929,22 +1686,63 @@
             return g;
         }
         function normalizeGateType(type) {
+            type = String(type || '').trim();
             return type.includes('_') ? convertToLevel8Format(type) : type;
         }
+        function getGateButtonId(type) {
+            const { kind, ctrl, target, zero } = parseGateSpec(type);
+            if (kind === 'X') return `X_${target}`;
+            if (kind === 'CX') {
+                const c = ctrl[0];
+                return `CX_${zero.includes(c) ? 0 : 1}_${c}_${target}`;
+            }
+            if (kind === 'TOF') {
+                const c1 = ctrl[0], c2 = ctrl[1];
+                return `TOF_${zero.includes(c1) ? 0 : 1}_${zero.includes(c2) ? 0 : 1}_${c1}_${c2}_${target}`;
+            }
+            return type;
+        }
         function parseGateSpec(type) {
-            const gate = normalizeGateType(type);
+            const gate = normalizeGateType(String(type || '').trim());
             let ctrl = [];
             let target = -1;
             let zero = [];
-            if (gate.startsWith('X')) {
+            let swap = null;
+            let kind = '';
+            if (gate.startsWith('SWAP_')) {
+                const p = gate.split('_').map(Number);
+                swap = [p[1], p[2]];
+                const diff = p[1] ^ p[2];
+                if (diff > 0 && (diff & (diff - 1)) === 0) {
+                    target = 2 - Math.round(Math.log2(diff));
+                    const low = Math.min(p[1], p[2]).toString(2).padStart(3, '0').split('').map(Number);
+                    for (let q = 0; q < 3; q++) {
+                        if (q === target) continue;
+                        ctrl.push(q);
+                        if (low[q] === 0) zero.push(q);
+                    }
+                }
+                kind = 'SWAP';
+            } else if (gate.startsWith('X')) {
                 target = parseInt(gate[1]);
+                kind = 'X';
             } else if (gate.startsWith('C0X')) {
                 ctrl = [parseInt(gate[3])];
                 target = parseInt(gate[4]);
                 zero = [parseInt(gate[3])];
+                kind = 'CX';
             } else if (gate.startsWith('CX')) {
-                ctrl = [parseInt(gate[2])];
-                target = parseInt(gate[3]);
+                if (/^CX[01][0-2][0-2]$/.test(gate)) {
+                    const ctrlVal = parseInt(gate[2]);
+                    const ctrlBit = parseInt(gate[3]);
+                    ctrl = [ctrlBit];
+                    target = parseInt(gate[4]);
+                    if (ctrlVal === 0) zero = [ctrlBit];
+                } else {
+                    ctrl = [parseInt(gate[2])];
+                    target = parseInt(gate[3]);
+                }
+                kind = 'CX';
             } else if (gate.startsWith('TOF')) {
                 const s = gate.replace('TOF', '');
                 let parts = [];
@@ -961,35 +1759,25 @@
                     ctrl.push(p.v);
                     if (p.z) zero.push(p.v);
                 });
+                kind = 'TOF';
             }
-            return { gate, ctrl, target, zero };
+            return { gate, kind, ctrl, target, zero, swap };
         }
         function getPermutationForGate(type) {
-            if (type.startsWith('SWAP_')) {
-                const p = type.split('_');
-                const iA = parseInt(p[1]);
-                const iB = parseInt(p[2]);
+            const spec = parseGateSpec(type);
+            if (spec.swap) {
+                const [iA, iB] = spec.swap;
                 const pm = Array.from({ length: 8 }, (_, i) => i);
                 [pm[iA], pm[iB]] = [pm[iB], pm[iA]];
                 return pm;
             }
-            const gate = normalizeGateType(type);
             return Array.from({ length: 8 }, (_, p) => {
                 let b = p.toString(2).padStart(3, '0').split('').map(Number);
-                if (gate.startsWith('X')) {
-                    b[parseInt(gate[1])] ^= 1;
-                } else if (gate.startsWith('C0X')) {
-                    const c = parseInt(gate[3]);
-                    const t = parseInt(gate[4]);
-                    if (b[c] === 0) b[t] ^= 1;
-                } else if (gate.startsWith('CX')) {
-                    const c = parseInt(gate[2]);
-                    const t = parseInt(gate[3]);
-                    if (b[c] === 1) b[t] ^= 1;
-                } else if (gate.startsWith('TOF')) {
-                    const { ctrl, target, zero } = parseGateSpec(gate);
-                    const ok = ctrl.every(bit => zero.includes(bit) ? b[bit] === 0 : b[bit] === 1);
-                    if (ok) b[target] ^= 1;
+                if (spec.kind === 'X') {
+                    b[spec.target] ^= 1;
+                } else if (spec.kind === 'CX' || spec.kind === 'TOF') {
+                    const ok = spec.ctrl.every(bit => spec.zero.includes(bit) ? b[bit] === 0 : b[bit] === 1);
+                    if (ok) b[spec.target] ^= 1;
                 }
                 return parseInt(b.join(''), 2);
             });
@@ -1014,6 +1802,10 @@
         function finishMove() {
             document.getElementById('step-count').innerText = gateCount;
             updateTruthTable();
+            for (let nI = 0; nI < 8; nI++) {
+                const nodeEl = document.getElementById(`node-${nI}`);
+                if (nodeEl) nodeEl.classList.toggle('node-correct', fishAtNode[nI] === nI);
+            }
             if (activeTraceInput !== null) {
                 if (currentTraceStep > gateHistory.length) currentTraceStep = gateHistory.length;
                 renderTraceStep();
@@ -1028,10 +1820,13 @@
                 const f = document.getElementById(`fish-${fishAtNode[nI]}`);
                 const n = nodePositions[nI];
                 if (f && n) {
-                    f.style.top = `${n.t + 78}px`;
+                    f.style.top = `${n.t + 55}px`; 
                     f.style.left = `${n.l + 22}px`;
                 }
+                const nodeEl = document.getElementById(`node-${nI}`);
+                if (nodeEl) nodeEl.classList.toggle('node-correct', fishAtNode[nI] === nI);
             }
+            updateFeatureHighlights();
         }
         function renderCircuit() {
             const c = document.getElementById('circuit-content');
@@ -1046,7 +1841,9 @@
                     states.push(curr);
                 }
             }
+
             const drawWires = (parentUnit, stepIdx) => {
+                if (!isQuantumMode) return; 
                 for (let q = 0; q < 3; q++) {
                     let wire = document.createElement('div');
                     wire.className = 'horizontal-wire'; 
@@ -1078,15 +1875,64 @@
             };
             const startU = document.createElement('div');
             startU.className = 'circuit-unit';
-            startU.style.minWidth = '30px';
             startU.style.cursor = 'default';
+            startU.dataset.index = '-1'; 
+            if (!isQuantumMode) {
+                startU.style.setProperty('min-width', '15px', 'important');
+                startU.style.setProperty('width', '15px', 'important');
+                startU.style.setProperty('max-width', '15px', 'important');
+                startU.style.setProperty('flex', '0 0 15px', 'important');
+                startU.style.padding = '0';
+            } else {
+                startU.style.setProperty('min-width', '30px', 'important');
+                startU.style.setProperty('width', '30px', 'important');
+                startU.style.setProperty('max-width', '30px', 'important');
+                startU.style.setProperty('flex', '0 0 30px', 'important');
+            }
             drawWires(startU, 0);
+
+            if (!isTouchDevice) {
+                startU.ondragover = (e) => {
+                    if (draggedIndex === null) return;
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+                    if (draggedIndex !== 0) startU.classList.add('drag-target');
+                    return false;
+                };
+                startU.ondragleave = () => startU.classList.remove('drag-target');
+                startU.ondrop = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const sourceIdx = draggedIndex;
+                    clearCircuitDragState();
+                    if (sourceIdx === null || sourceIdx === 0) return;
+                    pop.currentTime = 0; pop.play();
+                    const oldHistory = [...gateHistory];
+                    const movedGate = gateHistory.splice(sourceIdx, 1)[0];
+                    gateHistory.splice(0, 0, movedGate); 
+                    actionStack.push({ type: 'replace', index: 0, oldGates: oldHistory, newGate: null });
+                    selectedIndices = []; recalculate();
+                };
+            }
             c.appendChild(startU);
             gateHistory.forEach((g, idx) => {
                 const u = document.createElement('div');
                 u.className = 'circuit-unit' + (selectedIndices.includes(idx) ? ' selected-gate' : '');
-                u.draggable = !isTouchDevice && activeTraceInput === null;
-                u.oncontextmenu = (e) => { e.preventDefault(); return false; };
+                u.dataset.index = idx;
+                u.draggable = !isTouchDevice;
+                const hexColor = getGateColorMap(g);
+                u.style.setProperty('--gate-bg-color', getRgba(hexColor, 0.35));
+                u.style.setProperty('--gate-border-color', hexColor);
+                u.oncontextmenu = (e) => { 
+                    e.preventDefault(); 
+                    if (mobileDragging) return false;
+                    const sIdx = selectedIndices.indexOf(idx);
+                    if (sIdx > -1) selectedIndices.splice(sIdx, 1);
+                    else selectedIndices.push(idx);
+                    renderCircuit();
+                    return false;
+                };
                 drawWires(u, idx + 1);
                 const visuals = document.createElement('div');
                 visuals.className = 'gate-visuals';
@@ -1095,12 +1941,48 @@
                 visuals.style.width = '100%';
                 visuals.style.height = '100%';
                 visuals.style.pointerEvents = 'none'; 
+                visuals.style.zIndex = '2';  
                 if (activeTraceInput !== null) {
                     if (idx === currentTraceStep - 1) u.classList.add('trace-active');
                     else if (idx >= currentTraceStep) visuals.style.opacity = '0.35';
                 }
+                if (!isQuantumMode) {
+                    let activeState = null;
+                    if (activeTraceInput !== null && idx < currentTraceStep) {
+                        activeState = states[idx + 1];
+                    }
+                    visuals.innerHTML = getMiniHypercubeSVG(g, activeState);
+                } else {
+                    const { ctrl, target, zero } = parseGateSpec(g);
+                    if (ctrl.length > 0) {
+                        const min = Math.min(...ctrl, target);
+                        const max = Math.max(...ctrl, target);
+                        const v = document.createElement('div');
+                        v.className = 'connection-v-line';
+                        v.style.cssText = `top:${30 + min * 40}px; height:${(max - min) * 40}px; z-index: 5;`;
+                        visuals.appendChild(v);
+                        ctrl.forEach(cl => {
+                            const d = document.createElement('div');
+                            d.className = 'control-dot';
+                            d.style.top = `${24 + cl * 40}px`;
+                            d.style.zIndex = '6';
+                            if (zero.includes(cl)) {
+                                d.style.background = '#fff';
+                                d.style.border = '2.5px solid #463438';
+                            }
+                            visuals.appendChild(d);
+                        });
+                    }
+                    if (target !== -1) {
+                        const t = document.createElement('div');
+                        t.className = 'circuit-target';
+                        t.style.top = `${31 + target * 40}px`;
+                        t.style.zIndex = '6';
+                        visuals.appendChild(t);
+                    }
+                }
                 u.appendChild(visuals);
-                if (!isTouchDevice && activeTraceInput === null) {
+                if (!isTouchDevice) {
                     let dragClone = null;
                     u.ondragstart = (e) => { 
                         draggedIndex = idx; 
@@ -1110,7 +1992,9 @@
                         dragClone.style.position = 'absolute';
                         dragClone.style.top = '-9999px';
                         dragClone.style.left = '-9999px';
-                        dragClone.style.background = 'rgba(255, 183, 197, 0.4)';
+                        const style = getComputedStyle(u);
+                        const gateBg = style.getPropertyValue('--gate-bg-color');
+                        dragClone.style.backgroundColor = gateBg;
                         dragClone.style.borderRadius = '12px';
                         dragClone.style.boxSizing = 'border-box';
                         dragClone.style.border = 'none';
@@ -1126,28 +2010,38 @@
                     };
                     u.ondragover = (e) => { 
                         e.preventDefault(); 
-                        e.dataTransfer.dropEffect = 'move'; 
+                        e.dataTransfer.dropEffect = 'move';
+                        document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+                        if (draggedIndex !== null && draggedIndex !== idx) {
+                            u.classList.add('drag-target');
+                        }
                         return false; 
                     };
+                    u.ondragleave = (e) => { u.classList.remove('drag-target'); };
                     u.ondrop = (e) => {
-                        if (draggedIndex === null || draggedIndex === idx) return;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const sourceIdx = draggedIndex;
+                        clearCircuitDragState();
+                        if (sourceIdx === null || sourceIdx === idx) return;
                         pop.currentTime = 0; pop.play();
                         const oldHistory = [...gateHistory];
-                        const movedGate = gateHistory.splice(draggedIndex, 1)[0];
+                        const movedGate = gateHistory.splice(sourceIdx, 1)[0];
                         gateHistory.splice(idx, 0, movedGate);
                         actionStack.push({ type: 'replace', index: 0, oldGates: oldHistory, newGate: null });
-                        selectedIndices = []; recalculate(); draggedIndex = null;
+                        selectedIndices = []; recalculate();
                     };
                     u.ondragend = (e) => { 
                         if (dragClone && document.body.contains(dragClone)) dragClone.remove();
-                        visuals.style.opacity = '1';
-                        draggedIndex = null; 
+                        clearCircuitDragState();
                     };
                 }
+
                 let touchTimer = null;
                 let startX, startY;
+
                 u.addEventListener('touchstart', (e) => {
-                    if (activeTraceInput !== null || e.touches.length > 1) return;
+                    if (e.touches.length > 1) return;
                     u.draggable = false; 
                     startX = e.touches[0].clientX;
                     startY = e.touches[0].clientY;
@@ -1156,37 +2050,108 @@
                         startMobileDrag(e.touches[0], u, idx);
                     }, 300); 
                 }, {passive: true});
+
                 u.addEventListener('touchmove', (e) => {
+                    let dx = e.touches[0].clientX - startX;
+                    let dy = e.touches[0].clientY - startY;
+                    lastTouchX = e.touches[0].clientX;
+                    lastTouchY = e.touches[0].clientY;
+
                     if (mobileDragging) {
                         if (e.cancelable) e.preventDefault();
                         moveMobileDrag(e.touches[0]);
-                    } else if (touchTimer) {
-                        let dx = e.touches[0].clientX - startX;
-                        let dy = e.touches[0].clientY - startY;
-                        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
-                            clearTimeout(touchTimer);
-                            touchTimer = null;
+
+                        const wrapper = document.getElementById('circuit-content-wrapper');
+                        const wrapperRect = wrapper.getBoundingClientRect();
+                        const threshold = 60; 
+
+                        if (lastTouchX < wrapperRect.left + threshold) {
+                            scrollDirection = -1;
+                            autoScrollWrapper = wrapper;
+                            if (!autoScrollRAF) autoScrollRAF = requestAnimationFrame(handleAutoScroll);
+                        } else if (lastTouchX > wrapperRect.right - threshold) {
+                            scrollDirection = 1;  
+                            autoScrollWrapper = wrapper;
+                            if (!autoScrollRAF) autoScrollRAF = requestAnimationFrame(handleAutoScroll);
+                        } else {
+                            scrollDirection = 0;  
+                            if (autoScrollRAF) {
+                                cancelAnimationFrame(autoScrollRAF);
+                                autoScrollRAF = null;
+                            }
+                        }
+
+                        let targetEl = document.elementFromPoint(lastTouchX, lastTouchY);
+                        let dropUnit = targetEl ? targetEl.closest('.circuit-unit') : null;
+                        
+                        document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+                        
+                        if (dropUnit && dropUnit !== u && dropUnit.dataset.index !== undefined) {
+                            dropUnit.classList.add('drag-target');
+                        }
+                    } else {
+                        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 5 && e.cancelable) {
+                            e.preventDefault();
+                        }
+                        if (touchTimer) {
+                            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                                clearTimeout(touchTimer);
+                                touchTimer = null;
+                            }
                         }
                     }
                 }, {passive: false});
+
                 u.addEventListener('touchend', (e) => {
                     if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+                    
+                    scrollDirection = 0;
+                    if (autoScrollRAF) { cancelAnimationFrame(autoScrollRAF); autoScrollRAF = null; }
+
                     if (mobileDragging) {
                         if (e.cancelable) e.preventDefault();
                         endMobileDrag(e.changedTouches[0]);
+                    } else {
+                        let endX = e.changedTouches[0].clientX;
+                        let endY = e.changedTouches[0].clientY;
+                        let dx = endX - startX;
+                        let dy = endY - startY;
+
+                        if (Math.abs(dy) > 30 && Math.abs(dy) > Math.abs(dx)) {
+                            if (dy < 0) {
+                                if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(err => {}); }
+                                const removed = gateHistory[idx];
+                                actionStack.push({ type: 'delete', index: idx, oldGates: [removed] });
+                                gateHistory.splice(idx, 1);
+                                selectedIndices = [];
+                                recalculate();
+                                hideIndicator();
+                            } else {
+                                const sIdx = selectedIndices.indexOf(idx);
+                                if (sIdx > -1) selectedIndices.splice(sIdx, 1);
+                                else selectedIndices.push(idx);
+                                renderCircuit();
+                            }
+                        }
                     }
-                    if (activeTraceInput === null) setTimeout(() => { u.draggable = true; }, 100);
+
+                    setTimeout(() => { u.draggable = true; }, 100);
                 });
+
                 u.addEventListener('touchcancel', (e) => {
                     if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+                    scrollDirection = 0;
+                    if (autoScrollRAF) { cancelAnimationFrame(autoScrollRAF); autoScrollRAF = null; }
+
                     if (mobileDragging) endMobileDrag(e.changedTouches[0]);
-                    if (activeTraceInput === null) setTimeout(() => { u.draggable = true; }, 100);
+                    setTimeout(() => { u.draggable = true; }, 100);
                 });
+
                 u.onmouseenter = () => { if (typeof highlightByGate === 'function') highlightByGate(g); };
                 u.onmouseleave = () => { if (typeof clearHighlight === 'function') clearHighlight(); };
                 u.onclick = e => {
-                    if (mobileDragging || activeTraceInput !== null) return;
-                    if (e.ctrlKey || e.metaKey || isShakeCtrlActive) {
+                    if (mobileDragging) return;
+                    if (e.ctrlKey || e.metaKey) {
                         const sIdx = selectedIndices.indexOf(idx);
                         if (sIdx > -1) selectedIndices.splice(sIdx, 1);
                         else selectedIndices.push(idx);
@@ -1201,42 +2166,48 @@
                         hideIndicator();
                     }
                 };
-                const { ctrl, target, zero } = parseGateSpec(g);
-                if (ctrl.length > 0) {
-                    const min = Math.min(...ctrl, target);
-                    const max = Math.max(...ctrl, target);
-                    const v = document.createElement('div');
-                    v.className = 'connection-v-line';
-                    v.style.cssText = `top:${30 + min * 40}px; height:${(max - min) * 40}px; z-index: 5;`;
-                    visuals.appendChild(v);
-                    ctrl.forEach(cl => {
-                        const d = document.createElement('div');
-                        d.className = 'control-dot';
-                        d.style.top = `${24 + cl * 40}px`;
-                        d.style.zIndex = '6';
-                        if (zero.includes(cl)) {
-                            d.style.background = '#fff';
-                            d.style.border = '2.5px solid #463438';
-                        }
-                        visuals.appendChild(d);
-                    });
-                }
-                if (target !== -1) {
-                    const t = document.createElement('div');
-                    t.className = 'circuit-target';
-                    t.style.top = `${31 + target * 40}px`;
-                    t.style.zIndex = '6';
-                    visuals.appendChild(t);
-                }
                 c.appendChild(u);
             });
-            const endU = document.createElement('div');
-            endU.className = 'circuit-unit';
-            endU.style.minWidth = '50px';
-            endU.style.flexGrow = '1';
-            endU.style.cursor = 'default';
-            drawWires(endU, states.length > 0 ? states.length - 1 : 0);
-            c.appendChild(endU);
+
+            const endPad = document.createElement('div');
+            endPad.className = 'circuit-unit';
+            endPad.style.cursor = 'default';
+            endPad.dataset.index = gateHistory.length;
+            
+            if (!isQuantumMode) {
+                endPad.style.setProperty('min-width', '20px', 'important');
+                endPad.style.setProperty('flex-grow', '1', 'important');
+            } else {
+                endPad.style.setProperty('min-width', '50px', 'important');
+                endPad.style.setProperty('flex-grow', '1', 'important');
+            }
+            drawWires(endPad, states.length > 0 ? states.length - 1 : 0);
+            if (!isTouchDevice) {
+                endPad.ondragover = (e) => {
+                    if (draggedIndex === null) return;
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    document.querySelectorAll('.drag-target').forEach(el => el.classList.remove('drag-target'));
+                    if (draggedIndex !== gateHistory.length - 1) endPad.classList.add('drag-target');
+                    return false;
+                };
+                endPad.ondragleave = () => endPad.classList.remove('drag-target');
+                endPad.ondrop = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const sourceIdx = draggedIndex;
+                    clearCircuitDragState();
+                    if (sourceIdx === null || sourceIdx === gateHistory.length - 1) return;
+                    pop.currentTime = 0; pop.play();
+                    const oldHistory = [...gateHistory];
+                    const movedGate = gateHistory.splice(sourceIdx, 1)[0];
+                    gateHistory.splice(gateHistory.length, 0, movedGate); 
+                    actionStack.push({ type: 'replace', index: 0, oldGates: oldHistory, newGate: null });
+                    selectedIndices = []; recalculate();
+                };
+            }
+            c.appendChild(endPad);
+
             updateUndoStatus();
             if ((selectedIndices.length === 0 && gateHistory.length > 0 && typeof draggedIndex === 'undefined') || draggedIndex === null) {
                 if (activeTraceInput === null) setTimeout(() => wrapper && wrapper.scrollTo({ left: wrapper.scrollWidth, behavior: 'smooth' }), 50);
@@ -1279,7 +2250,11 @@
                 return;
             }
             const circuitData = gateHistory.join(',');
-            const shareUrl = `${window.location.origin}${window.location.pathname}?circuit=${encodeURIComponent(circuitData)}`;
+            let shareUrl = `${window.location.origin}${window.location.pathname}?circuit=${encodeURIComponent(circuitData)}`;
+            const defaultInput = Array.from({ length: LAB_TOTAL }, (_, i) => i).join(',');
+            if (initialFishAtNode.join(',') !== defaultInput) {
+                shareUrl += `&input=${initialFishAtNode.join(',')}`;
+            }
             navigator.clipboard.writeText(shareUrl).then(() => {
                 alert('Circuit sharing link copied! Send it to a friend to open this circuit.');
             }).catch(err => {
