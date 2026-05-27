@@ -226,6 +226,12 @@
         .skin-mj .fish-wrapper.large-node > img.fish-img, .skin-mj .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(14px, -30%) scale(0.92)!important; }
         .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-img, .skin-mj.hide-labels .fish-wrapper.large-node > img.fish-bg-shape { transform: translate(14px, -18%) scale(1) !important; }
         .skin-mj .fish-label { width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; gap: 1px; font-size: 10px; top: 13px; right: 18px; }
+	body:not(.skin-rip):not(.skin-poto):not(.skin-mj) .qubit-label img {
+ 	   width: 28px !important;    /* 調整這裡的數值，例如 28px */
+ 	   height: 28px !important;
+ 	   transform: translateX(0px) translateY(2px) !important; /* 微調位置 */
+	}
+
 </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels" id="body-root">
