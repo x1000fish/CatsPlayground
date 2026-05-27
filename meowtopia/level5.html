@@ -722,7 +722,7 @@
             <p id="victoryMsg" class="text-xl font-bold mb-6"></p>
             <div class="victory-actions">
                 <button onclick="location.href='index.html'" class="game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
-                <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
+                <button onclick="viewInLab()" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
             </div>
             <div class="victory-progress-actions">
                 <button onclick="location.reload()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
@@ -906,7 +906,7 @@
             if (percent > 100) percent = 100;
             fill.style.width = percent + '%';
             thumb.style.left = percent + '%';
-            text.innerText = dist;
+            text.innerText = dist + ' / ' + PROGRESS_MAX_DISTANCE;
             wrapper.classList.toggle('progress-win', dist === 0);
         }
 
@@ -1930,8 +1930,15 @@
         }
     }
 }
-        function viewInLab() { if (gateHistory.length === 0) { alert("Current circuit is empty!"); return; } window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}`; }
-        function initGameLayout() { const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer'); nL.innerHTML = ''; fL.innerHTML = ''; for (let i = 0; i < 8; i++) { let bin = i.toString(2).padStart(3, '0'); nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catLayerHtml(`./svg/${bin}-c.svg`, "encoded-img", `${bin} cat`)}</div>`; const fishSrc = `./svg/${bin}-f.svg`; fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="${fishSrc}" class="fish-bg-shape"><img src="${fishSrc}" class="fish-img"></div>`; } }
+	function viewInLab() { 
+	    if (gateHistory.length === 0) { 
+	        alert("Current circuit is empty!"); 
+	        return; 
+	    } 
+	    const initialInput = "7,6,5,4,3,2,1,0"; 
+	    window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}&input=	${initialInput}`; 
+	}        
+	function initGameLayout() { const nL = document.getElementById('nodes-layer'), fL = document.getElementById('fishes-layer'); nL.innerHTML = ''; fL.innerHTML = ''; for (let i = 0; i < 8; i++) { let bin = i.toString(2).padStart(3, '0'); nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;"><div class="fixed-number">${bin}</div>${catLayerHtml(`./svg/${bin}-c.svg`, "encoded-img", `${bin} cat`)}</div>`; const fishSrc = `./svg/${bin}-f.svg`; fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper"><div class="fish-label">${bin}</div><img src="${fishSrc}" class="fish-bg-shape"><img src="${fishSrc}" class="fish-img"></div>`; } }
             var activeRankType = 'steps';
         var rankChampionTimers = [];
         function rankDisplayName(item) { return item.username || item.name || 'Anonymous'; }
@@ -2144,7 +2151,7 @@
             if (typeof updateFeatureToggleLabels === 'function') updateFeatureToggleLabels();
             if (typeof updateFishUI === 'function') updateFishUI();
         }
-        (function wrapSkinOnload() {
+        (function wrapSkinOnload() {   
             const originalOnload = window.onload;
             window.onload = function (event) {
                 if (typeof originalOnload === 'function') originalOnload.call(window, event);
