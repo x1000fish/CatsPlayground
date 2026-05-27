@@ -90,10 +90,14 @@
     function showMeowMap(user) {
       const _ml  = parseInt(sessionStorage.getItem('meow_level'));
       const _cl  = parseInt(sessionStorage.getItem('currentLevel'));
-      const meowLv = Math.max(
-        isNaN(_ml) ? 1 : _ml,
-        isNaN(_cl) ? 1 : _cl,
-        1
+      // 確保等級最高只會到 18，絕對不會跳到 19
+      const meowLv = Math.min(
+ 	 Math.max(
+   		isNaN(_ml) ? 1 : _ml,
+    		isNaN(_cl) ? 1 : _cl,
+    		1
+  	),
+  	18
       );
       document.getElementById('meow-display-username').innerText = user;
       document.getElementById('meow-display-level').innerText    = `LV. ${meowLv}`;
@@ -103,15 +107,16 @@
       grid.innerHTML = '';
       
       // 更新迴圈至 18 關
+      // 更新迴圈至 18 關
       for (let i = 1; i <= 18; i++) {
         const node = document.createElement('a');
         node.className = 'level-node';
         
-        // 第 18 關顯示 '?'
-        node.innerText = i === 18 ? '?' : i;
+        // 正常顯示關卡數字
+        node.innerText = i; 
         
-        // 判斷是否解鎖且未滿 18 關
-        if ((i === 1 || i <= meowLv) && i < 18) {
+        // 判斷是否解鎖 (依據玩家等級解鎖)
+        if (i === 1 || i <= meowLv) {
           node.href = `level${i}.html`;
         } else {
           node.classList.add('locked');
