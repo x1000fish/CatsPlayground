@@ -347,7 +347,7 @@
             <p id="victoryMsg" class="text-xl font-bold mb-6"></p>
             <div class="victory-actions">
                 <button onclick="location.href='index.html'" class="game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
-                <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
+                <button onclick="viewInLab()" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
             </div>
             <div class="victory-progress-actions">
                 <button onclick="location.reload()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
@@ -497,7 +497,7 @@
                 if(percent > 100) percent = 100; 
                 fill.style.width = percent + '%';
                 thumb.style.left = percent + '%';
-                text.innerText = dist; 
+                text.innerText = dist+ ' / ' +'64'; 
                 if (dist === 0) {
                     wrapper.classList.add('progress-win');
                 } else {
@@ -1403,7 +1403,14 @@
         }
     }
 }
-        function viewInLab() { if (gateHistory.length === 0) { alert("Current circuit is empty!"); return; } window.location.href = `lab4.html?circuit=${encodeURIComponent(gateHistory.join(','))}`; }
+        function viewInLab() { 
+    		if (gateHistory.length === 0) { 
+        		alert("Current circuit is empty!"); 
+        		return; 
+    		}	 
+    	        const initialInput = "15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0"; 
+    		window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}&input=${initialInput}`; 
+	}
         function toggleLeaderboard() { toggleSidePanel('rank'); }
         async function fetchLeaderboard() { 
             const listArea = document.getElementById('rankList'); 
