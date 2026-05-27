@@ -348,7 +348,7 @@
                         <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-3.06c-.77 1.76-2.54 3-4.67 3c-2.76 0-5-2.24-5-5s2.24-5 5-5c1.38 0 2.63.56 3.54 1.46L12 12h8V4z" />
                     </svg>
                 </button>
-                <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1;">LAB</button>
+                <button onclick="viewInLab()" class="game-btn btn-red" style="flex: 1;">LAB</button>
             </div>
             <div class="victory-actions mt-6">
                 <button onclick="location.href='index.html'" class="w-full game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
@@ -529,7 +529,7 @@
             if (percent > 100) percent = 100;
             fill.style.width = percent + '%';
             thumb.style.left = percent + '%';
-            text.innerText = dist;
+            text.innerText = dist + ' / ' + PROGRESS_MAX_DISTANCE;
             wrapper.classList.toggle('progress-win', dist === 0);
         }
 
@@ -1101,7 +1101,14 @@
         }
     }
 }
-        function viewInLab() { if (gateHistory.length === 0) { alert("Current circuit is empty!"); return; } window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}`; }
+        function viewInLab() { 
+    		if (gateHistory.length === 0) { 
+        		alert("Current circuit is empty!"); 
+        		return; 
+    		} 
+	    	const initialInput = "7,0,1,3,4,2,6,5"; 
+    		window.location.href = `lab3.html?circuit=${encodeURIComponent(gateHistory.join(','))}&input=${initialInput}`; 
+	}
         function toggleLeaderboard() { document.getElementById('leaderboard-wrapper').classList.toggle('expanded'); }
         async function fetchLeaderboard() { const listArea = document.getElementById('rankList'); try { const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard&level=18`); const data = await response.json(); if (data && Array.isArray(data) && data.length > 0) { leaderboardData = data; renderRank('steps'); } else { listArea.innerHTML = '<p class="text-center italic text-gray-400 mt-10 text-sm">No records yet</p>'; } } catch (e) { listArea.innerHTML = '<p class="text-center italic text-red-400 mt-10 text-sm">Load Error</p>'; } }
         function renderRank(type) { const tabSteps = document.getElementById('tab-steps'), tabTime = document.getElementById('tab-time'), listArea = document.getElementById('rankList'); if (type === 'steps') { tabSteps.className = 'rank-tab active'; tabTime.className = 'rank-tab bg-gray-100'; } else { tabSteps.className = 'rank-tab bg-gray-100'; tabTime.className = 'rank-tab active'; } if (!leaderboardData || leaderboardData.length === 0) return; const sorted = [...leaderboardData].sort((a, b) => a[type] - b[type]); let html = ""; sorted.slice(0, 10).forEach((item, index) => { const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : (index + 1) + "."; const av=item.photo?`<img src="${item.photo}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:${item.photoX||50}% ${item.photoY||50}%;transform-origin:${item.photoX||50}% ${item.photoY||50}%;transform:scale(${item.photoScale||1});">`:'🐱'; html += `<div class="rank-item"><div class="rank-avatar-sm">${av}</div><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">${medal} ${item.username || item.name || 'Anonymous'}</span><span class="rank-value">${type === 'steps' ? item.steps + '🐾' : item.time + 's'}</span></div>`; }); listArea.innerHTML = html; }
