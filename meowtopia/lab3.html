@@ -77,7 +77,6 @@
         #tt-body td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
         #tt-body tr:hover td { background-color: rgba(0, 0, 0, 0.05); cursor: pointer; }
         #tt-body tr.active-trace td { background-color: #a3cd5a9f !important; color: #463438 !important; }
-        #tt-body tr.row-correct:not(.active-trace) td { background-color: #ebceff !important; }
         #tt-view-container { padding: 0; }
         #tt-view-container .panel-section-title { margin-bottom: 10px; }
         #circuit-content { padding-right: 40px; }
@@ -291,14 +290,14 @@
                         </table>
                     </div>
                 </div>
-                <div id="trace-controls" class="hidden-el shrink-0 w-full mt-auto flex gap-1 items-center bg-gray-100 p-2 rounded-2xl border-4 border-black shadow-[0_4px_0_0_rgba(0,0,0,0.1)] opacity-50 transition-opacity">
+                <div id="trace-controls" class="hidden-el shrink-0 w-full mt-auto flex gap-1 items-center bg-gray-100 p-2 rounded-2xl border-4 border-black shadow-[0_4px_0_0_rgba(0,0,0,0.1)] transition-opacity">
                     <button class="func-btn btn-reset m-0 py-2 px-1 text-xs hover:bg-yellow-200 flex-1" style="box-shadow: 0 2px 0 #463438;" onclick="traceMove(-1)">◀</button>
                     <div class="flex flex-col items-center justify-center px-1 min-w-[50px]">
                         <span class="text-[15px] font-black leading-none" style="color:#99C44D;">STEP</span>
                         <span id="trace-step-text" class="font-black text-lg leading-none">0</span>
                     </div>
                     <button class="func-btn btn-reset m-0 py-2 px-1 text-xs hover:bg-yellow-200 flex-1" style="box-shadow: 0 2px 0 #463438;" onclick="traceMove(1)">▶</button>
-                    <button class="func-btn btn-red m-0 py-2 px-1 text-xs text-white border-black flex-1" style="box-shadow: 0 2px 0 #463438;" onclick="exitTrace()">EXIT</button>
+                    <button class="func-btn btn-red m-0 py-2 px-1 text-lg text-white border-black flex-1" style="box-shadow: 0 2px 0 #463438; font-weight: 900;" onclick="resetTraceStep()">↻</button>
                 </div>
             </div>
             <div class="game-canvas" id="main-canvas">
@@ -1140,79 +1139,94 @@
                 btn.classList.add('mode-3');
                 gView.classList.add('hidden-el');
                 tView.classList.remove('hidden-el');
-                tCtrl.classList.remove('hidden-el', 'pointer-events-none');
-                tCtrl.classList.add('opacity-50');
+                tCtrl.classList.remove('hidden-el'); 
+                currentTraceStep = 0;
                 updateCircuitLabels();
                 updateTruthTable();
+                renderTraceStep();
             } else {
                 document.body.classList.remove('is-tracing');
                 btn.innerText = 'Trace: OFF';
                 btn.classList.remove('mode-3');
                 gView.classList.remove('hidden-el');
                 tView.classList.add('hidden-el');
-                tCtrl.classList.add('hidden-el', 'opacity-50', 'pointer-events-none');
-                exitTrace();
+                tCtrl.classList.add('hidden-el');
+
+                activeTraceInput = null;
+                document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
+                document.querySelectorAll('.trace-fish-active').forEach(el => el.classList.remove('trace-fish-active'));
+                updateCircuitLabels();
+                updateTruthTable();
+                if (typeof finishMove === 'function') finishMove();
                 setQuantumMode(isQuantumMode);
             }
         }
         function startTrace(catId) {
             if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
-            activeTraceInput = catId;
-            currentTraceStep = 0;
-            document.getElementById('trace-controls').classList.remove('opacity-50');
+            if (activeTraceInput === catId) {
+                activeTraceInput = null;
+            } else {
+                activeTraceInput = catId;
+                currentTraceStep = 0;
+            }
             updateTruthTable();
             renderTraceStep();
         }
         function traceMove(delta) {
-            if (activeTraceInput === null) {
-                exitTrace();
-                return;
-            }
             if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
             currentTraceStep += delta;
             if (currentTraceStep < 0) currentTraceStep = 0;
             if (currentTraceStep > gateHistory.length) currentTraceStep = gateHistory.length;
             renderTraceStep();
         }
-        function exitTrace() {
+        function resetTraceStep() {
             if (typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e => {}); }
-            activeTraceInput = null;
-            document.getElementById('trace-controls').classList.remove('pointer-events-none');
-            document.getElementById('trace-controls').classList.add('opacity-50');
-            document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
-            document.querySelectorAll('.trace-fish-active').forEach(el => el.classList.remove('trace-fish-active'));
-            updateCircuitLabels();
-            updateTruthTable();
-            if (typeof finishMove === 'function') finishMove();
+            currentTraceStep = 0;
+            renderTraceStep();
         }
         function renderTraceStep() {
-            if (activeTraceInput === null) return;
-            const trackedCatId = activeTraceInput;
-            let startNode = initialFishAtNode.indexOf(trackedCatId);
-            let prevNode = startNode;
-            let currNode = startNode;
-            
-            for (let k = 0; k < currentTraceStep; k++) {
-                prevNode = currNode;
-                currNode = getPermutationForGate(gateHistory[k])[currNode];
+            let tempFish = [...initialFishAtNode];
+            for(let k = 0; k < currentTraceStep; k++) {
+                const pm = getPermutationForGate(gateHistory[k]);
+                const nextFish = new Array(8);
+                for(let i = 0; i < 8; i++) nextFish[pm[i]] = tempFish[i];
+                tempFish = nextFish;
             }
-            
-            const f = document.getElementById(`fish-${trackedCatId}`);
-            const n = nodePositions[currNode];
-            if (f && n) {
-                f.style.top = `${n.t + 55}px`; 
-                f.style.left = `${n.l + 22}px`;
+
+            for (let nI = 0; nI < 8; nI++) {
+                const f = document.getElementById(`fish-${tempFish[nI]}`);
+                const n = nodePositions[nI];
+                if (f && n) {
+                    f.style.top = `${n.t + 55}px`; 
+                    f.style.left = `${n.l + 22}px`;
+                }
+                const nodeEl = document.getElementById(`node-${nI}`);
+                if (nodeEl) nodeEl.classList.toggle('node-correct', tempFish[nI] === nI);
             }
+
             document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
             document.querySelectorAll('.trace-fish-active').forEach(el => el.classList.remove('trace-fish-active'));
-            if (f) f.classList.add('trace-fish-active');
-            if (currentTraceStep > 0 && prevNode !== currNode) {
-                const lineId = `line-${Math.min(prevNode, currNode)}-${Math.max(prevNode, currNode)}`;
-                const lineEl = document.getElementById(lineId);
-                if (lineEl) lineEl.classList.add('trace-line-active');
+
+            if (activeTraceInput !== null) {
+                const trackedCatId = activeTraceInput;
+                const f = document.getElementById(`fish-${trackedCatId}`);
+                if (f) f.classList.add('trace-fish-active');
+
+                let prevNode = initialFishAtNode.indexOf(trackedCatId);
+                let currNode = prevNode;
+                for (let k = 0; k < currentTraceStep; k++) {
+                    prevNode = currNode;
+                    currNode = getPermutationForGate(gateHistory[k])[currNode];
+                }
+
+                if (currentTraceStep > 0 && prevNode !== currNode) {
+                    const lineId = `line-${Math.min(prevNode, currNode)}-${Math.max(prevNode, currNode)}`;
+                    const lineEl = document.getElementById(lineId);
+                    if (lineEl) lineEl.classList.add('trace-line-active');
+                }
             }
+
             updateFishVisibility();
-            
             updateCircuitLabels();
             document.getElementById('trace-step-text').innerText = currentTraceStep;
             if (typeof renderCircuit === 'function') renderCircuit();
@@ -1225,7 +1239,7 @@
             for (let i = 0; i < 8; i++) {
                 const f = document.getElementById(`fish-${i}`);
                 if (!f) continue;
-                if (activeTraceInput !== null) {
+                if (isTraceMode && activeTraceInput !== null) {
                     const trackedCatId = activeTraceInput;
                     if (i === trackedCatId) {
                         f.style.setProperty('opacity', '1', 'important');
@@ -1265,7 +1279,7 @@
                 const startNode = initialFishAtNode.indexOf(i);
                 
                 let currNode = startNode;
-                let stepLimit = (isTraceMode && activeTraceInput !== null) ? currentTraceStep : gateHistory.length;
+                let stepLimit = isTraceMode ? currentTraceStep : gateHistory.length;
                 for (let k = 0; k < stepLimit; k++) {
                     currNode = getPermutationForGate(gateHistory[k])[currNode];
                 }
@@ -1277,7 +1291,6 @@
                 const currStr = currNode.toString(2).padStart(3, '0');
                 
                 const isActive = activeTraceInput === i;
-                const isSuccess = currNode === targetNode;
                 const isChanged = startNode !== currNode;
                 
                 let outColor = 'text-gray-300';
@@ -1287,7 +1300,6 @@
 
                 let rowClasses = [];
                 if (isActive) rowClasses.push('active-trace');
-                if (isCustom && isSuccess) rowClasses.push('row-correct');
                 const rowClass = rowClasses.join(' ');
                 
                 let inContent, outContent, targetContent;
@@ -1904,8 +1916,6 @@
                     f.style.top = `${n.t + 55}px`; 
                     f.style.left = `${n.l + 22}px`;
                 }
-                const nodeEl = document.getElementById(`node-${nI}`);
-                if (nodeEl) nodeEl.classList.toggle('node-correct', fishAtNode[nI] === nI);
             }
             updateFeatureHighlights();
         }
@@ -1935,8 +1945,8 @@
                     wire.style.height = '4px';
                     wire.style.top = `${30 + q * 40 - 0.5}px`;
                     wire.style.zIndex = '1';
-                    if (activeTraceInput !== null) {
-                        if (stepIdx <= currentTraceStep) {
+                    if (isTraceMode) {
+                        if (activeTraceInput !== null && stepIdx <= currentTraceStep) {
                             let bit = (states[stepIdx] >> (2 - q)) & 1;
                             if (bit === 1) {
                                 wire.style.background = '#FFB7C5';
@@ -1945,12 +1955,16 @@
                                 wire.style.background = '#8a6d1c';
                                 wire.style.boxShadow = 'none';
                             }
-                        } else {
+                        } else if (stepIdx > currentTraceStep) {
                             wire.style.background = '#d1d5db';
+                            wire.style.boxShadow = 'none';
+                        } else {
+                            wire.style.background = '#463438';
                             wire.style.boxShadow = 'none';
                         }
                     } else {
                         wire.style.background = '#463438';
+                        wire.style.boxShadow = 'none';
                     }
                     parentUnit.appendChild(wire);
                 }
@@ -2024,13 +2038,13 @@
                 visuals.style.height = '100%';
                 visuals.style.pointerEvents = 'none'; 
                 visuals.style.zIndex = '2';  
-                if (activeTraceInput !== null) {
+                if (isTraceMode) {
                     if (idx === currentTraceStep - 1) u.classList.add('trace-active');
                     else if (idx >= currentTraceStep) visuals.style.opacity = '0.35';
                 }
                 if (!isQuantumMode) {
                     let activeState = null;
-                    if (activeTraceInput !== null && idx < currentTraceStep) {
+                    if (isTraceMode && activeTraceInput !== null && idx < currentTraceStep) {
                         activeState = states[idx + 1];
                     }
                     visuals.innerHTML = getMiniHypercubeSVG(g, activeState);
