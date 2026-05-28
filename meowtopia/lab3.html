@@ -1167,7 +1167,6 @@
                 activeTraceInput = null;
             } else {
                 activeTraceInput = catId;
-                currentTraceStep = 0;
             }
             updateTruthTable();
             renderTraceStep();
@@ -1254,7 +1253,8 @@
                 }
             }
         }
-        function updateTruthTable() {
+        
+function updateTruthTable() {
             const isCustom = initialFishAtNode.some((val, idx) => val !== idx);
             const headerRow = document.getElementById('tt-header-row');
             if (headerRow) {
@@ -1286,7 +1286,7 @@
                 
                 const targetNode = i;
                 
-                const inStr = i.toString(2).padStart(3, '0');
+                const inStr = startNode.toString(2).padStart(3, '0'); 
                 const targetStr = targetNode.toString(2).padStart(3, '0');
                 const currStr = currNode.toString(2).padStart(3, '0');
                 
@@ -1308,7 +1308,7 @@
                     outContent = currStr;
                     targetContent = targetStr;
                 } else {
-                    inContent = truthSpriteHtml('fish', i);
+                    inContent = truthSpriteHtml('fish', startNode); 
                     outContent = truthSpriteHtml('cat', currNode);
                     targetContent = truthSpriteHtml('cat', targetNode);
                 }
