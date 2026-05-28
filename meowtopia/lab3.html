@@ -536,7 +536,12 @@
             
             if (isTraceMode && activeTraceInput !== null) {
                 const startNode = initialFishAtNode.indexOf(activeTraceInput);
-                const currNode = fishAtNode.indexOf(activeTraceInput);
+                
+                let currNode = startNode;
+                for (let k = 0; k < currentTraceStep; k++) {
+                    currNode = getPermutationForGate(gateHistory[k])[currNode];
+                }
+                
                 inBin = startNode.toString(2).padStart(LAB_BITS, '0');
                 outBin = currNode.toString(2).padStart(LAB_BITS, '0');
             }
@@ -1214,6 +1219,7 @@
             const activeGate = document.querySelector('.circuit-unit.trace-active');
             if (activeGate) activeGate.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             updateFeatureHighlights();
+            updateTruthTable();
         }
         function updateFishVisibility() {
             for (let i = 0; i < 8; i++) {
@@ -1256,9 +1262,14 @@
             tbody.innerHTML = '';
             
             for (let i = 0; i < 8; i++) {
-                // i 代表 Cat/Fish ID
                 const startNode = initialFishAtNode.indexOf(i);
-                const currNode = fishAtNode.indexOf(i);
+                
+                let currNode = startNode;
+                let stepLimit = (isTraceMode && activeTraceInput !== null) ? currentTraceStep : gateHistory.length;
+                for (let k = 0; k < stepLimit; k++) {
+                    currNode = getPermutationForGate(gateHistory[k])[currNode];
+                }
+                
                 const targetNode = i;
                 
                 const inStr = i.toString(2).padStart(3, '0');
