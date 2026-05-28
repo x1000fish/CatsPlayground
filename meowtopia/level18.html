@@ -172,11 +172,8 @@
         .skin-mj .node img.skin-cat { width: 112px; transform: translateX(-3px); }
         .skin-mj .large-node img.skin-cat { width: 120px; transform: translateX(-3px); }
         .bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
-        .progress-bar-wrapper { flex: 1; height: 32px; background: #fffaf5; border: 4px solid #463438; border-radius: 20px; position: relative; box-shadow: inset 0 3px 5px rgba(0,0,0,0.1), 3px 3px 0 #FFB7C5; display: flex; align-items: center; justify-content: center; }
-        .progress-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background-color: #99C44D; border-radius: 16px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s; overflow: hidden; border-right: 3px solid #463438; }
-        .progress-bar-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(45deg, rgba(255,255,255,0.25) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.25) 75%, transparent 75%, transparent); background-size: 30px 30px; animation: stripeMove 1s linear infinite; }
-        @keyframes stripeMove { 0% { background-position: 0 0; } 100% { background-position: 30px 0; } }
-                .rank-item { gap: 8px; align-items: center; }
+        
+	.rank-item { gap: 8px; align-items: center; }
         .rank-player-main { flex: 1 1 0; overflow: visible; }
         .rank-value { flex: 0 0 auto; max-width: 62px; text-align: right; color: #5ba4cf; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .feature-toggle-row .qubit-label { position: relative; left: auto; top: auto; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; z-index: 5; }
@@ -200,12 +197,30 @@
         .fish-wrapper.feature-dimmed img.fish-bg-shape { opacity: 1 !important; }
         .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape), .fish-wrapper.feature-dimmed > img:not(.fish-bg-shape):not(.hat-bg-shape) { opacity: 0.25 !important; }
         .fish-wrapper.feature-dimmed .fish-label { opacity: 0 !important; visibility: hidden !important; }
+        /* 增加 margin 讓進度條整體往右縮，騰出空間不擋住數字 */
+        .progress-bar-wrapper { flex: 1; height: 32px; background: #fffaf5; border: 4px solid #463438; border-radius: 20px; position: relative; box-shadow: inset 0 3px 5px rgba(0,0,0,0.1), 3px 3px 0 #FFB7C5; display: flex; align-items: center; justify-content: center; margin: 5px -5px 0 25px; }
+        
+        /* 拿掉 left: 0，改為 right: 0 讓它從右邊開始長；並且把邊框改成 border-left */
+        .progress-bar-fill { position: absolute; right: 0; top: 0; bottom: 0; width: 0%; background-color: #99C44D; border-radius: 16px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s; overflow: hidden; border-left: 3px solid #463438; }
+        .progress-bar-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(45deg, rgba(255,255,255,0.25) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.25) 75%, transparent 75%, transparent); background-size: 30px 30px; animation: stripeMove 1s linear infinite; }
+        @keyframes stripeMove { 0% { background-position: 0 0; } 100% { background-position: 30px 0; } }
+        
         .progress-text { position: relative; z-index: 5; font-weight: 900; color: #463438; font-size: 14px; letter-spacing: 1px; }
-        .progress-thumb { position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%); width: 70px; height: auto; z-index: 5; transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.5)); }
-        .progress-target { position: absolute; right: -12px; top: 50%; transform: translateY(-50%); width: 60px; height: auto; z-index: 15; filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.3)); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        /* 這是魚 (會移動) - 將 z-index 提高到 20，確保它在貓的上層 */
+        .progress-thumb { position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%); width: 50px; height: auto; z-index: 20; transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.5)); }
+        
+        /* 這是貓 (固定在左側) - 設定 scaleX(-1) 翻轉，並降 z-index 到 10 */
+        .progress-target { position: absolute; left: -25px; right: auto; top: 50%; transform: translateY(-50%) scaleX(-1); width: 60px; height: auto; z-index: 10; filter: drop-shadow(2px 2px 0px rgba(70,52,56,0.3)); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        
         .progress-win .progress-bar-fill { background-color: #FFB7C5; }
         .progress-win .progress-target { animation: targetBounce 0.5s infinite alternate; }
-        @keyframes targetBounce { 0% { transform: translateY(-50%) scale(1); } 100% { transform: translateY(-50%) scale(1.25) rotate(12deg); } }
+        
+        /* 勝利跳躍動畫也需要加上 scaleX(-1) 及反向旋轉角度 */
+        @keyframes targetBounce { 
+            0% { transform: translateY(-50%) scaleX(-1) scale(1); } 
+            100% { transform: translateY(-65%) translateX(-5px) scaleX(-1) scale(1.15) rotate(10deg); } 
+        }
         @media (min-width: 1024px) {body {zoom: 0.8;} }
         .fish-label { width: 32px; height: 22px; border-radius: 10px; font-size: 11px; position: absolute; top: 30px; right: auto; margin-bottom: 0; pointer-events: none; }
         body:not(.hide-labels) .fish-wrapper > img.fish-img, body:not(.hide-labels) .fish-wrapper > img.fish-bg-shape { transform: translate(-2px, -30px) scale(0.95); }
@@ -292,14 +307,19 @@
                 <div class="text-3xl font-black ml-6" style="color: #7bc202;">LEVEL 18</div>
             </div>
         </div>
-        <div class="flex w-full px-4 mt-6 mb-4 items-center justify-between gap-4 progress-row">
-            <div class="text-2xl font-black text-[#463438] shrink-0">MATCHED：</div>
+       <div class="flex w-full px-4 mt-6 mb-4 items-center justify-between gap-2 progress-row">
+            <div class="text-2xl font-black text-[#463438] shrink-0">DISTANCE：</div>
+            
+            <div class="text-xl font-black text-[#463438]">0</div>
+            
             <div class="progress-bar-wrapper">
                 <div id="progress-bar-fill" class="progress-bar-fill"></div>
-                <div class="progress-text" id="progress-text">0 / 8</div>
-                <img id="progress-thumb" src="./svg/111-c.svg" class="progress-thumb" alt="cat">
-                <img id="progress-target" src="./svg/111-f.svg" class="progress-target" alt="fish">
+                <div class="progress-text" id="progress-text">24</div>
+                <img id="progress-thumb" src="./svg/111-f.svg" class="progress-thumb" alt="fish">
+                <img id="progress-target" src="./svg/111-c.svg" class="progress-target" alt="cat">
             </div>
+
+            <div class="text-xl font-black text-[#463438] ml-4">24</div>
         </div>
 
         <div class="main-layout">
@@ -514,8 +534,10 @@
             }
             const thumb = document.getElementById('progress-thumb');
             const target = document.getElementById('progress-target');
-            if (thumb) thumb.src = catSrc;
-            if (target) target.src = fishSrc;
+            
+            // 【修改這裡】貓跟魚的圖片對調
+            if (thumb) thumb.src = fishSrc;
+            if (target) target.src = catSrc;
         }
 
         function updateProgressBar(dist) {
@@ -524,15 +546,21 @@
             const thumb = document.getElementById('progress-thumb');
             const wrapper = document.querySelector('.progress-bar-wrapper');
             if (!fill || !text || !thumb || !wrapper) return;
-            let percent = ((PROGRESS_MAX_DISTANCE - dist) / PROGRESS_MAX_DISTANCE) * 100;
+            
+            // percent 代表魚的距離比例：100% 在最右邊(起點)，0% 在最左邊(終點)
+            let percent = (dist / PROGRESS_MAX_DISTANCE) * 100;
             if (percent < 0) percent = 0;
             if (percent > 100) percent = 100;
-            fill.style.width = percent + '%';
+            
+            // 綠色軌跡的長度 = 魚游過的距離 (100 - percent)
+            fill.style.width = (100 - percent) + '%';
             thumb.style.left = percent + '%';
-            text.innerText = dist + ' / ' + PROGRESS_MAX_DISTANCE;
+            
+            // 只顯示當前距離數字
+            text.innerText = dist;
+            
             wrapper.classList.toggle('progress-win', dist === 0);
         }
-
         const originalProgressUpdateFishUI = updateFishUI;
         updateFishUI = function() {
             originalProgressUpdateFishUI.apply(this, arguments);
