@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
   let activeSensorKeys = new Set();
   let shouldAnimateFishOnNextUpdate = false;
   let fishAnimationTimeouts = [];
+  let nearCompleteHintBlinkTimer = null;
+  let nearCompleteHintBlinkOn = false;
   let audioContext = null;
   let crunchAudioTemplate = null;
   let iceAudioTemplate = null;
@@ -1127,6 +1129,49 @@ document.addEventListener('DOMContentLoaded', function () {
     );
   }
 
+  function isLevelTwoInteractionGuideActive() {
+    return isLevelTwoProGuideEnabled() && (
+      isProModeGuidePending ||
+      levelTwoGuideStep === 'cell' ||
+      levelTwoGuideStep === 'coverage-intro' ||
+      levelTwoGuideStep === 'coverage' ||
+      levelTwoGuideStep === 'simple-intro'
+    );
+  }
+
+  function isAllowedLevelTwoGuideTarget(target) {
+    if (!isLevelTwoInteractionGuideActive()) {
+      return true;
+    }
+
+    if (isProModeGuidePending) {
+      return Boolean(modeToggleBtn?.contains(target));
+    }
+
+    if (levelTwoGuideStep === 'cell') {
+      return Boolean(getCellAt(5, 5)?.contains(target));
+    }
+
+    if (levelTwoGuideStep === 'coverage') {
+      return Boolean(thresholdBtn?.contains(target));
+    }
+
+    if (levelTwoGuideStep === 'coverage-intro' || levelTwoGuideStep === 'simple-intro') {
+      return Boolean(target.closest?.('.level-two-side-guide-ok'));
+    }
+
+    return true;
+  }
+
+  function blockOffGuideClick(event) {
+    if (isAllowedLevelTwoGuideTarget(event.target)) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+  }
+
   function getCellAt(row, column) {
     const index = (row - 1) * gridSize + (column - 1);
     return Array.from(clickableBox.children).find(cell => Number(cell.dataset.index) === index) || null;
@@ -1151,6 +1196,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function clearLevelTwoSideGuide() {
+    document.body.classList.remove('level-two-side-guide-active');
     statusBar?.classList.remove('level-two-side-guide-host');
     statusBar?.querySelector('.level-two-side-guide-card')?.remove();
   }
@@ -1160,6 +1206,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetMissionTimer();
     clearLevelTwoGuideTargets();
     clearLevelTwoSideGuide();
+    document.body.classList.add('level-two-side-guide-active');
     statusBar?.classList.add('level-two-side-guide-host');
     statusBar?.insertAdjacentHTML('beforeend', `
       <div class="level-two-side-guide-card">
@@ -2406,6 +2453,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateNearCompleteUncoveredHints(grid, completionRate) {
     const progress = Number(completionRate || 0);
     const shouldHighlight = progress >= 95 && progress < 100;
+    let highlightedCount = 0;
     Array.from(grid.childNodes)
       .filter(cell => cell.classList.contains('grid-cell'))
       .forEach(cell => {
@@ -2414,8 +2462,41 @@ document.addEventListener('DOMContentLoaded', function () {
           !cell.classList.contains('wall') &&
           !cell.classList.contains('sensor') &&
           !cell.classList.contains('relay-node');
-        cell.classList.toggle('near-complete-uncovered', shouldHighlight && isUncoveredPlayableCell);
+        const shouldShowCellHint = shouldHighlight && isUncoveredPlayableCell;
+        if (shouldShowCellHint) {
+          highlightedCount += 1;
+        }
+        cell.classList.toggle('near-complete-uncovered', shouldShowCellHint);
       });
+    setNearCompleteHintBlinking(grid, highlightedCount > 0);
+  }
+
+  function setNearCompleteHintBlinking(grid, shouldBlink) {
+    if (!grid) {
+      return;
+    }
+
+    if (!shouldBlink) {
+      if (nearCompleteHintBlinkTimer) {
+        window.clearInterval(nearCompleteHintBlinkTimer);
+        nearCompleteHintBlinkTimer = null;
+      }
+      nearCompleteHintBlinkOn = false;
+      grid.classList.remove('near-complete-hint-on');
+      return;
+    }
+
+    if (!nearCompleteHintBlinkTimer) {
+      nearCompleteHintBlinkOn = true;
+      grid.classList.add('near-complete-hint-on');
+      nearCompleteHintBlinkTimer = window.setInterval(() => {
+        nearCompleteHintBlinkOn = !nearCompleteHintBlinkOn;
+        grid.classList.toggle('near-complete-hint-on', nearCompleteHintBlinkOn);
+      }, 450);
+      return;
+    }
+
+    grid.classList.toggle('near-complete-hint-on', nearCompleteHintBlinkOn);
   }
 
   function updateCatPlacementHints(grid) {
@@ -3061,6 +3142,14 @@ document.addEventListener('DOMContentLoaded', function () {
   quickSolutionBtn?.addEventListener('click', loadPresetSolution);
 
   document.addEventListener('click', function (event) {
+    blockOffGuideClick(event);
+  }, true);
+
+  document.addEventListener('pointerdown', function (event) {
+    blockOffGuideClick(event);
+  }, true);
+
+  document.addEventListener('click', function (event) {
     const disabledNavLink = event.target.closest?.('.level-nav a[aria-disabled="true"]');
     if (disabledNavLink) {
       event.preventDefault();
@@ -3106,6 +3195,10 @@ document.addEventListener('DOMContentLoaded', function () {
   saveMapBtn?.addEventListener('click', exportMap);
 
   modeToggleBtn?.addEventListener('click', function () {
+    if (levelTwoGuideStep && levelTwoGuideStep !== 'done') {
+      return;
+    }
+
     isGameMode = !isGameMode;
     if (isGameMode) {
       isThresholdMode = false;
