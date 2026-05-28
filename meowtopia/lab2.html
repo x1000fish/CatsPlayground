@@ -314,14 +314,15 @@
                 <div id="line-h-1" class="connection-line line-h" style="bottom: 90px;" onclick="handleLineClick(this.id)" onmouseover="syncHighlight(this.id, true)" onmouseout="syncHighlight(this.id, false)"></div>
                 <div id="line-v-0" class="connection-line line-v" style="top: 150px;" onclick="handleLineClick(this.id)" onmouseover="syncHighlight(this.id, true)" onmouseout="syncHighlight(this.id, false)"></div>
                 <div id="line-v-1" class="connection-line line-v" style="top: 150px;" onclick="handleLineClick(this.id)" onmouseover="syncHighlight(this.id, true)" onmouseout="syncHighlight(this.id, false)"></div>
-                <div class="node" id="node-0" style="top: 25px;"><div class="fixed-number">00</div><img src="./image/Cat1.svg"></div>
-                <div class="node" id="node-1" style="top: 25px;"><div class="fixed-number">01</div><img src="./image/Cat2.svg"></div>
-                <div class="node" id="node-2" style="bottom: 25px;"><div class="fixed-number">10</div><img src="./image/Cat3.svg"></div>
-                <div class="node" id="node-3" style="bottom: 25px;"><div class="fixed-number">11</div><img src="./image/Cat4.svg"></div>
-                <div id="fish-0" class="fish-wrapper"><div class="fish-label">00</div><img src="./image/Fish1.svg"></div>
-                <div id="fish-1" class="fish-wrapper"><div class="fish-label">01</div><img src="./image/Fish2.svg"></div>
-                <div id="fish-2" class="fish-wrapper"><div class="fish-label">10</div><img src="./image/Fish3.svg"></div>
-                <div id="fish-3" class="fish-wrapper"><div class="fish-label">11</div><img src="./image/Fish4.svg"></div>
+                
+                <div class="node" id="node-0" style="top: 25px;"></div>
+                <div class="node" id="node-1" style="top: 25px;"></div>
+                <div class="node" id="node-2" style="bottom: 25px;"></div>
+                <div class="node" id="node-3" style="bottom: 25px;"></div>
+                <div id="fish-0" class="fish-wrapper"></div>
+                <div id="fish-1" class="fish-wrapper"></div>
+                <div id="fish-2" class="fish-wrapper"></div>
+                <div id="fish-3" class="fish-wrapper"></div>
             </div>
         </div>
         <div id="circuit-area" class="mx-auto">
@@ -1372,7 +1373,7 @@
                 if (startNode === -1) continue;
 
                 let currNode = startNode;
-                const stepLimit = (isTraceMode && activeTraceInput !== null) ? currentTraceStep : gateHistory.length;
+                const stepLimit = isTraceMode ? currentTraceStep : gateHistory.length;
                 for (let k = 0; k < stepLimit; k++) {
                     currNode = getPermutationForGate(gateHistory[k])[currNode];
                 }
