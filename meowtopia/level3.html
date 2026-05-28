@@ -368,7 +368,7 @@
             <p id="victoryMsg" class="text-xl font-bold mb-6"></p>
             <div class="victory-actions">
                 <button onclick="location.href='index.html'" class="game-btn btn-blue home-btn" aria-label="Home" title="Home">HOME</button>
-                <button onclick="viewInLab().style.display='none'" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
+                <button onclick="viewInLab()" class="game-btn btn-red" style="flex: 1; max-width: 150px;">LAB</button>
             </div>
             <div class="victory-progress-actions">
                 <button onclick="location.reload()" class="game-btn btn-green replay-btn" aria-label="Play again" title="Play again">
@@ -550,7 +550,7 @@
             if (percent > 100) percent = 100;
             fill.style.width = percent + '%';
             thumb.style.left = percent + '%';
-            text.innerText = dist;
+            text.innerText = dist + ' / ' + PROGRESS_MAX_DISTANCE;
             wrapper.classList.toggle('progress-win', dist === 0);
         }
 
@@ -1216,15 +1216,14 @@
         }
     }
 }
-        function viewInLab() {
-            if (gateHistory.length === 0) {
-                alert("Current circuit is empty!");
-                return;
-            }
-            const circuitData = gateHistory.join(',');
-            const labUrl = `lab2.html?circuit=${encodeURIComponent(circuitData)}`;
-            window.location.href = labUrl;
-        }
+        function viewInLab() { 
+    		if (gateHistory.length === 0) { 
+        		alert("Current circuit is empty!"); 
+        		return; 
+    		} 
+    	        const initialInput = "1,0,3,2"; 
+    		window.location.href = `lab2.html?circuit=${encodeURIComponent(gateHistory.join(','))}&input=${initialInput}`; 
+	}
             var activeRankType = 'steps';
         var rankChampionTimers = [];
         function rankDisplayName(item) { return item.username || item.name || 'Anonymous'; }
