@@ -2337,7 +2337,7 @@
             c.appendChild(endU);
             
             updateUndoStatus();
-            if (selectedIndices.length === 0 && gateHistory.length > 0 && draggedIndex === null && activeTraceInput === null) {
+            if (!isTraceMode && selectedIndices.length === 0 && gateHistory.length > 0 && draggedIndex === null && activeTraceInput === null) {
                 setTimeout(() => wrapper.scrollTo({ left: wrapper.scrollWidth, behavior: 'smooth' }), 50);
             }
         }
