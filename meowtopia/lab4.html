@@ -25,12 +25,12 @@
         .trace-line-active { background: #99C44D !important; box-shadow: 0 0 15px rgba(153, 196, 77, 0.8) !important; height: 8px !important; z-index: 16 !important; opacity: 1 !important; border-top: none !important; }
         .trace-fish-active { filter: drop-shadow(0 0 12px #FFB7C5) drop-shadow(0 0 20px #FFB7C5) !important; transform: scale(1.15) !important; z-index: 45 !important; }
         .fish-wrapper { position: absolute; width: 70px; height: 70px; pointer-events: none; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .fish-wrapper img.fish-img { width: 60px; height: auto; position: relative; z-index: 2; }
-        .fish-wrapper img.fish-bg-shape { width: 60px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1);opacity: 1; }
+        .fish-wrapper img.fish-img { width: 50px; height: auto; position: relative; z-index: 2; margin-top: -6px; }
+        .fish-wrapper img.fish-bg-shape { width: 50px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1);opacity: 1; margin-top: -6px; }
         .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: 32px; height: 22px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; z-index: 5; position: absolute; top: 24px; }  
-        .hat-img { position: absolute; height: auto; pointer-events: none; z-index: 21; }
-        .cat-hat { width: 35px !important; top: 7px; left: 50px; transform: translateX(-50%) rotate(15deg); }
-        .fish-hat { width: 22px; top: 6px; left: 43%; transform: translateX(-50%) rotate(15deg); z-index: 31; }
+        .hat-img { position: absolute; height: auto; pointer-events: none; z-index: 25; }
+        .cat-hat { width: 31px !important; top: 6px; left: 50px; transform: translateX(-50%) rotate(0deg); }
+        .fish-hat { width: 19px; top: 13px; left: 45%; transform: translateX(-50%) rotate(-10deg); z-index: 31; }
         #pro-panel { width: 297px; opacity: 1; height: 550px; background: #fff; border: 8px solid #463438; border-radius: 40px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; box-sizing: border-box; box-shadow: 10px 10px 0px #99C44D;}
         .panel-section-title { font-weight: 900; font-size: 18px; margin: 5px 0; color: #463438; text-align: center; white-space: nowrap; }
         .game-btn { cursor: pointer; border: 5px solid #463438; border-radius: 60px; padding: 12px; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 2px 2px 0 #463438; box-shadow: 0 6px 0 #463438; position: relative; transition: all 0.1s; display: inline-block; }
@@ -56,7 +56,6 @@
         
         .gate-btn-v2 { position: relative; height: 75px; width: 50px; display: flex; align-items: center; justify-content: center; background-image: linear-gradient(#463438,#463438), linear-gradient(#463438,#463438), linear-gradient(#463438,#463438), linear-gradient(#463438,#463438); background-size: 60% 1.5px; background-repeat: no-repeat; background-position: center 15px, center 30px, center 45px, center 60px; padding: 0; border: 2px solid #463438; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
         
-        /* 選單按鈕 粉紅底 綠色框 Level 11 對齊特效 */
         .gate-btn-v2:hover, .btn-highlight { 
             background-color: #FFB7C5 !important; 
             border: 4px solid #99C44D !important; 
@@ -75,14 +74,16 @@
         #circuit-area { width: 1155px; height: 250px; opacity: 1; background: #fff; border: 8px solid #463438; border-radius: 30px; padding: 15px; margin-top: 20px; position: relative; overflow: hidden; box-shadow: 10px 10px 0px #FFB7C5;}
         #circuit-content-wrapper { position: relative; height: 180px; overflow-x: auto; margin-left: 45px; margin-right: 12px; scrollbar-width: none; }
         #circuit-content { display: flex; height: 100%; padding: 0 10px; min-width: 100%; width: max-content; position: relative; }
-        .qubit-label { position: absolute; left: 19px; font-weight: 900; font-size: 18px; color: #463438; width: 25px; text-align: center; }
-        .qubit-label.right-side { left: auto !important; right: 18px !important; color: rgb(255, 151, 172) !important; font-weight: 900; }
+        .qubit-label { position: absolute; left: 8px; font-weight: 900; font-size: 20px; color: #463438; width: 48px; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .qubit-label.right-side { left: auto !important; right: 5px !important; color: rgb(255, 151, 172) !important; font-weight: 900; }
         .circuit-unit { min-width: 50px; height: 180px; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: all 0.2s; background-color: transparent !important; }
-       /* 滑鼠經過時只有背景色，沒有邊框 */
-	    .circuit-unit:hover { background-color: var(--bg-hover, rgba(255, 183, 197, 0.3)) !important; border-radius: 12px; }
-	/* 只有被右鍵選取時，才加上背景色與同色邊框 */
-	    .circuit-unit.selected-gate { background-color: var(--bg-hover, rgba(255, 183, 197, 0.3)) !important; box-shadow: inset 0 0 0 3px var(--gate-color, #FFB7C5) !important; border-radius: 12px; }
+        .circuit-unit:hover { background-color: var(--bg-hover, rgba(255, 183, 197, 0.3)) !important; border-radius: 12px; }
+        .circuit-unit.selected-gate { background-color: var(--bg-hover, rgba(255, 183, 197, 0.3)) !important; box-shadow: inset 0 0 0 3px var(--gate-color, #FFB7C5) !important; border-radius: 12px; }
         .circuit-unit.trace-active { background: #bdfc507a !important; box-shadow: inset 0 0 0 3px #99C44D; border-radius: 12px; z-index: 100 !important; }
+        .circuit-unit.trace-pending .gate-visuals,
+        .circuit-unit.trace-pending .control-dot,
+        .circuit-unit.trace-pending .connection-v-line,
+        .circuit-unit.trace-pending .circuit-target { opacity: 0.35; }
         .control-dot { width: 14px; height: 14px; background: #463438; border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); z-index: 5; }
         .connection-v-line { position: absolute; width: 2.5px; background: #463438; left: 50%; transform: translateX(-50%); z-index: 3; }
         .circuit-target { position: absolute; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2.5px solid #463438; left: 50%; transform: translate(-50%, -50%); z-index: 15; }
@@ -102,7 +103,6 @@
         .gate-target-circle::before { content: ''; position: absolute; width: 100%; height: 1.5px; top: 50%; left: 0; transform: translateY(-50%); background: #463438; }
         .gate-target-circle::after { content: ''; position: absolute; height: 100%; width: 1.5px; left: 50%; top: 0; transform: translateX(-50%); background: #463438; }
         
-        /* Hypercube SVG Styles & Mode Toggle Styles */
         .hyper-line { stroke: #463438; stroke-width: 0.6; opacity: 0.3; }
         .hyper-line-hi { stroke: #FFB7C5; stroke-width: 2.5; opacity: 1; transition: stroke 0.2s; }
         .gate-btn-v2 .hyper-line-hi { stroke: #f78790; }
@@ -124,6 +124,7 @@
         #tt-body td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
         #tt-body tr:hover td { background-color: rgba(0, 0, 0, 0.05); cursor: pointer; }
         #tt-body tr.active-trace td { background-color: #a3cd5a9f  !important; color: #463438 !important; }
+        #tt-body .truth-sprite img.cat-bg-shape, #tt-body .truth-sprite img.fish-bg-shape { display: none !important; }
         #tt-view-container { padding: 0px; }
         #tt-view-container .panel-section-title { margin-bottom: 10px; }
         #circuit-content { padding-right: 40px; }
@@ -145,16 +146,8 @@
         .drag-target { position: relative; }
         .drag-target.right { margin-left: 0; margin-right: 0; }
         .drag-target::before {
-            content: '';
-            position: absolute;
-            left: -3px;
-            top: 10px;
-            bottom: 10px;
-            width: 4px;
-            background-color: #FFB7C5;
-            border-radius: 4px;
-            z-index: 200;
-            pointer-events: none;
+            content: ''; position: absolute; left: -3px; top: 10px; bottom: 10px; width: 4px;
+            background-color: #FFB7C5; border-radius: 4px; z-index: 200; pointer-events: none;
         }
         .drag-target.right::before { left: auto; right: -3px; }
         .node.node-correct { background: #ebceff; }
@@ -162,7 +155,6 @@
         .mode-toggle-inline:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #463438; }
         .mode-toggle-inline:active { transform: translateY(2px); box-shadow: 0 1px 0 #463438; }
         .fixed-number, .fish-label { transition: opacity 0.3s ease, transform 0.3s ease; }
-        .hide-labels .fixed-number, .hide-labels .fish-label { opacity: 0; transform: translateY(1px); pointer-events: none; }
         .node img, .fish-wrapper img.fish-img, .fish-wrapper img.fish-bg-shape, .hat-img { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         #lab-side-wrapper { position: fixed; left: -220px; top: 80px; display: flex; z-index: 700; transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         #lab-side-wrapper.expanded { left: 0; }
@@ -180,41 +172,145 @@
         .skin-preview img.preview-hat { position: absolute; width: 22px; top: 7px; left: 32px; transform: translateX(-50%); z-index: 2; pointer-events: none; }
         .skin-card.active .skin-preview { border-color: #fff; }
         .node img.skin-cat, .fish-wrapper img.fish-img, .fish-wrapper img.fish-bg-shape { object-fit: contain; }
-        .node img.skin-cat { width: 70px; height: auto; position: relative; z-index: 20; }
-        .node img.cat-bg-shape { position: absolute; filter: brightness(0) invert(1); opacity: 1; z-index: 19; pointer-events: none; }
+        
+        .node img.skin-cat { width: 78px; height: auto; position: relative; z-index: 20; margin-top: -7px; }
+        .node img.encoded-img:not(.cat-bg-shape):not(.hat-bg-shape) { position: relative; z-index: 22; }
+        .node img.cat-bg-shape { position: absolute; filter: brightness(0) invert(1); opacity: 0; z-index: 19; pointer-events: none; width: 82px; margin-top: -5px; }
+        
+        .feature-filter-active .node img.cat-bg-shape { opacity: 1; }
         .node img.cat-bg-shape + img { position: relative; z-index: 20; }
         .bit-faded { filter: grayscale(1) saturate(0) brightness(0.95) contrast(0.72); }
-        .feature-toggle-row .qubit-label { position: relative; left: auto; top: auto; font-weight: 900; font-size: 16px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; z-index: 5; }
+        .feature-toggle-row .qubit-label { position: relative; left: auto; top: auto; font-weight: 900; font-size: 18px; color: #463438; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; z-index: 5; }
         .feature-toggle-row .qubit-label:hover { transform: translateY(-2px) scale(1.05); z-index: 50; }
         .feature-toggle-row .qubit-label:active { transform: translateY(2px) scale(0.95); }
-        .feature-state-1 { background: #fff8db !important; border-color: #FFB800 !important; box-shadow: 0 0 0 3px rgba(255,184,0,0.18); }
-        .feature-state-0 { background: #ece7e4 !important; border-color: #463438 !important; box-shadow: 0 0 0 3px rgba(70,52,56,0.12); }
-        .node-dist-badge { position: absolute; top: -12px; right: -10px; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 999px; background: #99C44D; border: 3px solid #463438; color: #fff; font-size: 14px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 0 #463438; z-index: 60; }
+        .feature-state-1 { border-color: #FFB800 !important; background-color: rgba(255, 184, 0, 0.2); box-shadow: 0 0 10px rgba(255, 184, 0, 0.8); transform: scale(1.1); transition: all 0.2s; }
+        .feature-state-0 { border-color: #463438 !important; background-color: rgba(70, 52, 56, 0.2); box-shadow: 0 0 8px rgba(70, 52, 56, 0.8); filter: grayscale(1) brightness(0.85); transform: scale(1.1); transition: all 0.2s; }
+        .node-dist-badge { position: absolute; top: -6px; right: -6px; background: #FFB800; color: #463438; width: 26px; height: 26px; border-radius: 50%; border: 3px solid #463438; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; box-shadow: 2px 2px 0 rgba(70,52,56,0.5); pointer-events: none; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 60; }
         .node.feature-highlight { border-color: #FFB800 !important; box-shadow: 3px 3px 0 #FFB800 !important; z-index: 45 !important; }
-        .node.feature-dimmed { opacity: 0.6; }
-        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div:not(.node-dist-badge):not(.fixed-number) { opacity: 0.25 !important; }
-        .node.feature-dimmed > img.hat-bg-shape, .node.feature-dimmed > img.cat-bg-shape { opacity: 1 !important; }
-        .fish-wrapper.feature-highlight { z-index: 55 !important; }
-        .fish-wrapper.feature-dimmed { opacity: 0.5 !important; }
+        .hat-bg-shape { filter: brightness(0) invert(1); }
+        .cat-hat.hat-bg-shape { z-index: 24; }
+        .fish-hat.hat-bg-shape { z-index: 30; }
+        .node.feature-dimmed { background-color: #fff !important; }
+        .node.feature-dimmed > img:not(.hat-bg-shape), .node.feature-dimmed > div:not(.fixed-number):not(.node-dist-badge) { opacity: 0.25 !important; }
+        .node.feature-dimmed > img.cat-bg-shape { opacity: 1 !important; }
+        .node.feature-dimmed > .fixed-number { opacity: 0 !important; visibility: hidden !important; }
+        .node.feature-dimmed > img.hat-bg-shape { opacity: 1 !important; }
+        .fish-wrapper.feature-highlight { z-index: 75 !important; }
+        .feature-filter-active #fishes-layer { z-index: 90 !important; }
+        .feature-filter-active .fish-wrapper { z-index: 90 !important; }
+        .fish-wrapper.feature-dimmed { opacity: 1 !important; }
         .fish-wrapper.feature-dimmed img.fish-bg-shape { opacity: 1 !important; }
-        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape), .fish-wrapper.feature-dimmed > img:not(.fish-bg-shape):not(.hat-bg-shape) { opacity: 0.25 !important; }
+        .fish-wrapper.feature-dimmed img.fish-img, .fish-wrapper.feature-dimmed img.hat-img:not(.hat-bg-shape) { opacity: 0.25 !important; }
         .fish-wrapper.feature-dimmed .fish-label { opacity: 0 !important; visibility: hidden !important; }
-        .skin-rip .node img.skin-cat, .skin-rip .node img.cat-bg-shape { width: 86px; }
-        .skin-rip .fish-wrapper img.fish-img, .skin-rip .fish-wrapper img.fish-bg-shape, .skin-poto .fish-wrapper img.fish-img, .skin-poto .fish-wrapper img.fish-bg-shape { width: 78px; }
-        .skin-mj .node img.skin-cat, .skin-mj .node img.cat-bg-shape { width: 82px; }
-        .skin-mj .fish-wrapper img.fish-img, .skin-mj .fish-wrapper img.fish-bg-shape { width: 76px; }
+
+        #tt-body .truth-sprite .cat-hat { top: 0px !important; left: 55% !important; transform: translateX(-50%) rotate(0deg) !important; width: 18px !important; }
+        #tt-body .truth-sprite .fish-hat { top: 6px !important; left: 40% !important; transform: translateX(-50%) rotate(-7deg) !important; width: 15px !important; }
+
+        .skin-rip .fish-wrapper { position: absolute; width: 66px; height: 70px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-rip .fish-wrapper img.fish-img { width: 62px; height: auto; position: relative; z-index: 2; transform: translateY(-4px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-rip .fish-wrapper img.fish-bg-shape { width: 62px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translateY(-4px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-rip .node img.skin-cat, .skin-rip .node img.cat-bg-shape { width: 75px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-top: -8px; }
+        .skin-rip .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 13px; right: 12px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
+        
+        .skin-poto .fish-wrapper { position: absolute; width: 80px; height: 80px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-poto .fish-wrapper img.fish-img { width: 65px; height: auto; position: relative; z-index: 2; transform: translate(-2px, -2px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-poto .fish-wrapper img.fish-bg-shape { width: 65px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translate(-2px, -2px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-poto .node img.skin-cat, .skin-poto .node img.cat-bg-shape { width: 76px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-top: -7px; margin-left: -3px; }
+        .skin-poto .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 22px; right: 24px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
+        
+        .skin-mj .fish-wrapper { position: absolute; width: auto; height: 80px; pointer-events: none; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-mj .fish-wrapper img.fish-img { width: 52px; height: auto; position: relative; z-index: 2; transform: translate(4px, 3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-mj .fish-wrapper img.fish-bg-shape { width: 52px; height: auto; position: absolute; z-index: 1; filter: brightness(0) invert(1); opacity: 1; transform: translate(4px, 3px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skin-mj .node img.skin-cat, .skin-mj .node img.cat-bg-shape { width: 80px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-top: -9px; }
+        .skin-mj .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 24px; right: -5px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
+        .skin-mj .large-node .fish-label { background: rgba(70, 52, 56, 0.8); color: #fff; width: auto; padding: 2px 5px; height: 22px; border-radius: 10px; display: flex; gap: 1px; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; z-index: 5; position: absolute; top: 24px; right: -18px; transition: opacity 0.3s, transform 0.2s; pointer-events: none;}
+        
+        .skin-mj .large-node img.skin-cat, .skin-mj .large-node img.cat-bg-shape { width: 82px; height: auto; pointer-events: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-top: -10px;}
+        
+        .skin-mj .fish-wrapper.large-node img.fish-bg-shape { 
+            transform: translate(16px, -3px) scale(0.92) !important; 
+        }
+
+        .skin-mj .fish-wrapper.large-node img.fish-img { 
+            transform: translate(16px, -3px) scale(0.92) !important; 
+        }
+        .skin-mj .fish-wrapper:not(.large-node) img.fish-img, .skin-mj .fish-wrapper:not(.large-node) img.fish-bg-shape { transform: translate(6px, -5px); }
+        .hide-labels .node .fixed-number, .hide-labels .fish-wrapper .fish-label { opacity: 0 !important; transform: translateY(1px) !important; pointer-events: none; }
+
+        .hide-labels .node > img.encoded-img:not(.hat-img) { transform: translate(-2px, 2px) scale(1.05); }
+        .hide-labels .node > img.hat-img { transform: translate(-50%, 5%) rotate(0deg) scale(1.15); }
+        .hide-labels .fish-wrapper > img.fish-img, .hide-labels .fish-wrapper > img.fish-bg-shape { transform: scale(1.05) translate(-3px, -1px); }
+        .hide-labels .fish-wrapper > img.hat-img { transform: translate(-50%, 0px) rotate(-5deg) scale(1.15); }
+
+        .skin-rip.hide-labels .node > img.encoded-img { transform: translate(0px, 5px) scale(1.1) !important; }
+        .skin-rip.hide-labels .fish-wrapper img.fish-img, .skin-rip.hide-labels .fish-wrapper img.fish-bg-shape { transform: scale(1.15) translateY(3px) !important; }
+
+        .skin-poto.hide-labels .node > img.encoded-img { transform: translate(0px, 3px) scale(1.1) !important; }
+        .skin-poto.hide-labels .fish-wrapper img.fish-img, .skin-poto.hide-labels .fish-wrapper img.fish-bg-shape { transform: scale(1.15) translate(0px, 5px) !important; }
+
+        .skin-mj.hide-labels .node:not(.large-node) > img.encoded-img { transform: translate(-2px, 2px) scale(1.05) !important; }
+        .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-img, .skin-mj.hide-labels .fish-wrapper:not(.large-node) img.fish-bg-shape { transform: scale(1.15) translate(5px, -1px) !important; }
+        .skin-mj.hide-labels .node.large-node > img.encoded-img { transform: translate(-2px, 3px) scale(1.1) !important; }
+        .skin-mj.hide-labels .fish-wrapper.large-node img.fish-bg-shape { 
+            transform: scale(1) translate(16px, 1px) !important; 
+        }
+
+        .skin-mj.hide-labels .fish-wrapper.large-node img.fish-img { 
+            transform: scale(1) translate(16px, 1px) !important; 
+        }
+
         .truth-sprite { width: 58px; height: 46px; display: inline-flex; align-items: center; justify-content: center; position: relative; vertical-align: middle; }
         .truth-sprite img { max-width: 56px; max-height: 46px; object-fit: contain; pointer-events: none; }
-        .truth-sprite img.cat-bg-shape, .truth-sprite img.fish-bg-shape { position: absolute; filter: brightness(0) invert(1); opacity: 1; z-index: 1; }
-        .truth-sprite img.skin-cat, .truth-sprite img.fish-img, .truth-sprite img.encoded-img:not(.cat-bg-shape):not(.fish-bg-shape) { position: relative; z-index: 2; }
-        body.skin-rainbow .fish-label { top: 18px; right: 22px; background: rgba(70, 52, 56, 0.85); }
-        body.skin-rainbow img.fish-img { width: 64px; height: auto; position: relative; z-index: 2; }
+        .truth-sprite img.cat-bg-shape, .truth-sprite img.fish-bg-shape { position: absolute; filter: brightness(0) invert(1); opacity: 1; z-index: 1; margin: 0; }
+        .truth-sprite img.skin-cat, .truth-sprite img.fish-img, .truth-sprite img.encoded-img:not(.cat-bg-shape):not(.fish-bg-shape) { position: relative; z-index: 2; margin: 0; }
+        
+        body:not(.skin-rainbow) #tt-body .truth-sprite.mj-large-tt img.skin-cat,
+        body:not(.skin-rainbow) #tt-body .truth-sprite.mj-large-tt img.cat-bg-shape { transform: scale(1.25) translateY(-2px); }
+
+        body.skin-rainbow .fish-label { top: 24px; right: 20px; background: rgba(70, 52, 56, 0.85); }
+        body.skin-rainbow img.fish-img, body.skin-rainbow img.fish-bg-shape { width: 58px; height: auto; margin-top: 2px; }
+        body.skin-rainbow img.fish-img { position: relative; z-index: 2; }
+        body.skin-rainbow .node img.skin-cat, body.skin-rainbow .node img.cat-bg-shape { width: 80px; margin-top: -7px; margin-left: 0; }
+        body.skin-rainbow .cat-hat { top: -1px !important; left: 53% !important; transform: translateX(-50%) rotate(8deg) !important; width: 32px !important; }
+        body.skin-rainbow .fish-hat { top: 2px !important; left: 50% !important; transform: translateX(-50%) rotate(12deg) !important; width: 30px !important; }
+        body.skin-rainbow #tt-body .truth-sprite .cat-hat { top: -6px !important; left: 54% !important; transform: translateX(-50%) rotate(5deg) !important; width: 23px !important; }
+        body.skin-rainbow #tt-body .truth-sprite .fish-hat { top: -2px !important; left: 43% !important; transform: translateX(-50%) rotate(15deg) !important; width: 19px !important; }
+
+        body.skin-rainbow.hide-labels .node > img.skin-cat,
+        body.skin-rainbow.hide-labels .node > img.cat-bg-shape {
+            transform: translate(0px, 3px) scale(1.1) !important; 
+        }
+
+        body.skin-rainbow.hide-labels .node > img.cat-hat {
+            transform: translateX(-50%) translate(0px, 4px) rotate(5deg) scale(1.15) !important;
+        }
+
+        body.skin-rainbow.hide-labels .fish-wrapper img.fish-img,
+        body.skin-rainbow.hide-labels .fish-wrapper img.fish-bg-shape {
+            transform: translate(0px, 4px) scale(1.15) !important;
+        }
+
+        body.skin-rainbow.hide-labels .fish-wrapper img.fish-hat {
+            transform: translateX(-50%) translate(0px, 4px) rotate(10deg) scale(1.15) !important;
+        }
         @media (min-width: 1024px) {body {zoom: 0.8;} }
     </style>
 </head>
 <body id="body-root" class="mini-mode">
+    <div id="input-modal" class="hidden-el fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-sm bg-black/30 transition-opacity">
+        <div class="bg-[#fffaf5] p-6 rounded-[30px] border-[6px] border-[#463438] shadow-[10px_10px_0_#FFB7C5] w-96 flex flex-col gap-4">
+            <h3 class="text-2xl font-black text-[#463438] text-center mb-2">Edit Input</h3>
+            <p class="text-sm font-bold text-[#463438] text-center mb-2">Enter order (0-15, comma-separated):</p>
+            <input type="text" id="initial-input-field" class="border-4 border-[#463438] rounded-2xl p-3 text-xl font-black text-center text-[#463438] outline-none focus:border-[#99C44D] bg-white transition-colors" onkeydown="if(event.key === 'Enter') saveInitialInput()" />
+            <div class="flex gap-4 justify-center mt-4">
+                <button onclick="closeInputModal()" class="func-btn flex-1 text-white" style="background: #5BA4CF; border-width: 4px; border-color: #463438;">Cancel</button>
+                <button onclick="saveInitialInput()" class="func-btn flex-1 text-white border-[#463438]" style="background: #99C44D; border-width: 4px;">Save</button>
+            </div>
+        </div>
+    </div>
+
     <button onclick="navWithSound('lab2.html')" class="nav-fab" title="Go to 2-Bit">2</button>
-    <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 110px; right: 25px; font-size: 26px;">⚛️</div>
+    <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 110px; right: 25px; font-size: 26px;" title="Quantum Mode" aria-label="Quantum Mode">⚛️</div>
     
     <div id="edit-input-btn" class="mode-toggle-fixed" onclick="editInitialInput()" style="top: 190px; right: 25px; font-size: 26px; background: #fff;" title="Edit Input">&#9999;&#65039;</div>
     <div id="rainbow-btn" class="mode-toggle-fixed" onclick="toggleRainbowMode()" style="top: 270px; right: 25px; font-size: 26px; background: #fff;" title="Rainbow Mode">&#127752;</div>
@@ -249,7 +345,7 @@
                 </button>
             </div>
             <h3 class="text-xl font-black text-center text-[#463438] mb-3 mt-3">FEATURES</h3>
-            <div class="feature-toggle-row flex justify-center gap-2 w-full pb-2">
+            <div class="feature-toggle-row flex justify-center gap-3 w-full pb-4">
                 <div id="feat-toggle-0" class="qubit-label" onclick="toggleFeature(0)">d1</div>
                 <div id="feat-toggle-1" class="qubit-label" onclick="toggleFeature(1)">d2</div>
                 <div id="feat-toggle-2" class="qubit-label" onclick="toggleFeature(2)">d3</div>
@@ -286,14 +382,12 @@
                 </div>
                 <div id="tt-view-container" class="w-full flex-col hidden-el h-full flex" style="max-height: 100%; overflow: hidden;">
                     <div class="panel-section-title shrink-0 mt-2">Truth Table</div>
-                    <div class="text-lg text-gray-400 text-center mb-2 font-bold flex justify-between px-8 shrink-0 border-b border-black-100 pb-2">
-                        <span id="tt-head-left" class="w-1/2 text-left text-black">INPUT</span>
-                        <span id="tt-head-right" class="w-1/2 text-right text-black">OUTPUT</span>
+                    <div id="tt-header-row" class="text-sm text-gray-400 text-center mb-1 font-bold flex w-full shrink-0 border-b border-gray-300 pb-1 px-2">
                     </div>
-                    <div class="overflow-y-auto w-full flex-grow px-2 mb-2 custom-scrollbar" style="scrollbar-width: none;">
+                    <div id="tt-scroll-area" class="overflow-y-auto w-full flex-grow px-2 mb-2 custom-scrollbar" style="scrollbar-width: none;">
                         <table class="w-full text-center text-lg border-separate border-spacing-y-1">
                             <tbody id="tt-body" class="font-bold">
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -304,7 +398,7 @@
                         <span id="trace-step-text" class="font-black text-lg leading-none">0</span>
                     </div>
                     <button class="func-btn btn-reset m-0 py-2 px-1 text-xs hover:bg-yellow-200 flex-1" style="box-shadow: 0 2px 0 #463438;;" onclick="traceMove(1)">▶</button>
-                    <button class="func-btn btn-red m-0 py-2 px-1 text-xs text-white border-black flex-1" style="box-shadow: 0 2px 0 #463438;;" onclick="exitTrace()">EXIT</button>
+                    <button class="func-btn btn-red m-0 py-2 px-1 text-xs text-white border-black flex-1" style="box-shadow: 0 2px 0 #463438; font-weight: 900;" onclick="resetTraceStep()">↻</button>
                 </div>
             </div>
             <div class="game-canvas" id="main-canvas">
@@ -319,14 +413,14 @@
         </div>
         <div id="circuit-area" class="mx-auto relative">
             <div id="circuit-diagram-title" class="circuit-title font-black text-xl text-center" style="color: #463438;">Paths</div>
-            <div id="q-in-0" class="qubit-label" style="top: 60px;">d1</div>
-            <div id="q-in-1" class="qubit-label" style="top: 100px;">d2</div>
-            <div id="q-in-2" class="qubit-label" style="top: 140px;">d3</div>
-            <div id="q-in-3" class="qubit-label" style="top: 180px;">d4</div>
-            <div id="q-out-0" class="qubit-label right-side hidden-el" style="top: 60px;"></div>
-            <div id="q-out-1" class="qubit-label right-side hidden-el" style="top: 100px;"></div>
-            <div id="q-out-2" class="qubit-label right-side hidden-el" style="top: 140px;"></div>
-            <div id="q-out-3" class="qubit-label right-side hidden-el" style="top: 180px;"></div>
+            <div id="q-in-0" class="qubit-label" style="top: 57px;">d1</div>
+            <div id="q-in-1" class="qubit-label" style="top: 97px;">d2</div>
+            <div id="q-in-2" class="qubit-label" style="top: 137px;">d3</div>
+            <div id="q-in-3" class="qubit-label" style="top: 177px;">d4</div>
+            <div id="q-out-0" class="qubit-label right-side hidden-el" style="top: 57px;"></div>
+            <div id="q-out-1" class="qubit-label right-side hidden-el" style="top: 97px;"></div>
+            <div id="q-out-2" class="qubit-label right-side hidden-el" style="top: 137px;"></div>
+            <div id="q-out-3" class="qubit-label right-side hidden-el" style="top: 177px;"></div>
             <div id="circuit-content-wrapper"><div id="circuit-content"></div></div>
         </div>
         <div class="w-full flex justify-center items-center gap-6 mt-6 mb-6">
@@ -343,7 +437,7 @@
         let currentTraceStep = 0;
         let gateCount = 0, gateHistory = [];
         let selectedIndices = [], actionStack = [];
-        let fishAtNode = [];    
+        let fishAtNode = [];   
         let lineMode = 1, hoverLine = null;
         let currentOptionIndex = 0, currentOptions = [], draggedIndex = null;
         let desktopDragGhost = null;
@@ -353,7 +447,6 @@
         let originalDragEl = null;
         let isTouchDevice = false;
         
-        // 鎖定模式的變數
         let lockedLineId = null;
         let hasScrolled = false;
         
@@ -380,7 +473,6 @@
         const hyperOffset = 400;
         const offsetPro = 100;
         
-        // --- 自動捲動變數 ---
         let targetGateScrollSpeed = 0;
         let currentGateScrollSpeed = 0;
         let gateAutoScrollRAF = null;
@@ -388,6 +480,10 @@
         let targetScrollSpeed = 0;
         let currentScrollSpeed = 0;
         let autoScrollRAF = null;
+        
+        let targetTtScrollSpeed = 0;
+        let currentTtScrollSpeed = 0;
+        let ttAutoScrollRAF = null;
 
         const nodePositions = Array.from({ length: 16 }, (_, i) => {
             let x = (i & 1) ? side : 0;
@@ -420,8 +516,22 @@
         function editInitialInput() {
             playPopSound();
             const current = initialFishAtNode.join(', ');
-            const res = prompt(`Enter the initial fish order (0-${LAB_TOTAL - 1}, comma-separated):`, current);
-            if (res === null) return;
+            const modal = document.getElementById('input-modal');
+            const inputField = document.getElementById('initial-input-field');
+            inputField.value = current;
+            modal.classList.remove('hidden-el');
+        }
+
+        function closeInputModal() {
+            playPopSound();
+            document.getElementById('input-modal').classList.add('hidden-el');
+        }
+
+        function saveInitialInput() {
+            playPopSound();
+            const inputField = document.getElementById('initial-input-field');
+            const res = inputField.value;
+            if (!res) return;
             const parsed = res.replace(/\s/g, '').split(',').map(Number);
             const isValid = parsed.length === LAB_TOTAL &&
                 new Set(parsed).size === LAB_TOTAL &&
@@ -433,7 +543,9 @@
             initialFishAtNode = parsed;
             activeTraceInput = null;
             currentTraceStep = 0;
+            refreshSkinAssets();
             recalculate();
+            closeInputModal();
         }
 
         function toggleRainbowMode() {
@@ -470,7 +582,7 @@
         function rainbowSkinHat(kind, index, count = LAB_TOTAL) {
             if (count <= 8 || index < 8) return '';
             const cls = kind === 'cat' ? 'cat-hat' : 'fish-hat';
-            return '<img src="./image/hat.png" class="hat-img ' + cls + '" alt="">';
+            return '<img src="./image/hat.png" class="hat-img ' + cls + ' hat-bg-shape" alt=""><img src="./image/hat.png" class="hat-img ' + cls + '" alt="">';
         }
 
         function defaultSkinFaded(index, count = LAB_TOTAL) {
@@ -491,8 +603,8 @@
                 const src = './image/' + (kind === 'cat' ? 'Cat' : 'Fish') + ((index % 8) + 1) + '.svg';
                 const hat = rainbowSkinHat(kind, index, count);
                 return kind === 'cat'
-                    ? hat + '<img src="' + src + '" class="skin-cat" alt="' + text + ' cat">'
-                    : hat + '<img src="' + src + '" class="fish-img" alt="' + text + ' fish">';
+                    ? hat + catLayerHtml(src, 'skin-cat', text + ' cat')
+                    : hat + '<img src="' + src + '" class="fish-bg-shape" alt=""><img src="' + src + '" class="fish-img" alt="' + text + ' fish">';
             }
             if (currentSkin === 'rip') {
                 const src = './RIP/' + (kind === 'cat' ? 'Cat' : 'Fish') + (index + 1) + '.png';
@@ -515,7 +627,11 @@
         }
 
         function truthSpriteHtml(kind, index) {
-            return '<span class="truth-sprite">' + skinAssetHtml(kind, index, LAB_TOTAL, getSkinBits(index)) + '</span>';
+            let extraClass = '';
+            if (currentSkin === 'mj' && index % 2 === 1 && kind === 'cat') {
+                extraClass = ' mj-large-tt';
+            }
+            return '<span class="truth-sprite' + extraClass + '">' + skinAssetHtml(kind, index, LAB_TOTAL, getSkinBits(index)) + '</span>';
         }
 
         function initSkinFromUser(urlParams) {
@@ -560,30 +676,43 @@
             return './svg/';
         }
 
+        function featureLabelImageHtml(imgIndex, borderColor = 'transparent', extraClass = '') {
+            const classAttr = extraClass ? ` class="${extraClass}"` : '';
+            return `<img src="${getFeatureSkinFolder()}dif${imgIndex}.png"${classAttr} style="width: 42px; height: 42px; object-fit: contain; padding: 3px; border: 3px solid ${borderColor}; border-radius: 8px; box-sizing: border-box;" alt="dif${imgIndex}">`;
+        }
+
         function setQLabel(el, text, qIndex) {
             if (!el) return;
-            const forceText = isTraceMode && !isQuantumMode;
-            if (labelsOpen || forceText) {
+            if (labelsOpen) {
                 el.innerHTML = text;
             } else {
                 const imgIndex = getFeatureImageIndex(qIndex);
-                el.innerHTML = `<img src="${getFeatureSkinFolder()}dif${imgIndex}.png" style="width: 36px; height: 36px; object-fit: contain; padding: 2px;" alt="dif${imgIndex}">`;
+                el.innerHTML = featureLabelImageHtml(imgIndex);
             }
         }
 
         function updateCircuitLabels() {
             if (isTraceMode && isQuantumMode && activeTraceInput !== null) {
-                const inBin = activeTraceInput.toString(2).padStart(LAB_BITS, '0');
-                let finalNode = activeTraceInput;
-                for (let k = 0; k < gateHistory.length; k++) finalNode = getPermutationForGate(gateHistory[k])[finalNode];
-                const outBin = finalNode.toString(2).padStart(LAB_BITS, '0');
+                const startNode = initialFishAtNode.indexOf(activeTraceInput);
+                if (startNode === -1) return;
+                let currNode = startNode;
+                for (let k = 0; k < currentTraceStep; k++) currNode = getPermutationForGate(gateHistory[k])[currNode];
+                const inBin = startNode.toString(2).padStart(LAB_BITS, '0');
+                const outBin = currNode.toString(2).padStart(LAB_BITS, '0');
                 for (let i = 0; i < LAB_BITS; i++) {
-                    setQLabel(document.getElementById(`q-in-${i}`), inBin[i], i);
+                    const qIn = document.getElementById(`q-in-${i}`);
                     const qOut = document.getElementById(`q-out-${i}`);
-                    if (qOut) {
-                        qOut.innerText = outBin[i];
-                        qOut.classList.remove('hidden-el');
+                    const inColor = inBin[i] === '1' ? '#FFB7C5' : '#7d6961';
+                    const outColor = outBin[i] === '1' ? '#FFB7C5' : '#7d6961';
+                    if (labelsOpen) {
+                        if (qIn) qIn.innerHTML = `<span style="color: ${inColor}; font-weight: 900; font-size: 24px;">${inBin[i]}</span>`;
+                        if (qOut) qOut.innerHTML = `<span style="color: ${outColor}; font-weight: 900; font-size: 24px;">${outBin[i]}</span>`;
+                    } else {
+                        const imgIndex = getFeatureImageIndex(i);
+                        if (qIn) qIn.innerHTML = featureLabelImageHtml(imgIndex, inColor);
+                        if (qOut) qOut.innerHTML = featureLabelImageHtml(imgIndex, outColor);
                     }
+                    if (qOut) qOut.classList.remove('hidden-el');
                 }
                 return;
             }
@@ -608,7 +737,7 @@
                     badge = `<div style="position:absolute; top:-6px; right:-6px; background:#463438; color:#fff; font-size:12px; font-weight:900; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border:2px solid #fff; z-index:10; box-shadow: 1px 1px 0 rgba(70,52,56,0.3);">0</div>`;
                 }
                 if (labelsOpen) {
-                    label.innerHTML = `<div style="position:relative;"><span class="${styleClass}" style="padding: 2px 6px; display: inline-block; border-radius: 6px; border:2px solid transparent;">d${i + 1}</span>${badge}</div>`;
+                    label.innerHTML = `<div style="position:relative;"><span class="${styleClass}" style="padding: 2px 6px; display: inline-block; border-radius: 6px; border:2px solid transparent;">${isQuantumMode ? `q${i}` : `d${i + 1}`}</span>${badge}</div>`;
                 } else {
                     const imgIndex = getFeatureImageIndex(i);
                     label.innerHTML = `<div style="position:relative;"><img src="${getFeatureSkinFolder()}dif${imgIndex}.png" class="${styleClass}" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; padding: 2px; border:3px solid transparent;" alt="dif${imgIndex}">${badge}</div>`;
@@ -625,6 +754,7 @@
             if (btn) btn.innerHTML = labelsOpen ? '&#128683;' : '&#127991;&#65039;';
             updateCircuitLabels();
             updateFeatureToggleLabels();
+            updateTruthTable();
         }
 
         function toggleSidePanel() {
@@ -725,7 +855,6 @@
             }
         }
 
-        // --- 自動捲動函數 (左側面板) ---
         function gateScrollLoop() {
             const gateScrollArea = document.getElementById('gate-scroll-area');
             currentGateScrollSpeed += (targetGateScrollSpeed - currentGateScrollSpeed) * 0.15;
@@ -763,7 +892,42 @@
             }
         }
 
-        // --- 自動捲動函數 (底部電路區塊) ---
+        function ttScrollLoop() {
+            const ttScrollArea = document.getElementById('tt-scroll-area');
+            currentTtScrollSpeed += (targetTtScrollSpeed - currentTtScrollSpeed) * 0.15;
+            if (Math.abs(currentTtScrollSpeed) > 0.1 || Math.abs(targetTtScrollSpeed) > 0) {
+                ttScrollArea.scrollTop += currentTtScrollSpeed;
+                ttAutoScrollRAF = requestAnimationFrame(ttScrollLoop);
+            } else {
+                currentTtScrollSpeed = 0;
+                ttAutoScrollRAF = null;
+            }
+        }
+
+        function handleTtScroll(e) {
+            const ttScrollArea = document.getElementById('tt-scroll-area');
+            const rect = ttScrollArea.getBoundingClientRect();
+            const edgeThreshold = 60;
+            const maxSpeed = 10;
+
+            if (ttScrollArea.scrollHeight > ttScrollArea.clientHeight) {
+                let distTop = e.clientY - rect.top;
+                let distBottom = rect.bottom - e.clientY;
+
+                if (distTop < edgeThreshold) {
+                    let ratio = Math.max(0, 1 - (distTop / edgeThreshold));
+                    targetTtScrollSpeed = -(ratio * maxSpeed);
+                    if (!ttAutoScrollRAF) ttAutoScrollRAF = requestAnimationFrame(ttScrollLoop);
+                } else if (distBottom < edgeThreshold) {
+                    let ratio = Math.max(0, 1 - (distBottom / edgeThreshold));
+                    targetTtScrollSpeed = (ratio * maxSpeed);
+                    if (!ttAutoScrollRAF) ttAutoScrollRAF = requestAnimationFrame(ttScrollLoop);
+                } else {
+                    targetTtScrollSpeed = 0;
+                }
+            }
+        }
+
         function scrollLoop() {
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             currentScrollSpeed += (targetScrollSpeed - currentScrollSpeed) * 0.15;
@@ -809,14 +973,18 @@
             drawStaticLines();
             recalculate();
             
-            // 綁定左側面板捲動事件
             const gateScrollArea = document.getElementById('gate-scroll-area');
             if(gateScrollArea) {
                 gateScrollArea.addEventListener('mousemove', handleGateScroll);
                 gateScrollArea.addEventListener('mouseleave', () => { targetGateScrollSpeed = 0; });
             }
 
-            // 綁定底部電路區塊捲動事件
+            const ttScrollArea = document.getElementById('tt-scroll-area');
+            if(ttScrollArea) {
+                ttScrollArea.addEventListener('mousemove', handleTtScroll);
+                ttScrollArea.addEventListener('mouseleave', () => { targetTtScrollSpeed = 0; });
+            }
+
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             if(circuitWrapper) {
                 circuitWrapper.addEventListener('mousemove', (e) => {
@@ -888,7 +1056,6 @@
             const canvas = document.getElementById('main-canvas');
             const indicator = document.getElementById('ios-indicator');
             
-            // 電腦版點擊背景取消鎖定
             canvas.addEventListener('mousedown', (e) => {
                 if (lockedLineId && !isTouchDevice) {
                     if (e.button === 0 && !e.target.classList.contains('connection-line')) { 
@@ -897,7 +1064,6 @@
                 }
             });
 
-            // 電腦版右鍵確認 Gate
             canvas.addEventListener('contextmenu', (e) => {
                 if (lockedLineId && !isTouchDevice) {
                     e.preventDefault(); 
@@ -907,7 +1073,6 @@
                 }
             });
 
-            // 手機版取消鎖定
             canvas.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
                     canvasTouchStartX = e.touches[0].clientX;
@@ -918,7 +1083,6 @@
                 }
             }, { passive: true });
 
-            // 手機版雙指確認 Gate
             canvas.addEventListener('touchstart', (e) => {
                 if (lockedLineId && e.touches.length >= 2) {
                     e.preventDefault();
@@ -1052,7 +1216,10 @@
         function toggleQuantumMode() {
             if(typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e=>{}); }
             isQuantumMode = !isQuantumMode;
-            document.getElementById('quantum-toggle').innerText = isQuantumMode ? "🧊" : "⚛️";
+            const qToggle = document.getElementById('quantum-toggle');
+            qToggle.innerText = isQuantumMode ? "🧊" : "⚛️";
+            qToggle.title = isQuantumMode ? "Hypercube Mode" : "Quantum Mode";
+            qToggle.setAttribute('aria-label', qToggle.title);
             document.getElementById('body-root').classList.toggle('mini-mode', !isQuantumMode);
             
             document.getElementById('circuit-diagram-title').innerText = isQuantumMode ? "Circuit Diagram" : "Paths";
@@ -1079,8 +1246,11 @@
                 gView.classList.add('hidden-el');
                 tView.classList.remove('hidden-el');
                 tCtrl.classList.remove('hidden-el', 'opacity-50', 'pointer-events-none');
+                activeTraceInput = null;
+                currentTraceStep = 0;
                 updateCircuitLabels();
                 updateTruthTable();
+                renderTraceStep();
             } else {
                 btn.innerText = "Trace: OFF";
                 btn.classList.remove('mode-5');
@@ -1094,10 +1264,8 @@
         
         function startTrace(inputIndex) {
             if(typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e=>{}); }
-            activeTraceInput = inputIndex;
-            currentTraceStep = 0;
+            activeTraceInput = activeTraceInput === inputIndex ? null : inputIndex;
             
-            // === 新增：加上正在 Trace 的狀態 ===
             document.body.classList.add('is-tracing');
             
             document.getElementById('trace-controls').classList.remove('opacity-50', 'pointer-events-none');
@@ -1111,18 +1279,21 @@
             if (currentTraceStep > gateHistory.length) currentTraceStep = gateHistory.length;
             renderTraceStep();
         }
+        function resetTraceStep() {
+            if(typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e=>{}); }
+            currentTraceStep = 0;
+            renderTraceStep();
+        }
         function exitTrace() {
             if(typeof pop !== 'undefined' && pop.play) { pop.currentTime = 0; pop.play().catch(e=>{}); }
             activeTraceInput = null;
             
-            // === 新增：移除 Trace 的狀態 ===
             document.body.classList.remove('is-tracing');
             
             document.getElementById('trace-controls').classList.add('opacity-50', 'pointer-events-none');
             document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
             document.querySelectorAll('.trace-fish-active').forEach(el => el.classList.remove('trace-fish-active'));
             
-            // 恢復顯示 d0~d3 / q0~q3 並隱藏右側的輸出數字
             for(let i=0; i<4; i++) {
                 document.getElementById(`q-out-${i}`).classList.add('hidden-el');
             }
@@ -1131,42 +1302,44 @@
             finishMove();
         }
         function renderTraceStep() {
-            if (activeTraceInput === null) return;
-            let prevNode = activeTraceInput;
-            let currNode = activeTraceInput;
+            let tempFish = [...initialFishAtNode];
             for(let k = 0; k < currentTraceStep; k++) {
-                prevNode = currNode;
-                let pm = getPermutationForGate(gateHistory[k]);
-                currNode = pm[currNode];
+                const pm = getPermutationForGate(gateHistory[k]);
+                const nextFish = new Array(LAB_TOTAL);
+                for(let i = 0; i < LAB_TOTAL; i++) nextFish[pm[i]] = tempFish[i];
+                tempFish = nextFish;
             }
-            let trackedFishId = initialFishAtNode[activeTraceInput];
-            let f = document.getElementById(`fish-${trackedFishId}`);
-            let n = nodePositions[currNode];
-            if (f && n) {
-                f.style.top = (n.t + 27) + "px";
-                f.style.left = (n.l + 15) + "px";
+
+            for (let nI = 0; nI < LAB_TOTAL; nI++) {
+                const f = document.getElementById(`fish-${tempFish[nI]}`);
+                const n = nodePositions[nI];
+                if (f && n) {
+                    f.style.top = (n.t + 27) + "px";
+                    f.style.left = (n.l + 15) + "px";
+                }
+                const nodeEl = document.getElementById(`node-${nI}`);
+                if (nodeEl) nodeEl.classList.toggle('node-correct', tempFish[nI] === nI);
             }
             document.querySelectorAll('.trace-line-active').forEach(el => el.classList.remove('trace-line-active'));
             document.querySelectorAll('.trace-fish-active').forEach(el => el.classList.remove('trace-fish-active'));
-            if (f) f.classList.add('trace-fish-active');
-            if (currentTraceStep > 0 && prevNode !== currNode) {
-                let lineId = `line-${Math.min(prevNode, currNode)}-${Math.max(prevNode, currNode)}`;
-                let lineEl = document.getElementById(lineId);
-                if (lineEl) lineEl.classList.add('trace-line-active');
+
+            if (activeTraceInput !== null) {
+                const f = document.getElementById(`fish-${activeTraceInput}`);
+                if (f) f.classList.add('trace-fish-active');
+
+                let prevNode = initialFishAtNode.indexOf(activeTraceInput);
+                let currNode = prevNode;
+                for(let k = 0; k < currentTraceStep; k++) {
+                    prevNode = currNode;
+                    currNode = getPermutationForGate(gateHistory[k])[currNode];
+                }
+                if (currentTraceStep > 0 && prevNode !== currNode) {
+                    let lineId = `line-${Math.min(prevNode, currNode)}-${Math.max(prevNode, currNode)}`;
+                    let lineEl = document.getElementById(lineId);
+                    if (lineEl) lineEl.classList.add('trace-line-active');
+                }
             }
             updateFishVisibility();
-            let inBin = activeTraceInput.toString(2).padStart(4, '0');
-            let finalNode = activeTraceInput;
-            for(let k = 0; k < gateHistory.length; k++) {
-                let pm = getPermutationForGate(gateHistory[k]);
-                finalNode = pm[finalNode];
-            }
-            let outBin = finalNode.toString(2).padStart(4, '0');
-            for(let i = 0; i < 4; i++) {
-                document.getElementById(`q-in-${i}`).innerText = inBin[i];
-                document.getElementById(`q-out-${i}`).innerText = outBin[i];
-                document.getElementById(`q-out-${i}`).classList.remove('hidden-el');
-            }
             updateCircuitLabels();
             document.getElementById('trace-step-text').innerText = currentTraceStep;
             renderCircuit();
@@ -1174,54 +1347,94 @@
             if (activeGate) {
                 activeGate.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
+            updateFeatureHighlights();
+            updateTruthTable();
         }
         function updateFishVisibility() {
             for (let i = 0; i < 16; i++) {
                 let f = document.getElementById(`fish-${i}`);
                 if (!f) continue;
-                if (activeTraceInput !== null) {
-                    let trackedFishId = initialFishAtNode[activeTraceInput];
-                    if (i === trackedFishId) {
-                        f.style.opacity = 1;
+                if (isTraceMode && activeTraceInput !== null) {
+                    if (i === activeTraceInput) {
+                        f.style.setProperty('opacity', '1', 'important');
                         f.style.zIndex = 40;
                     } else {
-                        f.style.opacity = 0;
+                        f.style.setProperty('opacity', '0', 'important');
                         f.style.zIndex = 30;
                     }
                 } else {
-                    f.style.opacity = 1;
+                    f.style.removeProperty('opacity');
                     f.style.zIndex = 30;
                 }
             }
         }
         function updateTruthTable() {
-            let stateMap = Array.from({length: 16}, (_, i) => i);
-            gateHistory.forEach(type => {
-                let pm = getPermutationForGate(type);
-                let nextMap = new Array(16);
-                for(let i=0; i<16; i++) nextMap[i] = pm[stateMap[i]];
-                stateMap = nextMap;
-            });
-            let tbody = document.getElementById('tt-body');
-            const headLeft = document.getElementById('tt-head-left');
-            const headRight = document.getElementById('tt-head-right');
-            if (headLeft) headLeft.innerText = isQuantumMode ? 'INPUT' : 'CAT';
-            if (headRight) headRight.innerText = isQuantumMode ? 'OUTPUT' : 'FISH';
+            const isCustom = initialFishAtNode.some((val, idx) => val !== idx);
+            const headerRow = document.getElementById('tt-header-row');
+            if (headerRow) {
+                if (isCustom) {
+                    headerRow.innerHTML = `
+                        <div class="w-1/4 text-center text-black">ID</div>
+                        <div class="w-1/4 text-center text-black">${labelsOpen ? 'IN' : 'START'}</div>
+                        <div class="w-1/4 text-center text-black">${labelsOpen ? 'OUT' : 'NOW'}</div>
+                        <div class="w-1/4 text-center text-black">${labelsOpen ? 'TARGET' : 'HOME'}</div>
+                    `;
+                } else {
+                    headerRow.innerHTML = `
+                        <div class="w-1/3 text-center text-black">ID</div>
+                        <div class="w-1/3 text-center text-black">${labelsOpen ? 'IN' : 'START'}</div>
+                        <div class="w-1/3 text-center text-black">${labelsOpen ? 'OUT' : 'NOW'}</div>
+                    `;
+                }
+            }
+            
+            const tbody = document.getElementById('tt-body');
             tbody.innerHTML = '';
-            for(let i=0; i<16; i++) {
-                let inStr = i.toString(2).padStart(4, '0');
-                let outStr = stateMap[i].toString(2).padStart(4, '0');
-                let isActive = (activeTraceInput === i);
-                let isChanged = (i !== stateMap[i]);
-                let outColor = isActive ? '' : (isChanged ? 'text-[#99C44D] font-bold' : 'text-gray-300');
-                let rowClass = isActive ? 'active-trace' : '';
-                const inputCell = isQuantumMode ? inStr : truthSpriteHtml('cat', i);
-                const outputCell = isQuantumMode ? outStr : truthSpriteHtml('fish', stateMap[i]);
-                tbody.innerHTML += `
-                    <tr class="${rowClass}" onclick="startTrace(${i})">
-                        <td class="py-2 text-base w-1/2 text-left pl-6">${inputCell}</td>
-                        <td class="py-2 text-base w-1/2 text-right pr-6 ${outColor}">${outputCell}</td>
-                    </tr>`;
+            for(let i = 0; i < LAB_TOTAL; i++) {
+                const startNode = initialFishAtNode.indexOf(i);
+                if (startNode === -1) continue;
+                let currNode = startNode;
+                const stepLimit = isTraceMode ? currentTraceStep : gateHistory.length;
+                for (let k = 0; k < stepLimit; k++) {
+                    currNode = getPermutationForGate(gateHistory[k])[currNode];
+                }
+                const targetNode = i;
+                const inStr = startNode.toString(2).padStart(LAB_BITS, '0');
+                const outStr = currNode.toString(2).padStart(LAB_BITS, '0');
+                const targetStr = targetNode.toString(2).padStart(LAB_BITS, '0');
+                const isActive = activeTraceInput === i;
+                const isChanged = startNode !== currNode;
+                const outColor = isActive ? '' : (isChanged ? 'text-[#99C44D] font-bold' : 'text-gray-400');
+                const rowClass = isActive ? 'active-trace' : '';
+                let idContent, inContent, outContent, targetContent;
+                if (labelsOpen) {
+                    idContent = i;
+                    inContent = inStr;
+                    outContent = outStr;
+                    targetContent = targetStr;
+                } else {
+                    idContent = truthSpriteHtml('fish', i);
+                    inContent = truthSpriteHtml('cat', startNode);
+                    outContent = truthSpriteHtml('cat', currNode);
+                    targetContent = truthSpriteHtml('cat', targetNode);
+                }
+                const cellClass = "py-1 text-sm text-center align-middle";
+                if (isCustom) {
+                    tbody.innerHTML += `
+                        <tr class="${rowClass}" onclick="startTrace(${i})">
+                            <td class="${cellClass} w-1/4">${idContent}</td>
+                            <td class="${cellClass} w-1/4">${inContent}</td>
+                            <td class="${cellClass} w-1/4 ${outColor}">${outContent}</td>
+                            <td class="${cellClass} w-1/4 font-bold text-gray-400">${targetContent}</td>
+                        </tr>`;
+                } else {
+                    tbody.innerHTML += `
+                        <tr class="${rowClass}" onclick="startTrace(${i})">
+                            <td class="${cellClass} w-1/3">${idContent}</td>
+                            <td class="${cellClass} w-1/3">${inContent}</td>
+                            <td class="${cellClass} w-1/3 ${outColor}">${outContent}</td>
+                        </tr>`;
+                }
             }
         }
         function handleDragStart(e, index) {
@@ -1240,7 +1453,7 @@
             const bg = style.getPropertyValue('--bg-hover');
             desktopDragGhost.style.setProperty('background-color', bg, 'important');
             desktopDragGhost.style.borderRadius = '12px';
-            desktopDragGhost.classList.remove('selected-gate', 'trace-active'); 
+            desktopDragGhost.classList.remove('selected-gate', 'trace-active', 'trace-pending'); 
             desktopDragGhost.style.position = 'fixed';
             desktopDragGhost.style.top = '-9999px';
             desktopDragGhost.style.left = '-9999px';
@@ -1364,13 +1577,16 @@
             for (let i = 0; i < 16; i++) {
                 let bin = i.toString(2).padStart(4, '0');
                 const catHat = (i >= 8) ? `<img src="./image/hat.png" class="hat-img cat-hat">` : '';
-                nL.innerHTML += `<div class="node" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">
+                
+                const largeClass = (i % 2) ? ' large-node' : '';
+                
+                nL.innerHTML += `<div class="node${largeClass}" id="node-${i}" style="top:${nodePositions[i].t}px; left:${nodePositions[i].l}px;">
                     <div class="fixed-number">${bin}</div>${catHat}
                     <img src="./image/Cat${(i % 8) + 1}.svg" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MCIgaGVpZ2h0PSI3MCI+PGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iMzAiIGZpbGw9IiNjY2MiLz48L3N2Zz4='">
                 </div>`;
                 const fishSrc = `./image/Fish${(i % 8) + 1}.svg`;
                 const fishHat = (i >= 8) ? `<img src="./image/hat.png" class="hat-img fish-hat">` : '';
-                fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper">
+                fL.innerHTML += `<div id="fish-${i}" class="fish-wrapper${largeClass}">
                     <div class="fish-label">${bin}</div>${fishHat}
                     <img src="${fishSrc}" class="fish-bg-shape" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjOTk5Ii8+PC9zdmc+'">
                     <img src="${fishSrc}" class="fish-img" onerror="this.style.display='none'">
@@ -1400,13 +1616,11 @@
             return pairs;
         }
 
-        // --- 生成對應的 Mini Hypercube SVG (支援大紅點標示) ---
         function getMiniHypercubeSVG(type, activeState = null) {
             let pairs = getHighlightPairsForGate(type);
             const miniNodes = nodePositions.map(n => ({ x: n.relX / 12, y: (n.t - baseOffsetY) / 12 }));
             let svg = `<svg viewBox="-10 -15 65 35" style="width:100%; height:100%; pointer-events:none;" preserveAspectRatio="xMidYMid meet">`;
             
-            // 畫出所有的連線
             for(let i=0; i<16; i++) {
                 for(let b=0; b<4; b++) {
                     let j = i ^ (1<<b);
@@ -1419,16 +1633,13 @@
                 }
             }
             
-            // 畫出所有的黑色基礎節點
             for(let i=0; i<16; i++) {
                 let n = miniNodes[i];
                 svg += `<circle cx="${n.x}" cy="${n.y}" r="1.5" fill="#463438"/>`;
             }
 
-            // === 新增：如果處於 Trace 模式，標示魚的當前位置 ===
             if (activeState !== null) {
                 let n = miniNodes[activeState];
-                // 用比粉紅更紅的顏色 (#FF3366)，並加大半徑 (r="3.5")，加上白色外框讓它更立體
                 svg += `<circle cx="${n.x}" cy="${n.y}" r="2.5" fill="#f78790" stroke="#FFF9F0" stroke-width="1.5"/>`;
             }
 
@@ -1436,7 +1647,6 @@
             return svg;
         }
         
-        // --- 設定高亮色彩、關聯路徑，並觸發按鈕滾動 ---
         function highlightGateButton(type) {
             document.querySelectorAll('.gate-btn-v2').forEach(btn => btn.classList.remove('btn-highlight'));
             if(type) {
@@ -1478,7 +1688,6 @@
             }, 500);
         }
 
-        // 取得單個閘的圖案（根據視圖動態切換）
         function getGateContent(type) {
             if (isQuantumMode) {
                 let controls = [], target = -1;
@@ -1517,34 +1726,26 @@
                 return `<button id="gate-btn-${type}" class="gate-btn-v2" style="background-color: ${rgbaLight}; background-image: ${bgImage};" onmouseenter="highlightByGate('${type}')" onmouseleave="clearHighlight()" onclick="applyGate('${type}')">${getGateContent(type)}</button>`;
             };
 
-            // 1. 單量子位元閘 (X Gate)
-            // 最內層迴圈為 Target (t)，搭配 grid-cols-4，就會完美分配到四個直欄
             for (let t = 0; t < 4; t++) {
                 html += wrapBtn(`X${t}`);
             }
 
-            // 2. 雙量子位元閘 (CX Gate)
-            // 每個 Target 都有 3 條不同的控制線，利用 ctrlIdx (0, 1, 2) 來確保各欄橫向對齊
             for (let ctrlIdx = 0; ctrlIdx < 3; ctrlIdx++) {
-                // 控制位元條件為 1 (CX1)
                 for (let t = 0; t < 4; t++) {
                     const pool = [0, 1, 2, 3].filter(q => q !== t);
                     html += wrapBtn(`CX1${pool[ctrlIdx]}${t}`);
                 }
-                // 控制位元條件為 0 (CX0)
                 for (let t = 0; t < 4; t++) {
                     const pool = [0, 1, 2, 3].filter(q => q !== t);
                     html += wrapBtn(`CX0${pool[ctrlIdx]}${t}`);
                 }
             }
 
-            // 3. 三量子位元閘 (Toffoli Gate)
             const combos = [{ id: '11'}, { id: '00'}, { id: '01'}, { id: '10'}];
             for (let pairIdx = 0; pairIdx < 3; pairIdx++) {
                 for (let cb of combos) {
                     for (let t = 0; t < 4; t++) {
                         const pool = [0, 1, 2, 3].filter(q => q !== t);
-                        // 三種控制位元組合對
                         const pairs = [
                             [pool[0], pool[1]],
                             [pool[0], pool[2]],
@@ -1614,7 +1815,6 @@
                     return;
                 }
                 if (lockedLineId === line.id) {
-                    // 原本是 cancelLock(); 改成直接執行目前滾輪選中的選項
                     applyGate(currentOptions[currentOptionIndex].gateType);
                     return;
                 }
@@ -1821,10 +2021,10 @@
             let borderRight = false;
             if (type === 'start') {
                 insertIdx = 0;
-                borderRight = true; // 放在最開頭
+                borderRight = true;
             } else if (type === 'end') {
                 insertIdx = gateHistory.length;
-                borderLeft = true;  // 放在最後面
+                borderLeft = true; 
             } else {
                 const idx = parseInt(targetUnit.dataset.idx);
                 insertIdx = isAfter ? idx + 1 : idx;
@@ -1860,11 +2060,13 @@
             let states = [];
             
             if (activeTraceInput !== null) {
-                let curr = activeTraceInput;
-                states.push(curr);
-                for (let k = 0; k < gateHistory.length; k++) {
-                    curr = getPermutationForGate(gateHistory[k])[curr];
+                let curr = initialFishAtNode.indexOf(activeTraceInput);
+                if (curr !== -1) {
                     states.push(curr);
+                    for (let k = 0; k < gateHistory.length; k++) {
+                        curr = getPermutationForGate(gateHistory[k])[curr];
+                        states.push(curr);
+                    }
                 }
             }
             
@@ -1878,22 +2080,34 @@
                     wire.style.height = '3px';
                     wire.style.top = (30 + q * 40 - 0.5) + 'px';
                     wire.style.zIndex = '1';
-                    if (activeTraceInput !== null) {
-                        if (stepIdx <= currentTraceStep) {
-                            let bit = (states[stepIdx] >> (3 - q)) & 1;
-                            if (bit === 1) {
-                                wire.style.background = '#FFB7C5';
-                                wire.style.boxShadow = '0 0 8px #FFB7C5';
+                    
+                    if (isTraceMode) {
+                        if (activeTraceInput !== null && states.length > stepIdx) {
+                            if (stepIdx <= currentTraceStep) {
+                                let bit = (states[stepIdx] >> (3 - q)) & 1;
+                                if (bit === 1) {
+                                    wire.style.background = '#FFB7C5';
+                                    wire.style.boxShadow = '0 0 8px #FFB7C5';
+                                } else {
+                                    wire.style.background = '#8a6d1c';
+                                    wire.style.boxShadow = 'none';
+                                }
                             } else {
-                                wire.style.background = '#8a6d1c';
+                                wire.style.background = '#d1d5db';
                                 wire.style.boxShadow = 'none';
                             }
                         } else {
-                            wire.style.background = '#d1d5db';
-                            wire.style.boxShadow = 'none';
+                            if (stepIdx <= currentTraceStep) {
+                                wire.style.background = '#463438';
+                                wire.style.boxShadow = 'none';
+                            } else {
+                                wire.style.background = '#d1d5db';
+                                wire.style.boxShadow = 'none';
+                            }
                         }
                     } else {
                         wire.style.background = '#463438';
+                        wire.style.boxShadow = 'none';
                     }
                     parentUnit.appendChild(wire);
                 }
@@ -1923,7 +2137,6 @@
                 });
 
                 unit.addEventListener('drop', (e) => {
-                    // 3. 確保 drop 也有 preventDefault
                     e.preventDefault(); 
                     e.stopPropagation();
                     
@@ -1974,21 +2187,23 @@
                 if (!isQuantumMode) u.style.minWidth = '280px';
                 if (selectedIndices.includes(idx)) u.classList.add('selected-gate');
                 
-                if (activeTraceInput !== null) {
+                if (isTraceMode) {
                     if (idx === currentTraceStep - 1) u.classList.add('trace-active');
-                    else if (idx >= currentTraceStep) u.style.opacity = '0.35';
+                    else if (idx >= currentTraceStep) u.classList.add('trace-pending');
                 }
                 drawWires(u, idx + 1);
                 
                 if (!isQuantumMode) {
                     const svgWrap = document.createElement('div');
+                    svgWrap.className = 'gate-visuals';
                     svgWrap.style.width = '100%'; svgWrap.style.height = '100%'; svgWrap.style.position = 'absolute'; svgWrap.style.zIndex = '4'; svgWrap.style.pointerEvents = 'none';
                     
                     let currentFishPos = null;
-                    if (activeTraceInput !== null && idx < currentTraceStep) {
+                    if (activeTraceInput !== null && idx < currentTraceStep && states.length > idx + 1) {
                         currentFishPos = states[idx + 1];
                     }
                     svgWrap.innerHTML = getMiniHypercubeSVG(g, currentFishPos);
+                    if (isTraceMode && idx >= currentTraceStep) svgWrap.style.opacity = '0.35';
                     u.appendChild(svgWrap);
                 } else {
                     let controls = [], target = -1;
@@ -2000,8 +2215,18 @@
                     else if (g.startsWith('CX')) { controls.push({ line: parseInt(g[3]), type: parseInt(g[2]) }); target = parseInt(g[4]); }
                     else if (g.startsWith('TOF')) { controls.push({ line: parseInt(g[5]), type: parseInt(g[3]) }); controls.push({ line: parseInt(g[6]), type: parseInt(g[4]) }); target = parseInt(g[7]); }
                     if (target !== -1) {
-                        let lines = [target, ...controls.map(ctrl => ctrl.line)]; let minQ = Math.min(...lines), maxQ = Math.max(...lines);
-                        const vLine = document.createElement('div'); vLine.className = 'connection-v-line'; vLine.style.cssText = `top:${30 + minQ * 40}px; height:${(maxQ - minQ) * 40}px; z-index: 5;`; u.appendChild(vLine);
+                        const linePoints = [target, ...controls.map(ctrl => ctrl.line)].sort((a, b) => a - b);
+                        const centerY = q => q === target ? 32 + q * 40 : 31 + q * 40;
+                        const radiusFor = q => q === target ? 12 : 7;
+                        for (let p = 0; p < linePoints.length - 1; p++) {
+                            const from = linePoints[p], to = linePoints[p + 1];
+                            const lineTop = centerY(from) + radiusFor(from);
+                            const lineHeight = Math.max(0, centerY(to) - radiusFor(to) - lineTop);
+                            const vLine = document.createElement('div');
+                            vLine.className = 'connection-v-line';
+                            vLine.style.cssText = `top:${lineTop}px; height:${lineHeight}px; z-index: 5;`;
+                            u.appendChild(vLine);
+                        }
                         controls.forEach(ctrl => {
                             const dot = document.createElement('div'); dot.className = 'control-dot'; dot.style.top = (24 + ctrl.line * 40) + 'px'; dot.style.zIndex = '6';
                             if (ctrl.type === 0) { dot.style.background = '#fff'; dot.style.border = '2px solid #463438'; } u.appendChild(dot);
