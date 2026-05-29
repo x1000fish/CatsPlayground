@@ -103,8 +103,22 @@
         .mode-toggle-fixed:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #463438; }
         .mode-toggle-fixed:active { transform: translateY(2px); box-shadow: 0 2px 0 #463438; }
         #pro-panel {width: 280px !important; height: 628px !important;padding: 20px !important;border: 8px solid #463438;border-radius: 40px; box-shadow: 10px 10px 0px #99C44D;}
-        #gate-scroll-area { flex: 1; min-height: 0; padding: 10px !important; overflow-y: auto; scrollbar-width: none; scroll-behavior: smooth; }
-        #gate-scroll-area::-webkit-scrollbar { display: none; }
+        
+        /* 這裡加入了 gate-scroll-area 的專屬美化滾輪設定 */
+        #gate-scroll-area { 
+            flex: 1; 
+            min-height: 0; 
+            padding: 10px !important; 
+            overflow-y: auto; 
+            scroll-behavior: smooth; 
+            scrollbar-width: thin; 
+            scrollbar-color: #FFB7C5 transparent; 
+        }
+        #gate-scroll-area::-webkit-scrollbar { width: 8px; }
+        #gate-scroll-area::-webkit-scrollbar-track { background: transparent; border-radius: 10px; margin: 5px 0; }
+        #gate-scroll-area::-webkit-scrollbar-thumb { background: #FFB7C5; border-radius: 10px; border: 2px solid #fff; }
+        #gate-scroll-area::-webkit-scrollbar-thumb:hover { background: #f78790; }
+
         .gate-btn-v2 { position: relative; height: 75px; width: 60px; display: flex; align-items: center; justify-content: center; padding: 0; border: 2px solid #463438; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); background-size: 60% 1.5px; background-repeat: no-repeat; background-position: center 18px, center 36.5px, center 55px; margin: auto;}
         .gate-btn-v2:hover { background-color: #FFB7C5 !important; filter: brightness(1.05); transform: scale(1.05); z-index: 10; }
         .btn-highlight { transform: scale(1.15) !important; box-shadow: 0 0 10px rgba(0,0,0,0.3) !important; border: 4px solid #99C44D !important; z-index: 10; filter: brightness(1.1); background-color: #FFB7C5 !important; }
@@ -203,6 +217,17 @@
         body.skin-rainbow:not(.hide-labels) .fish-wrapper > img.fish-img { transform: translateY(-123%) scale(1.1); }
         body.skin-rainbow.hide-labels .fish-wrapper > img.fish-img { transform: translateY(-108%) scale(1.1) !important; }
         @media (min-width: 1024px) {body {zoom: 0.8;} }
+        #gate-scroll-area { 
+            flex: 1; 
+            min-height: 0; 
+            padding: 10px !important; 
+            overflow-y: auto; 
+            scroll-behavior: smooth; 
+            scrollbar-width: none; /* Firefox 隱藏滾動條 */
+        }
+        #gate-scroll-area::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge 隱藏滾動條 */
+        }
     </style>
 </head>
 <body id="body-root" class="mini-mode">
@@ -913,6 +938,46 @@
             }
         }
 
+        let gateEdgeScrollRAF = null;
+        let gateEdgeScrollDirection = 0;
+        const GATE_EDGE_THRESHOLD = 40;
+        const GATE_EDGE_SCROLL_SPEED = 20;
+
+        function runGateEdgeScroll() {
+            if (!gateEdgeScrollDirection) {
+                gateEdgeScrollRAF = null;
+                return;
+            }
+            const wrapper = document.getElementById('gate-scroll-area');
+            if (wrapper) {
+                wrapper.scrollTop += gateEdgeScrollDirection * GATE_EDGE_SCROLL_SPEED;
+                gateEdgeScrollRAF = requestAnimationFrame(runGateEdgeScroll);
+            }
+        }
+
+        function initGateEdgeAutoScroll() {
+            const area = document.getElementById('gate-scroll-area');
+            if (!area) return;
+            
+            area.addEventListener('mousemove', (e) => {
+                const rect = area.getBoundingClientRect();
+                // Check if mouse is within the top/bottom threshold
+                if (e.clientY > rect.top && e.clientY < rect.top + GATE_EDGE_THRESHOLD) {
+                    gateEdgeScrollDirection = -1;
+                    if (!gateEdgeScrollRAF) gateEdgeScrollRAF = requestAnimationFrame(runGateEdgeScroll);
+                } else if (e.clientY < rect.bottom && e.clientY > rect.bottom - GATE_EDGE_THRESHOLD) {
+                    gateEdgeScrollDirection = 1;
+                    if (!gateEdgeScrollRAF) gateEdgeScrollRAF = requestAnimationFrame(runGateEdgeScroll);
+                } else {
+                    gateEdgeScrollDirection = 0;
+                }
+            });
+            
+            area.addEventListener('mouseleave', () => {
+                gateEdgeScrollDirection = 0;
+            });
+        }
+
         window.onload = () => {
             initLabData();
             initGameLayout();
@@ -922,6 +987,9 @@
             initGates();
             drawStaticLines();
             recalculate();
+            
+            initGateEdgeAutoScroll();
+
             const requestPermissions = async () => {
                 if (!gyroPermissionGranted && typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                     try {
@@ -1471,6 +1539,7 @@
                 const btn = document.getElementById(`gate-btn-${getGateButtonId(type)}`);
                 if(btn) {
                     btn.classList.add('btn-highlight');
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     const container = document.getElementById('gate-scroll-area');
                     if (container) {
                         const btnRect = btn.getBoundingClientRect();
@@ -2328,7 +2397,7 @@
 
             updateUndoStatus();
             if ((selectedIndices.length === 0 && gateHistory.length > 0 && typeof draggedIndex === 'undefined') || draggedIndex === null) {
-                if (activeTraceInput === null) setTimeout(() => wrapper && wrapper.scrollTo({ left: wrapper.scrollWidth, behavior: 'smooth' }), 50);
+                if (activeTraceInput === null && !isTraceMode) setTimeout(() => wrapper && wrapper.scrollTo({ left: wrapper.scrollWidth, behavior: 'smooth' }), 50);
             }
         }
         function undo() {
