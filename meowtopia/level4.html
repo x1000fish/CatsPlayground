@@ -1247,14 +1247,14 @@
     }
 }
         function viewInLab() {
-            if (gateHistory.length === 0) {
-                alert("Current circuit is empty!");
-                return;
-            }
-            const circuitData = gateHistory.join(',');
-            const labUrl = `lab2.html?circuit=${encodeURIComponent(circuitData)}`;
-            window.location.href = labUrl;
+            if (gateHistory.length === 0) { 
+        	alert("Current circuit is empty!"); 
+        	return; 
+    	    } 
+    	    const initialInput = "3,2,1,0"; 
+    	    window.location.href = `lab2.html?circuit=${encodeURIComponent(gateHistory.join(','))}&input=${initialInput}`;
         }
+
             var activeRankType = 'steps';
         var rankChampionTimers = [];
         function rankDisplayName(item) { return item.username || item.name || 'Anonymous'; }
