@@ -87,8 +87,8 @@
         .multi-toggle-btn:active,
         .mode-toggle-fixed:active { transform: translateY(2px); box-shadow: 0 2px 0 #463438;}  
         .gate-btn-v2 { position: relative; height: 76px; width: 72px; display: flex; align-items: center; justify-content: center; padding: 0; border: 2.5px solid #463438; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin: auto; background-color: transparent;}
-        .btn-not { background-color: rgba(226, 222, 110, 0.35) !important; }
-        .btn-cnot { background-color: rgba(98, 158, 237, 0.35) !important; }
+        .btn-cnot { background-color: rgba(226, 222, 110, 0.35) !important; }
+        .btn-not { background-color: rgba(98, 158, 237, 0.35) !important; }
         .gate-btn-v2:hover { background-color: #FFB7C5 !important; transform: scale(1.05); z-index: 10; border-color: #463438; }
         .btn-highlight { transform: scale(1.15) !important; box-shadow: 0 0 10px rgba(0,0,0,0.3) !important; border: 4px solid #99C44D !important; z-index: 10 !important; background-color: #FFB7C5 !important; }
         .hyper-line { stroke: #463438; stroke-width: 2; opacity: 0.3; }
@@ -1308,8 +1308,8 @@
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }     
         function getGateColorMap(type) {
-            if (type.startsWith('X')) return '#e2de6e'; 
-            return '#629eed'; 
+            if (type.startsWith('X')) return '#629eed'; 
+            return '#e2de6e'; 
         }
         function handleDragStart(e, index, el) {
             if (isSolved) return;
