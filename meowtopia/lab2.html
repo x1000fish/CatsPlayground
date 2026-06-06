@@ -35,8 +35,8 @@
         .multi-toggle-btn:hover, .mode-toggle-fixed:hover, .view-btn:hover, .game-btn:hover, .btn-share:hover {transform: translateY(-2px);box-shadow: 0 6px 0 #000; }
         .multi-toggle-btn:active, .mode-toggle-fixed:active, .view-btn:active, .game-btn:active, .btn-share:active {transform: translateY(2px); box-shadow: 0 2px 0 #000;}
         .gate-btn-v2 { position: relative; height: 76px; width: 72px; display: flex; align-items: center; justify-content: center; padding: 0; border: 2.5px solid #463438; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin: auto; background-color: transparent;}
-        .btn-not { background-color: rgba(226, 222, 110, 0.35) !important; }
-        .btn-cnot { background-color: rgba(98, 158, 237, 0.35) !important; }
+        .btn-cnot { background-color: rgba(226, 222, 110, 0.35) !important; }
+        .btn-not { background-color: rgba(98, 158, 237, 0.35) !important; }
         .gate-btn-v2:hover { background-color: #FFB7C5 !important; filter: brightness(1.05); transform: scale(1.05); z-index: 10; border-color: #463438; }
         .btn-highlight { transform: scale(1.15) !important; box-shadow: 0 0 10px rgba(0,0,0,0.3) !important; border: 4px solid #99C44D !important; z-index: 10 !important; filter: brightness(1.1) !important; background-color: #FFB7C5 !important; }
         .func-btn { width: 100%; margin-top: 5px; padding: 14px; border-radius: 35px; font-weight: 900; font-size: 16px; border: 2.5px solid #463438; cursor: pointer; box-shadow: 0 4px 0 rgba(70,52,56,0.1); transition: all 0.2s; }
@@ -784,8 +784,8 @@
         }
         
         function getGateColorMap(type) {
-            if (type.startsWith('X')) return '#e2de6e'; 
-            return '#629eed'; 
+            if (type.startsWith('X')) return '#629eed'; 
+            return '#e2de6e'; 
         }
 
         function getHighlightPairsForGate(type) {
