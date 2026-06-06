@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const undoBtn = document.getElementById('undo-btn');
   const saveMapBtn = document.getElementById('savemap-btn');
   const modeToggleBtn = document.getElementById('mode-toggle-btn');
-  const quickSolutionBtn = document.getElementById('quick-solution-btn');
+  let quickSolutionBtn = document.getElementById('quick-solution-btn');
   const resetBtn = document.createElement('button');
   resetBtn.id = 'reset-btn';
   resetBtn.className = 'action-button game-action-button';
@@ -26,6 +26,21 @@ document.addEventListener('DOMContentLoaded', function () {
     undoBtn.title = 'Undo';
     undoBtn.setAttribute('aria-label', 'Undo');
     undoBtn.textContent = 'Undo';
+  }
+
+  function ensureQuickSolutionButton() {
+    if (quickSolutionBtn) {
+      return quickSolutionBtn;
+    }
+
+    quickSolutionBtn = document.createElement('button');
+    quickSolutionBtn.id = 'quick-solution-btn';
+    quickSolutionBtn.className = 'action-button game-action-button';
+    quickSolutionBtn.type = 'button';
+    quickSolutionBtn.title = 'Load Solution';
+    quickSolutionBtn.setAttribute('aria-label', 'Load Solution');
+    quickSolutionBtn.innerHTML = 'Load<br>Solution';
+    return quickSolutionBtn;
   }
 
   let gridSize = 5;
@@ -583,9 +598,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (saveMapBtn) {
     leftButtonGrid.appendChild(saveMapBtn);
   }
-  if (quickSolutionBtn) {
-    leftButtonGrid.appendChild(quickSolutionBtn);
-  }
+  leftButtonGrid.appendChild(ensureQuickSolutionButton());
   leftControlPanel.appendChild(leftButtonGrid);
   mapActionSidebar.appendChild(leftControlPanel);
   interactivePanel.prepend(mapActionSidebar);
@@ -3186,8 +3199,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function openSolutionLoadModal() {
     const hasBuiltInSolution = Boolean(presetSolutionLayouts[getSelectedLevel()]);
+    solutionLoadBuiltInBtn.hidden = !hasBuiltInSolution;
     solutionLoadBuiltInBtn.disabled = !hasBuiltInSolution;
     solutionLoadBuiltInBtn.setAttribute('aria-disabled', hasBuiltInSolution ? 'false' : 'true');
+    solutionLoadModal.classList.toggle('no-built-in-solution', !hasBuiltInSolution);
     solutionLoadModal.classList.add('show');
   }
 
@@ -3312,6 +3327,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
   solutionLoadBuiltInBtn?.addEventListener('click', function () {
+    if (!presetSolutionLayouts[getSelectedLevel()]) {
+      return;
+    }
     closeSolutionLoadModal();
     loadPresetSolution();
   });
@@ -3388,7 +3406,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     shouldAnimateFishOnNextUpdate = false;
-    hasShownCompletionModal = false;
     const shouldStartLevelTwoGuide = isProModeGuidePending && !isGameMode && isLevelTwoProGuideEnabled() && !hasCompletedProModeIntro;
     const shouldShowSignalIntro = isProModeGuidePending && !isGameMode && !isLevelTwoProGuideEnabled() && !hasCompletedProModeIntro;
     if (shouldStartLevelTwoGuide || shouldShowSignalIntro) {
@@ -3401,7 +3418,6 @@ document.addEventListener('DOMContentLoaded', function () {
     applyProbabilitiesToGrid(probabilitiesCache, clickableBox);
     const completionRate = calculateCompletionRate(clickableBox);
     updateCompletionText(completionRate);
-    checkCompletion(completionRate);
     if (shouldStartLevelTwoGuide) {
       showLevelTwoCellGuide();
       return;
