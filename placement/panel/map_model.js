@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
   let activeSensorKeys = new Set();
   let shouldAnimateFishOnNextUpdate = false;
   let fishAnimationTimeouts = [];
+  let pendingCompletionTimeout = null;
+  let pendingCompletionDelayMs = 0;
+  let hasFrozenTimerForPendingCompletion = false;
   let nearCompleteHintBlinkTimer = null;
   let nearCompleteHintBlinkOn = false;
   let audioContext = null;
@@ -663,6 +666,29 @@ document.addEventListener('DOMContentLoaded', function () {
   const completionReplayBtn = document.getElementById('completion-replay-btn');
   const completionLevelsBtn = document.getElementById('completion-levels-btn');
   const completionNextBtn = document.getElementById('completion-next-btn');
+  const solutionFileInput = document.createElement('input');
+  solutionFileInput.type = 'file';
+  solutionFileInput.accept = '.epin,.txt,.json,.csv,text/plain,application/json';
+  solutionFileInput.hidden = true;
+  document.body.appendChild(solutionFileInput);
+
+  const solutionLoadModal = document.createElement('div');
+  solutionLoadModal.className = 'solution-load-modal';
+  solutionLoadModal.innerHTML = `
+    <div class="solution-load-card">
+      <button class="solution-load-close" type="button" aria-label="Close load solution options">x</button>
+      <h2>Load Solution</h2>
+      <p>Choose the built-in solution or load your own saved file.</p>
+      <div class="solution-load-actions">
+        <button class="solution-load-choice solution-load-built-in" type="button">Built-In Solution</button>
+        <button class="solution-load-choice solution-load-file" type="button">Load File</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(solutionLoadModal);
+  const solutionLoadClose = solutionLoadModal.querySelector('.solution-load-close');
+  const solutionLoadBuiltInBtn = solutionLoadModal.querySelector('.solution-load-built-in');
+  const solutionLoadFileBtn = solutionLoadModal.querySelector('.solution-load-file');
   const tutorialKey = document.body.dataset.tutorial || '';
   const isProModeTutorial = document.body.dataset.proTutorial === 'true' || tutorialKey === 'pro-mode';
 
@@ -1417,6 +1443,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function resetMissionTimer() {
+    cancelPendingCompletion({ resumeTimer: false });
     if (missionTimerInterval) {
       clearInterval(missionTimerInterval);
       missionTimerInterval = null;
@@ -1894,6 +1921,29 @@ document.addEventListener('DOMContentLoaded', function () {
     playCrunchSequence(durationMs);
   }
 
+  function getFishEatAnimationDuration() {
+    const frames = getFishSkin().frames || [];
+    return frames.reduce((duration, frame) => Math.max(duration, Number(frame.at) || 0), 0);
+  }
+
+  function cancelPendingCompletion(options = {}) {
+    const shouldResumeTimer = options.resumeTimer ?? true;
+    if (pendingCompletionTimeout) {
+      window.clearTimeout(pendingCompletionTimeout);
+      pendingCompletionTimeout = null;
+    }
+
+    pendingCompletionDelayMs = 0;
+    if (hasFrozenTimerForPendingCompletion) {
+      hasFrozenTimerForPendingCompletion = false;
+      if (shouldResumeTimer && !hasShownCompletionModal && finalElapsedSeconds) {
+        missionStartedAt = Date.now() - finalElapsedSeconds * 1000;
+        finalElapsedSeconds = 0;
+        startMissionTimer();
+      }
+    }
+  }
+
   function runFishEatAnimation(entityLayer) {
     if (!entityLayer) {
       return;
@@ -2017,11 +2067,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const coverage = Number(completionRate || 0);
     if (coverage >= 100) {
       if (isPresetSolutionLoaded && !isReducedPresetSolution()) {
+        cancelPendingCompletion({ resumeTimer: false });
         hasShownCompletionModal = false;
+        return;
+      }
+      if (pendingCompletionDelayMs > 0 && !hasShownCompletionModal) {
+        if (!pendingCompletionTimeout) {
+          stopMissionTimer();
+          hasFrozenTimerForPendingCompletion = true;
+          pendingCompletionTimeout = window.setTimeout(() => {
+            pendingCompletionTimeout = null;
+            hasFrozenTimerForPendingCompletion = false;
+            pendingCompletionDelayMs = 0;
+            showCompletionModal();
+          }, pendingCompletionDelayMs + 80);
+        }
         return;
       }
       showCompletionModal();
     } else {
+      cancelPendingCompletion({ resumeTimer: true });
       hasShownCompletionModal = false;
     }
   }
@@ -2618,6 +2683,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const shouldAnimateFish = isGameMode && shouldAnimateFishOnNextUpdate;
     let animatedFishCount = 0;
 
+    pendingCompletionDelayMs = 0;
     clearFishAnimations();
 
     cells.forEach((cell, index) => {
@@ -2761,7 +2827,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (animatedFishCount > 0) {
-      playEatSoundSequence(2000);
+      pendingCompletionDelayMs = getFishEatAnimationDuration();
+      playEatSoundSequence(pendingCompletionDelayMs || 2000);
     }
 
     updateCatPlacementHints(grid);
@@ -2769,6 +2836,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function calculateDetectionProbability(size, sensorList, grid) {
+    cancelPendingCompletion({ resumeTimer: true });
     const probabilities = Array(size * size).fill(0);
     const connectivityData = buildConnectivityData(sensorList);
     const activeSensors = sensorList.filter(sensor => connectivityData.activeSensorKeys.has(`${sensor.x},${sensor.y}`));
@@ -3086,6 +3154,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 100);
   }
 
+  function loadSolutionLayout(layout) {
+    if (!Array.isArray(layout) || layout.length === 0) {
+      return;
+    }
+
+    saveMapState();
+    isPresetSolutionLoaded = true;
+    presetSolutionSensorCount = layout.length;
+    lastSavedCompletionKey = '';
+    startMissionTimer();
+    shouldAnimateFishOnNextUpdate = false;
+    hasShownCompletionModal = false;
+    updateGrid(layout.map(sensor => ({ x: sensor.x, y: sensor.y })));
+  }
+
   function loadPresetSolution() {
     const selectedLevel = getSelectedLevel();
     const presetLayout = presetSolutionLayouts[selectedLevel];
@@ -3094,14 +3177,96 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    saveMapState();
-    isPresetSolutionLoaded = true;
-    presetSolutionSensorCount = presetLayout.length;
-    lastSavedCompletionKey = '';
-    startMissionTimer();
-    shouldAnimateFishOnNextUpdate = false;
-    hasShownCompletionModal = false;
-    updateGrid(presetLayout.map(sensor => ({ x: sensor.x, y: sensor.y })));
+    loadSolutionLayout(presetLayout);
+  }
+
+  function closeSolutionLoadModal() {
+    solutionLoadModal.classList.remove('show');
+  }
+
+  function openSolutionLoadModal() {
+    const hasBuiltInSolution = Boolean(presetSolutionLayouts[getSelectedLevel()]);
+    solutionLoadBuiltInBtn.disabled = !hasBuiltInSolution;
+    solutionLoadBuiltInBtn.setAttribute('aria-disabled', hasBuiltInSolution ? 'false' : 'true');
+    solutionLoadModal.classList.add('show');
+  }
+
+  function parseSolutionLayoutFromText(text) {
+    const sourceText = String(text || '');
+    const generationMatch = sourceText.match(/Generation\s*:\s*([\s\S]*)/i);
+    const coordinateText = generationMatch ? generationMatch[1] : sourceText;
+    const layout = [];
+    const seen = new Set();
+
+    const pushCoordinate = function (xValue, yValue) {
+      const x = Number(xValue);
+      const y = Number(yValue);
+      if (!Number.isInteger(x) || !Number.isInteger(y)) {
+        return;
+      }
+      if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) {
+        return;
+      }
+      const key = `${x},${y}`;
+      if (seen.has(key)) {
+        return;
+      }
+      seen.add(key);
+      layout.push({ x, y });
+    };
+
+    try {
+      const parsed = JSON.parse(sourceText);
+      if (Array.isArray(parsed)) {
+        parsed.forEach(item => {
+          if (Array.isArray(item)) {
+            pushCoordinate(item[0], item[1]);
+          } else if (item && typeof item === 'object') {
+            pushCoordinate(item.x, item.y);
+          }
+        });
+      }
+    } catch (error) {
+      // Plain text solution files are parsed below.
+    }
+
+    const objectPattern = /[{\s,]x\s*:\s*(-?\d+)\s*,\s*y\s*:\s*(-?\d+)/gi;
+    let objectMatch = objectPattern.exec(coordinateText);
+    while (objectMatch) {
+      pushCoordinate(objectMatch[1], objectMatch[2]);
+      objectMatch = objectPattern.exec(coordinateText);
+    }
+
+    if (layout.length === 0) {
+      const pairPattern = /(-?\d+)\s*,\s*(-?\d+)/g;
+      let pairMatch = pairPattern.exec(coordinateText);
+      while (pairMatch) {
+        pushCoordinate(pairMatch[1], pairMatch[2]);
+        pairMatch = pairPattern.exec(coordinateText);
+      }
+    }
+
+    return layout;
+  }
+
+  function loadSolutionFile(file) {
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.addEventListener('load', function () {
+      const layout = parseSolutionLayoutFromText(reader.result);
+      if (layout.length === 0) {
+        window.alert('No valid solution coordinates were found in this file.');
+        return;
+      }
+      loadSolutionLayout(layout);
+    });
+    reader.addEventListener('error', function () {
+      window.alert('Could not read this solution file.');
+    });
+    reader.readAsText(file);
   }
 
   function replayCurrentLevel() {
@@ -3139,7 +3304,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  quickSolutionBtn?.addEventListener('click', loadPresetSolution);
+  quickSolutionBtn?.addEventListener('click', openSolutionLoadModal);
+  solutionLoadClose?.addEventListener('click', closeSolutionLoadModal);
+  solutionLoadModal.addEventListener('click', function (event) {
+    if (event.target === solutionLoadModal) {
+      closeSolutionLoadModal();
+    }
+  });
+  solutionLoadBuiltInBtn?.addEventListener('click', function () {
+    closeSolutionLoadModal();
+    loadPresetSolution();
+  });
+  solutionLoadFileBtn?.addEventListener('click', function () {
+    closeSolutionLoadModal();
+    solutionFileInput.value = '';
+    solutionFileInput.click();
+  });
+  solutionFileInput.addEventListener('change', function () {
+    loadSolutionFile(solutionFileInput.files?.[0]);
+  });
 
   document.addEventListener('click', function (event) {
     blockOffGuideClick(event);
