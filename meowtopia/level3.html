@@ -246,10 +246,10 @@
 
 </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels" id="body-root">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels pro-active" id="body-root">
     <div id="mode-toggle-container">
         <div id="mode-toggle" class="mode-toggle-fixed" onclick="togglePro()">👁️</div>
-        <div id="quantum-toggle" class="mode-toggle-fixed hidden" onclick="toggleQuantumMode()" style="top: 100px; font-size: 26px;">⚛️</div>
+        <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 100px; font-size: 26px;">⚛️</div>
     </div>
     <div id="leaderboard-wrapper">
         <div class="side-leaderboard-content">
@@ -410,7 +410,7 @@
             updateFeatureToggleLabels();
         }
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsOdnjfzdpZPaLEojtMJFNjs8t2EJaoPYib4kVj6GrCXKMwt9Fj6iV6swJbicaM28QOw/exec';
-        let steps = 0, time = 0, isPro = false, fishAtNode = [1, 0, 3, 2], gateHistory = [], timerInterval, isSolved = false;
+        let steps = 0, time = 0, isPro = false, fishAtNode = [1, 0, 3, 2], gateHistory = [], timerInterval, isSolved = true;
         const PROGRESS_TOTAL = 4;
         const PROGRESS_DEFAULT_CODE = '011';
 
