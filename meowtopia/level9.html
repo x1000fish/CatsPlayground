@@ -1808,7 +1808,10 @@
             fetchLeaderboard();
             
             // 綁定教學按鈕並在開始時主動觸發，傳入 false 以移除初次載入時的彈出動畫
-            openTutorial(false);
+            if (!hasTimerStarted) {
+                hasTimerStarted = true;
+                timerInterval = setInterval(() => { time++; document.getElementById('timer').innerText = time; }, 1000);
+            }
 
             const circuitWrapper = document.getElementById('circuit-content-wrapper');
             const gateScrollArea = document.getElementById('gate-scroll-area');
