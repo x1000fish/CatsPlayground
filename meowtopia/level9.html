@@ -234,9 +234,9 @@
         @media (min-width: 1024px) {body {zoom: 0.9;} }
     </style>
 </head>
-<body id="body-root" class="mini-mode hide-labels">
+<body id="body-root" class="mini-mode hide-labels pro-active">
     <div id="mode-toggle" class="mode-toggle-fixed" onclick="togglePro()">👁️</div>
-    <div id="quantum-toggle" class="mode-toggle-fixed hidden" onclick="toggleQuantumMode()" style="top: 100px; font-size: 26px;">⚛️</div>
+    <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 100px; font-size: 26px;">⚛️</div>
     <div id="leaderboard-wrapper">
         <div class="side-leaderboard-content">
             <div id="rank-panel" class="side-panel-view flex flex-col flex-grow min-h-0">
@@ -796,7 +796,7 @@
             updateFeatureHighlights(); 
         }
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsOdnjfzdpZPaLEojtMJFNjs8t2EJaoPYib4kVj6GrCXKMwt9Fj6iV6swJbicaM28QOw/exec';
-        let steps = 0, time = 0, isPro = false, isQuantumMode = false, timerInterval, gateHistory = [], isSolved = false;
+        let steps = 0, time = 0, isPro = true, isQuantumMode = false, timerInterval, gateHistory = [], isSolved = false;
         let selectedIndices = [];
         let actionStack = [];
         let fishAtNode = [8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7];
