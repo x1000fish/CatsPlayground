@@ -543,7 +543,7 @@
         </div>
     </div>
     
-    <div id="tutorialModal" class="modal-overlay" style="display: flex;">
+    <div id="tutorialModal" class="modal-overlay" style="display: none;">
         <div class="modal-content text-left" style="transform: scale(1); opacity: 1;">
             <div id="tut-page-1">
                 <h2 class="text-3xl font-black mb-10 flex justify-center items-center gap-3" style="color: #463438;">
@@ -1065,6 +1065,10 @@
             updateFishUI();
             updateUndoStatus();
             fetchLeaderboard();   
+            if (!hasTimerStarted) {
+                hasTimerStarted = true;
+                timerInterval = setInterval(() => { time++; document.getElementById('timer').innerText = time; }, 1000);
+            }
             const btn = document.getElementById('help-btn');
             const modalContent = document.querySelector('#tutorialModal .modal-content');
             if (btn && modalContent) {
