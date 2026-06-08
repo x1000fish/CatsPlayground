@@ -331,7 +331,7 @@
         </div>
         <div class="main-layout">
             <div id="pro-panel">
-                <div class="panel-section-title" id="panel-title-gates">Transformations</div>
+                <div class="panel-section-title" id="panel-title-gates">Path Select</div>
                 <div class="grid grid-cols-2 gap-2 w-10/12 mx-auto" id="gate-container">
                     <button id="gate-x0" class="gate-btn-v2 btn-not" onclick="applyGate('X0')" onmouseover="syncGateHighlight('X0', true)" onmouseout="syncGateHighlight('X0', false)"></button>
                     <button id="gate-x1" class="gate-btn-v2 btn-not" onclick="applyGate('X1')" onmouseover="syncGateHighlight('X1', true)" onmouseout="syncGateHighlight('X1', false)"></button>      
@@ -670,7 +670,7 @@
         };       
         function updateLabels() {
             const isCube = !isQuantumMode;
-            document.getElementById('panel-title-gates').innerText = isCube ? 'Transformations' : 'Quantum Gate';
+            document.getElementById('panel-title-gates').innerText = isCube ? 'Path Select' : 'Quantum Gate';
             document.getElementById('circuit-title-text').innerText = isCube ? 'Paths' : 'Circuit Diagram';
             updateCircuitLabels();
             if (typeof updateFeatureToggleLabels === 'function') updateFeatureToggleLabels();
