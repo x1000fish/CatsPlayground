@@ -1412,7 +1412,7 @@
             document.getElementById('quantum-toggle').innerText = isQuantumMode ? "🧊" : "⚛️";
             document.getElementById('body-root').classList.toggle('mini-mode', !isQuantumMode);
             document.getElementById('circuit-diagram-title').innerText = isQuantumMode ? "Circuit Diagram" : "Paths";
-            document.getElementById('panel-gate-title').innerText = isQuantumMode ? "Quantum Gates" : "Transformations";
+            document.getElementById('panel-gate-title').innerText = isQuantumMode ? "Quantum Gates" : "Path Select";
             updateCircuitLabels();
             if (typeof updateFeatureToggleLabels === 'function') updateFeatureToggleLabels();
 
