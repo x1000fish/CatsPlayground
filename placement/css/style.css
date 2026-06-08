@@ -3143,31 +3143,32 @@ body.level-page {
   position: absolute;
   inset: -1px;
   border-style: solid;
-  border-color: #ffbb4d;
+  border-color: #ef1f1f;
   border-width:
     var(--cat-placeable-top, 0)
     var(--cat-placeable-right, 0)
     var(--cat-placeable-bottom, 0)
     var(--cat-placeable-left, 0);
   background: transparent;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.75), 0 0 8px rgba(239, 31, 31, 0.45);
   pointer-events: none;
   z-index: 3;
 }
 
 .cat-game-mode .grid-cell.cat-placeable-edge-top {
-  --cat-placeable-top: max(2px, min(4px, 0.2em));
+  --cat-placeable-top: max(3px, min(5px, 0.26em));
 }
 
 .cat-game-mode .grid-cell.cat-placeable-edge-right {
-  --cat-placeable-right: max(2px, min(4px, 0.2em));
+  --cat-placeable-right: max(3px, min(5px, 0.26em));
 }
 
 .cat-game-mode .grid-cell.cat-placeable-edge-bottom {
-  --cat-placeable-bottom: max(2px, min(4px, 0.2em));
+  --cat-placeable-bottom: max(3px, min(5px, 0.26em));
 }
 
 .cat-game-mode .grid-cell.cat-placeable-edge-left {
-  --cat-placeable-left: max(2px, min(4px, 0.2em));
+  --cat-placeable-left: max(3px, min(5px, 0.26em));
 }
 
 .grid-cell.wall,
