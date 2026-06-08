@@ -301,7 +301,7 @@
         <div class="main-layout">
             <div id="pro-panel">
                 <div id="gate-view-container" class="w-full flex-col flex h-full min-h-0">
-                    <div id="panel-gate-title" class="panel-section-title">Transformations</div>
+                    <div id="panel-gate-title" class="panel-section-title">Path Select</div>
                     <div id="gate-scroll-area">
                         <div class="flex flex-col gap-2 w-full" id="gate-grid"></div>
                     </div>
@@ -1562,7 +1562,7 @@
                 qToggle.title = isQuantumMode ? 'Mini Hypercube Mode' : 'Quantum Mode';
             }
             const title = document.getElementById('panel-gate-title');
-            if (title) title.innerText = isQuantumMode ? 'Quantum Gates' : 'Transformations';
+            if (title) title.innerText = isQuantumMode ? 'Quantum Gates' : 'Path Select';
             const cTitle = document.getElementById('circuit-diagram-title');
             if (cTitle) cTitle.innerText = isQuantumMode ? 'Circuit Diagram' : 'Paths';
             updateCircuitLabels();
