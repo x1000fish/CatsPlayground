@@ -175,12 +175,27 @@
   </div>
   <script>
     (function initLevelSelect() {
-      const user  = sessionStorage.getItem('currentUser');
-      const placeLv = parseInt(sessionStorage.getItem('placement_level') || sessionStorage.getItem('placementLevel'));
-      if (!user || isNaN(placeLv)) {
-        document.getElementById('auth-gate').style.display = 'flex';
-        return;
+      let user = sessionStorage.getItem('currentUser');
+      let placeLv = parseInt(sessionStorage.getItem('placement_level') || sessionStorage.getItem('placementLevel'));
+
+      if (!user) {
+        user = 'Guest';
+        placeLv = 19;
+        sessionStorage.setItem('isGuest', 'true');
+        sessionStorage.setItem('currentUser', user);
+        sessionStorage.setItem('placement_level', String(placeLv));
+        sessionStorage.setItem('placementLevel', String(placeLv));
+        sessionStorage.setItem('currentLevel', sessionStorage.getItem('currentLevel') || '1');
+      } else if (sessionStorage.getItem('isGuest') === 'true') {
+        placeLv = 19;
+        sessionStorage.setItem('placement_level', String(placeLv));
+        sessionStorage.setItem('placementLevel', String(placeLv));
+      } else if (isNaN(placeLv)) {
+        placeLv = 1;
+        sessionStorage.setItem('placement_level', String(placeLv));
+        sessionStorage.setItem('placementLevel', String(placeLv));
       }
+
       const safePlace = Math.max(1, placeLv);
       document.getElementById('bar-username').textContent = user;
       document.getElementById('bar-level').textContent    = Math.min(safePlace, 19);
