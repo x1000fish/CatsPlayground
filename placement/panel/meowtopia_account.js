@@ -1,6 +1,7 @@
 (function () {
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1JUQIPd3qTapnYRANptv2RdRwxuH5-hvzTwiDghtyuHCn9km3zcDL2AFRy8w5dWA59w/exec';
   const USER_KEY = 'currentUser';
+  const GUEST_KEY = 'isGuest';
   const FLAGSHIP_LEVEL_KEY = 'currentLevel';
   const PLACEMENT_LEVEL_KEY = 'placement_level';
   const LEGACY_PLACEMENT_LEVEL_KEY = 'placementLevel';
@@ -13,6 +14,22 @@
 
   function getCurrentUser() {
     return sessionStorage.getItem(USER_KEY) || '';
+  }
+
+  function isGuestUser() {
+    return sessionStorage.getItem(GUEST_KEY) === 'true';
+  }
+
+  function ensureGuestSession() {
+    if (getCurrentUser()) {
+      return;
+    }
+
+    sessionStorage.setItem(GUEST_KEY, 'true');
+    sessionStorage.setItem(USER_KEY, 'Guest');
+    sessionStorage.setItem(FLAGSHIP_LEVEL_KEY, '1');
+    sessionStorage.setItem(PLACEMENT_LEVEL_KEY, String(MAX_PLACEMENT_LEVEL));
+    sessionStorage.setItem(LEGACY_PLACEMENT_LEVEL_KEY, String(MAX_PLACEMENT_LEVEL));
   }
 
   function getPageLevel() {
@@ -35,6 +52,10 @@
   }
 
   function getPlacementLevel() {
+    if (isGuestUser() || !getCurrentUser()) {
+      return MAX_PLACEMENT_LEVEL;
+    }
+
     const value = Math.max(
       getStoredNumber(PLACEMENT_LEVEL_KEY, 1),
       getStoredNumber(LEGACY_PLACEMENT_LEVEL_KEY, 1)
@@ -103,7 +124,7 @@
       if (result.status === 'success') {
         const flagshipLevel = result.meowtopiaLevel || result.flagshipLevel || result.level || '1';
         const placementLevel = result.placementLevel || '1';
-        sessionStorage.removeItem('isGuest');
+        sessionStorage.removeItem(GUEST_KEY);
         sessionStorage.setItem(USER_KEY, username);
         sessionStorage.setItem(FLAGSHIP_LEVEL_KEY, flagshipLevel);
         sessionStorage.setItem(PLACEMENT_LEVEL_KEY, placementLevel);
@@ -182,7 +203,7 @@
 
   function handleLogout() {
     sessionStorage.removeItem(USER_KEY);
-    sessionStorage.removeItem('isGuest');
+    sessionStorage.removeItem(GUEST_KEY);
     sessionStorage.removeItem(FLAGSHIP_LEVEL_KEY);
     sessionStorage.removeItem(PLACEMENT_LEVEL_KEY);
     sessionStorage.removeItem(LEGACY_PLACEMENT_LEVEL_KEY);
@@ -194,6 +215,7 @@
     localStorage.removeItem('playerPhotoX');
     localStorage.removeItem('playerPhotoY');
     localStorage.removeItem('playerPhotoScale');
+    ensureGuestSession();
     renderHomeAccount();
   }
 
@@ -238,8 +260,8 @@
     panel.innerHTML = `
       <div class="account-avatar" aria-hidden="true">🐱</div>
       <div class="account-profile-copy">
-        <span class="hero-badge">Signed In</span>
-        <strong>${escapeHtml(username)}</strong>
+        <span class="hero-badge">${isGuestUser() ? 'Guest Mode' : 'Signed In'}</span>
+        <strong>${escapeHtml(isGuestUser() ? 'Guest' : username)}</strong>
       </div>
       <button id="account-logout-btn" class="account-secondary-btn" type="button">LOGOUT</button>
     `;
@@ -307,7 +329,17 @@
       const profile = buildProfileCard(username);
       document.querySelector('.game-home-hero')?.after(profile);
       profile.after(buildGameChoiceCard());
-      document.getElementById('account-logout-btn')?.addEventListener('click', handleLogout);
+      const logoutButton = document.getElementById('account-logout-btn');
+      if (logoutButton) {
+        logoutButton.textContent = isGuestUser() ? 'LOGIN' : 'LOGOUT';
+        logoutButton.addEventListener('click', () => {
+          if (isGuestUser()) {
+            window.location.href = '../login.html';
+            return;
+          }
+          handleLogout();
+        });
+      }
       document.getElementById('play-placement-btn')?.addEventListener('click', () => {
         levelPanel?.classList.remove('game-choice-hidden');
         levelPanel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -353,12 +385,9 @@
       return;
     }
 
-    if (!getCurrentUser()) {
-      window.location.href = 'index.html';
-      return;
-    }
+    ensureGuestSession();
 
-    if (getPageLevel() > getPlacementLevel()) {
+    if (!isGuestUser() && getPageLevel() > getPlacementLevel()) {
       window.location.href = 'index.html?locked=1';
     }
   }
@@ -587,7 +616,7 @@
       sessionStorage.setItem(LEGACY_PLACEMENT_LEVEL_KEY, String(nextLevel));
     }
 
-    if (sessionStorage.getItem('isGuest') === 'true') {
+    if (isGuestUser()) {
       return Promise.resolve(true);
     }
 
@@ -617,6 +646,7 @@
   }
 
   function init() {
+    ensureGuestSession();
     renderHomeAccount();
     requireLevelLogin();
     createLeaderboard();
