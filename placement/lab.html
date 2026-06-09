@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Placement Lab - Custom Map</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="level-page game-level lab-page lab-game-mode">
+  <main class="level-shell lab-shell">
+    <header class="level-topbar">
+      <a class="return-link" href="index.html">&larr; Back To Levels</a>
+      <div class="level-meta-group">
+        <div class="mission-id-pill">Lab</div>
+        <div class="mission-size-pill" id="lab-size-pill">Custom Map</div>
+        <button id="lab-mode-toggle-btn" class="mode-toggle-button" type="button">Pro Mode</button>
+      </div>
+    </header>
+
+    <section class="mission-header-compact">
+      <div class="mission-status-strip">
+        <div class="stat-grid game-stat-grid lab-stat-grid">
+          <div class="stat-card"><span id="lab-actor-count-label">Cats</span>: <span id="lab-cat-count" class="bold-text">0</span></div>
+          <div class="stat-card">Relays: <span id="lab-relay-count" class="bold-text">0</span></div>
+          <div class="stat-card">Coverage: <span id="lab-coverage" class="bold-text">0.00%</span></div>
+        </div>
+
+        <div class="legend-group lab-legend-group">
+          <div class="label-box"><span class="lab-actor-swatch"></span> : <span id="lab-actor-legend-label">Cat</span></div>
+          <div class="label-box"><span class="lab-target-swatch"></span> : <span id="lab-target-legend-label">Fish</span></div>
+          <div class="label-box"><span class="lab-wall-swatch"></span> : Wall</div>
+          <div class="label-box"><span class="lab-relay-swatch"></span> : Relay</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission-layout compact-layout">
+      <div class="mission-stage">
+        <div id="sensor-deployment-panel" class="framed mission-panel lab-panel">
+          <div class="inside lab-inside">
+            <aside class="lab-control-panel">
+              <div id="lab-mode-badge" class="lab-mode-badge">Design Mode</div>
+
+              <div class="lab-control-block lab-design-only">
+                <label for="lab-map-size">Map Size</label>
+                <div class="lab-control-row">
+                  <input id="lab-map-size" type="number" min="5" max="60" step="1" value="12">
+                  <button id="lab-apply-size" class="lab-small-button" type="button">Apply</button>
+                </div>
+              </div>
+
+              <div class="lab-control-block lab-design-only">
+                <span class="lab-control-label">Tool</span>
+                <div class="lab-tool-grid" role="group" aria-label="Lab tools">
+                  <button class="lab-tool-button active" type="button" data-tool="wall">Wall</button>
+                  <button class="lab-tool-button" type="button" data-tool="relay">Relay</button>
+                  <button class="lab-tool-button" type="button" data-tool="erase">Erase</button>
+                </div>
+              </div>
+
+              <div class="lab-control-block lab-design-only">
+                <label for="lab-wall-length">Wall Length</label>
+                <div class="lab-control-row lab-wall-control-row">
+                  <input id="lab-wall-length" type="number" min="1" max="30" step="1" value="4">
+                  <select id="lab-wall-direction" aria-label="Wall direction">
+                    <option value="horizontal">Horizontal</option>
+                    <option value="vertical">Vertical</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="lab-control-block lab-design-only">
+                <label for="lab-link-distance">Relay Link</label>
+                <input id="lab-link-distance" type="number" min="1" max="30" step="1" value="5">
+              </div>
+
+              <button id="lab-start-play" class="lab-start-button" type="button">Confirm Map</button>
+              <button id="lab-reset-cats" class="lab-small-button lab-play-only" type="button" hidden>Reset Cats</button>
+              <button id="lab-edit-map" class="lab-small-button lab-play-only" type="button" hidden>Edit Map</button>
+              <button id="lab-clear-map" class="lab-clear-button lab-design-only" type="button">Clear Map</button>
+            </aside>
+
+            <div class="lab-map-stage">
+              <div class="lab-map-scroll">
+                <div class="lab-map-wrap">
+                  <svg id="lab-links" class="lab-links" aria-hidden="true"></svg>
+                  <div id="lab-grid" class="lab-grid" role="grid" aria-label="Custom placement lab map"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const grid = document.getElementById('lab-grid');
+      const linksSvg = document.getElementById('lab-links');
+      const sizeInput = document.getElementById('lab-map-size');
+      const sizePill = document.getElementById('lab-size-pill');
+      const applySizeBtn = document.getElementById('lab-apply-size');
+      const wallLengthInput = document.getElementById('lab-wall-length');
+      const wallDirectionSelect = document.getElementById('lab-wall-direction');
+      const linkDistanceInput = document.getElementById('lab-link-distance');
+      const clearBtn = document.getElementById('lab-clear-map');
+      const startPlayBtn = document.getElementById('lab-start-play');
+      const resetCatsBtn = document.getElementById('lab-reset-cats');
+      const editMapBtn = document.getElementById('lab-edit-map');
+      const modeBadge = document.getElementById('lab-mode-badge');
+      const labModeToggleBtn = document.getElementById('lab-mode-toggle-btn');
+      const toolButtons = Array.from(document.querySelectorAll('.lab-tool-button'));
+      const designOnlyControls = Array.from(document.querySelectorAll('.lab-design-only'));
+      const playOnlyControls = Array.from(document.querySelectorAll('.lab-play-only'));
+      const actorCountLabel = document.getElementById('lab-actor-count-label');
+      const actorLegendLabel = document.getElementById('lab-actor-legend-label');
+      const targetLegendLabel = document.getElementById('lab-target-legend-label');
+      const catCountDisplay = document.getElementById('lab-cat-count');
+      const relayCountDisplay = document.getElementById('lab-relay-count');
+      const coverageDisplay = document.getElementById('lab-coverage');
+      const sensingRange = 5;
+      const coverageThreshold = 0.3;
+      let mapSize = 12;
+      let activeTool = 'wall';
+      let labPlayMode = 'game';
+      let isPlaying = false;
+      let designedCells = [];
+      let cells = [];
+
+      function clampNumber(value, min, max, fallback) {
+        const number = parseInt(value, 10);
+        if (!Number.isFinite(number)) {
+          return fallback;
+        }
+        return Math.min(max, Math.max(min, number));
+      }
+
+      function getCellSize(size) {
+        if (size <= 12) return 40;
+        if (size <= 20) return 36;
+        if (size <= 35) return 32;
+        return 30;
+      }
+
+      function setActiveTool(tool) {
+        activeTool = tool;
+        toolButtons.forEach(item => item.classList.toggle('active', item.dataset.tool === activeTool));
+      }
+
+      function setLabPlayMode(mode) {
+        labPlayMode = mode === 'pro' ? 'pro' : 'game';
+        document.body.classList.toggle('lab-pro-mode', labPlayMode === 'pro');
+        document.body.classList.toggle('lab-game-mode', labPlayMode === 'game');
+        const toggleLabel = labPlayMode === 'pro' ? 'Game Mode' : 'Pro Mode';
+        labModeToggleBtn.textContent = toggleLabel;
+        labModeToggleBtn.title = toggleLabel;
+        labModeToggleBtn.setAttribute('aria-label', toggleLabel);
+        actorCountLabel.textContent = labPlayMode === 'pro' ? 'Sensors' : 'Cats';
+        actorLegendLabel.textContent = labPlayMode === 'pro' ? 'Sensor' : 'Cat';
+        targetLegendLabel.textContent = labPlayMode === 'pro' ? 'Weak Zone' : 'Fish';
+        resetCatsBtn.textContent = labPlayMode === 'pro' ? 'Reset Sensors' : 'Reset Cats';
+      }
+
+      function setDesignControlsEnabled(isEnabled) {
+        [sizeInput, applySizeBtn, wallLengthInput, wallDirectionSelect, linkDistanceInput, clearBtn].forEach(control => {
+          control.disabled = !isEnabled;
+        });
+        toolButtons.forEach(button => {
+          button.disabled = !isEnabled;
+        });
+      }
+
+      function updateLabModeUI() {
+        document.body.classList.toggle('lab-playing', isPlaying);
+        modeBadge.textContent = isPlaying ? 'Play Mode' : 'Design Mode';
+        startPlayBtn.hidden = isPlaying;
+        designOnlyControls.forEach(control => { control.hidden = isPlaying; });
+        playOnlyControls.forEach(control => { control.hidden = !isPlaying; });
+        setDesignControlsEnabled(!isPlaying);
+      }
+
+      function createCell(type = 'fish') {
+        return { type, covered: false, active: false, probability: 0 };
+      }
+
+      function cloneCells(sourceCells) {
+        return sourceCells.map(cell => createCell(cell.type));
+      }
+
+      function cellIndex(row, column) {
+        return row * mapSize + column;
+      }
+
+      function inBounds(row, column) {
+        return row >= 0 && row < mapSize && column >= 0 && column < mapSize;
+      }
+
+      function getCellsByType(type) {
+        return cells
+          .map((cell, index) => ({ cell, index, row: Math.floor(index / mapSize), column: index % mapSize }))
+          .filter(item => item.cell.type === type);
+      }
+
+      function hasWallBetween(startRow, startColumn, endRow, endColumn) {
+        const rowDistance = Math.abs(endRow - startRow);
+        const columnDistance = Math.abs(endColumn - startColumn);
+        const steps = Math.max(rowDistance, columnDistance);
+        for (let step = 1; step < steps; step++) {
+          const row = Math.round(startRow + (endRow - startRow) * (step / steps));
+          const column = Math.round(startColumn + (endColumn - startColumn) * (step / steps));
+          if (cells[cellIndex(row, column)]?.type === 'wall') {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function getDistance(aRow, aColumn, bRow, bColumn) {
+        return Math.hypot(aRow - bRow, aColumn - bColumn);
+      }
+
+      function updateCoverage() {
+        const relays = getCellsByType('relay');
+        const cats = getCellsByType('cat');
+        const linkDistance = clampNumber(linkDistanceInput.value, 1, 30, 5);
+
+        cells.forEach(cell => {
+          cell.covered = false;
+          cell.active = false;
+          cell.probability = 0;
+        });
+
+        cats.forEach(cat => {
+          cat.cell.active = !relays.length || relays.some(relay =>
+            getDistance(cat.row, cat.column, relay.row, relay.column) <= linkDistance &&
+            !hasWallBetween(cat.row, cat.column, relay.row, relay.column)
+          );
+        });
+
+        cells.forEach((cell, index) => {
+          if (cell.type !== 'fish') {
+            return;
+          }
+
+          const row = Math.floor(index / mapSize);
+          const column = index % mapSize;
+          cats.forEach(cat => {
+            if (!cat.cell.active || hasWallBetween(row, column, cat.row, cat.column)) {
+              return;
+            }
+            const distance = getDistance(row, column, cat.row, cat.column);
+            if (distance > 0 && distance <= sensingRange) {
+              const probability = 1 / distance;
+              cell.probability = 1 - (1 - cell.probability) * (1 - probability);
+            }
+          });
+          cell.covered = cell.probability > coverageThreshold;
+        });
+
+        const fish = cells.filter(cell => cell.type === 'fish');
+        const covered = fish.filter(cell => cell.covered).length;
+        catCountDisplay.textContent = cats.length;
+        relayCountDisplay.textContent = relays.length;
+        coverageDisplay.textContent = fish.length ? `${((covered / fish.length) * 100).toFixed(2)}%` : '0.00%';
+      }
+
+      function renderConnections() {
+        const relays = getCellsByType('relay');
+        const cats = getCellsByType('cat').filter(cat => cat.cell.active);
+        const linkDistance = clampNumber(linkDistanceInput.value, 1, 30, 5);
+        const cellSize = getCellSize(mapSize);
+        linksSvg.innerHTML = '';
+        linksSvg.setAttribute('width', mapSize * cellSize);
+        linksSvg.setAttribute('height', mapSize * cellSize);
+
+        cats.forEach(cat => {
+          const nearestRelay = relays
+            .filter(relay =>
+              getDistance(cat.row, cat.column, relay.row, relay.column) <= linkDistance &&
+              !hasWallBetween(cat.row, cat.column, relay.row, relay.column)
+            )
+            .sort((a, b) =>
+              getDistance(cat.row, cat.column, a.row, a.column) -
+              getDistance(cat.row, cat.column, b.row, b.column)
+            )[0];
+
+          if (!nearestRelay) {
+            return;
+          }
+
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', cat.column * cellSize + cellSize / 2);
+          line.setAttribute('y1', cat.row * cellSize + cellSize / 2);
+          line.setAttribute('x2', nearestRelay.column * cellSize + cellSize / 2);
+          line.setAttribute('y2', nearestRelay.row * cellSize + cellSize / 2);
+          linksSvg.appendChild(line);
+        });
+      }
+
+      function getSignalLevel(probability) {
+        if (probability <= 0) return 0;
+        if (probability < 0.3) return 1;
+        if (probability < 0.4) return 2;
+        if (probability < 0.6) return 3;
+        if (probability < 0.8) return 4;
+        return 5;
+      }
+
+      function paintGrid() {
+        updateCoverage();
+        const hasRelays = cells.some(cell => cell.type === 'relay');
+        Array.from(grid.children).forEach((element, index) => {
+          const cell = cells[index];
+          element.className = `lab-cell is-${cell.type}`;
+          element.classList.toggle('covered', cell.covered);
+          element.classList.toggle('inactive', cell.type === 'cat' && !cell.active && hasRelays);
+          element.dataset.signalLevel = String(getSignalLevel(cell.probability || 0));
+          element.setAttribute('aria-label', `Row ${Math.floor(index / mapSize) + 1}, Column ${(index % mapSize) + 1}, ${cell.type}`);
+        });
+        renderConnections();
+      }
+
+      function buildGrid(size) {
+        mapSize = size;
+        isPlaying = false;
+        const cellSize = getCellSize(mapSize);
+        sizeInput.value = mapSize;
+        sizePill.textContent = `${mapSize} x ${mapSize} Lab`;
+        grid.style.setProperty('--lab-size', mapSize);
+        grid.style.setProperty('--lab-cell-size', `${cellSize}px`);
+        grid.style.setProperty('--lab-map-size-px', `${mapSize * cellSize}px`);
+        cells = Array.from({ length: mapSize * mapSize }, () => createCell());
+        designedCells = cloneCells(cells);
+        grid.innerHTML = '';
+
+        cells.forEach((_, index) => {
+          const cellElement = document.createElement('button');
+          cellElement.type = 'button';
+          cellElement.className = 'lab-cell is-fish';
+          cellElement.dataset.index = index;
+          cellElement.addEventListener('click', () => applyTool(index));
+          grid.appendChild(cellElement);
+        });
+
+        setActiveTool('wall');
+        updateLabModeUI();
+        paintGrid();
+      }
+
+      function setCellType(index, type) {
+        const cell = cells[index];
+        if (!cell) {
+          return;
+        }
+        cell.type = type;
+      }
+
+      function placeWall(startIndex) {
+        const length = clampNumber(wallLengthInput.value, 1, 30, 4);
+        const direction = wallDirectionSelect.value;
+        const startRow = Math.floor(startIndex / mapSize);
+        const startColumn = startIndex % mapSize;
+
+        for (let offset = 0; offset < length; offset++) {
+          const row = direction === 'vertical' ? startRow + offset : startRow;
+          const column = direction === 'horizontal' ? startColumn + offset : startColumn;
+          if (inBounds(row, column)) {
+            setCellType(cellIndex(row, column), 'wall');
+          }
+        }
+      }
+
+      function applyTool(index) {
+        if (isPlaying) {
+          const cell = cells[index];
+          if (!cell || cell.type === 'wall' || cell.type === 'relay') {
+            return;
+          }
+          setCellType(index, cell.type === 'cat' ? 'fish' : 'cat');
+          paintGrid();
+          return;
+        }
+
+        if (activeTool === 'wall') {
+          placeWall(index);
+        } else if (activeTool === 'erase') {
+          setCellType(index, 'fish');
+        } else {
+          setCellType(index, activeTool);
+        }
+        designedCells = cloneCells(cells);
+        paintGrid();
+      }
+
+      labModeToggleBtn.addEventListener('click', () => {
+        setLabPlayMode(labPlayMode === 'pro' ? 'game' : 'pro');
+        paintGrid();
+      });
+
+      toolButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          setActiveTool(button.dataset.tool || 'wall');
+        });
+      });
+
+      applySizeBtn.addEventListener('click', () => {
+        buildGrid(clampNumber(sizeInput.value, 5, 60, 12));
+      });
+
+      sizeInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+          buildGrid(clampNumber(sizeInput.value, 5, 60, 12));
+        }
+      });
+
+      [wallLengthInput, wallDirectionSelect, linkDistanceInput].forEach(control => {
+        control.addEventListener('change', paintGrid);
+      });
+
+      clearBtn.addEventListener('click', () => {
+        cells = Array.from({ length: mapSize * mapSize }, () => createCell());
+        designedCells = cloneCells(cells);
+        paintGrid();
+      });
+
+      startPlayBtn.addEventListener('click', () => {
+        designedCells = cloneCells(cells);
+        cells = cloneCells(designedCells);
+        isPlaying = true;
+        updateLabModeUI();
+        paintGrid();
+      });
+
+      resetCatsBtn.addEventListener('click', () => {
+        cells = cloneCells(designedCells);
+        paintGrid();
+      });
+
+      editMapBtn.addEventListener('click', () => {
+        cells = cloneCells(designedCells);
+        isPlaying = false;
+        setActiveTool('wall');
+        updateLabModeUI();
+        paintGrid();
+      });
+
+      buildGrid(mapSize);
+      setLabPlayMode(labPlayMode);
+    });
+  </script>
+</body>
+</html>
