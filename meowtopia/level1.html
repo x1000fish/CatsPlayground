@@ -258,7 +258,7 @@
                     if(typeof meow !== 'undefined') { meow.currentTime = 0; meow.play(); }
                     document.getElementById('victoryMsg').innerText = `STEP：${st} | TIME：${ft}s`;
                     document.getElementById('victoryModal').style.display = 'flex';
-                }, 3500);
+                }, 3700);
                 if (u && sessionStorage.getItem('isGuest') !== 'true') {
                     const currentLvInSession = parseInt(sessionStorage.getItem('currentLevel') || "1");
                     if (currentLvInSession <= 1) {
