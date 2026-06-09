@@ -1360,6 +1360,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function getUnlockedPlacementLevel() {
+    if (sessionStorage.getItem('isGuest') === 'true' || !sessionStorage.getItem('currentUser')) {
+      return 19;
+    }
+
     const currentKeyValue = parseInt(sessionStorage.getItem('placement_level') || '', 10);
     const legacyKeyValue = parseInt(sessionStorage.getItem('placementLevel') || '', 10);
     const unlockedLevel = Math.max(
