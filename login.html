@@ -154,30 +154,30 @@
     .game-card:hover { top: -4px; transform: rotate(3deg) scale(1.04); }
     .game-card:active { top: 5px; box-shadow: 2px 2px 0 var(--dark); }
     
-    /* Hover Shadows & Colors */
-    .game-card:nth-child(1) { background: #fbdbe2; } 
-    .game-card:nth-child(1):hover { box-shadow: 7px 11px 0 var(--pink); }
-    .game-card:nth-child(2) { background: #fdf7d6; } 
-    .game-card:nth-child(2):hover { box-shadow: 7px 11px 0 var(--yellow); }
-    .game-card:nth-child(3) { background: #dceaff; }
-    .game-card:nth-child(3):hover { box-shadow: 7px 11px 0 var(--blue); }
+    /* Hover Shadows & Colors - (1:藍, 2:粉, 3:黃) */
+    .game-card:nth-child(1) { background: #dceaff; } 
+    .game-card:nth-child(1):hover { box-shadow: 7px 11px 0 var(--blue); }
+    .game-card:nth-child(2) { background: #fbdbe2; } 
+    .game-card:nth-child(2):hover { box-shadow: 7px 11px 0 var(--pink); }
+    .game-card:nth-child(3) { background: #fdf7d6; } 
+    .game-card:nth-child(3):hover { box-shadow: 7px 11px 0 var(--yellow); }
     .game-card:nth-child(4) { background: #ddf6e5; }
     .game-card:nth-child(4):hover { box-shadow: 7px 11px 0 var(--mint); }
 
     .game-card .card-title { 
-  	font-family: 'Titan One', cursive; 
-  	font-size: 1.6rem; 
-  	font-weight: 100; 
-  	letter-spacing: 1px; 
-  	text-align: center; 
-  	margin-top: 8px; 
- 	color: var(--dark); 
-    	display: flex;
-  	align-items: center;
-  	justify-content: center;
-  	min-height: 4rem; /* 預留給兩行文字的高度 */
-  	line-height: 1.1; /* 稍微縮小行距讓兩行字看起來更緊湊 */
-	}
+      font-family: 'Titan One', cursive; 
+      font-size: 1.6rem; 
+      font-weight: 100; 
+      letter-spacing: 1px; 
+      text-align: center; 
+      margin-top: 8px; 
+      color: var(--dark); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 4rem;
+      line-height: 1.1; 
+    }
     .game-card .card-desc { font-size: 0.75rem; font-weight: 700; color: #888; letter-spacing: 1px; text-align: center; text-transform: uppercase; }
     .card-badge { background: white; border: 3px solid var(--dark); border-radius: 30px; padding: 4px 14px; font-size: 0.8rem; font-weight: 900; color: var(--dark); margin-top: 10px; }
     .stamp { position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; border: 4px solid var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-15deg); color: var(--green); font-weight: 900; font-size: 12px; pointer-events: none; opacity: 0.7; }
@@ -194,14 +194,82 @@
     /* ── CSS ICONS ── */
     .css-icon-wrapper { position: relative; width: 60px; height: 60px; display: flex; justify-content: center; align-items: flex-end; }
     
-    .css-cat { width: 46px; height: 38px; background: var(--cream); border: 4px solid var(--dark); border-radius: 50% 50% 40% 40%; position: relative; z-index: 2; margin: 0 auto; }
-    .css-cat::before, .css-cat::after { content: ''; position: absolute; top: -45%; width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 18px solid var(--dark); z-index: -1; }
-    .css-cat::before { left: -10px; transform: rotate(-33deg); }
-    .css-cat::after { right: -10px; transform: rotate(33deg); }
-    .css-cat-eyes { position: absolute; top: 14px; left: 50%; margin-left: -12px; width: 6px; height: 6px; background: var(--dark); border-radius: 50%; box-shadow: 18px 0 0 var(--dark); animation: cat-blink 2s infinite; }
-    .css-cat-nose { position: absolute; top: 23px; left: 50%; transform: translateX(-50%); width: 6px; height: 4px; background: var(--pink); border-radius: 50%; }
-    @keyframes cat-blink { 0%, 95%, 98%, 100% { transform: scaleY(1); } 96%, 97% { transform: scaleY(0.1); } }
+    /* ── QUANTUM REVERSIBLE CIRCUIT (NEW) ── */
+    .css-rev-circuit { 
+      width: 60px; 
+      height: 50px; 
+      position: relative; 
+      margin: 0 auto 5px; 
+      z-index: 2; 
+    }
+    /* 兩條平行的量子位元線 (Qubit Wires) */
+    .css-rev-wire { 
+      position: absolute; 
+      left: 0; 
+      width: 100%; 
+      height: 6px; 
+      background: var(--dark); 
+      border-radius: 3px; 
+    }
+    .css-rev-wire.top { top: 8px; }
+    .css-rev-wire.bottom { top: 33px; }
 
+    /* 垂直連接線 (Connection) */
+    .css-rev-conn { 
+      position: absolute; 
+      left: 50%; 
+      top: 10px; 
+      height: 25px; 
+      width: 6px; 
+      background: var(--dark); 
+      transform: translateX(-50%); 
+    }
+
+    /* 控制節點 (Control Qubit - Dot) */
+    .css-rev-ctrl { 
+      position: absolute; 
+      left: 50%; 
+      top: 10px; 
+      width: 16px; 
+      height: 16px; 
+      background: var(--mint); 
+      border: 4px solid var(--dark); 
+      border-radius: 50%; 
+      transform: translate(-50%, -50%); 
+      z-index: 3; 
+      animation: pulse-q-ctrl 1.5s infinite alternate; 
+    }
+
+    /* 目標節點 (Target Qubit - NOT / ⊕) */
+    .css-rev-target { 
+      position: absolute; 
+      left: 50%; 
+      top: 35px; 
+      width: 24px; 
+      height: 24px; 
+      background: var(--cream); 
+      border: 4px solid var(--dark); 
+      border-radius: 50%; 
+      transform: translate(-50%, -50%); 
+      z-index: 3; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1);
+    }
+    .css-rev-target::before { 
+      content: ''; position: absolute; width: 100%; height: 4px; background: var(--dark); 
+    }
+    .css-rev-target::after { 
+      content: ''; position: absolute; width: 4px; height: 100%; background: var(--dark); 
+    }
+
+    @keyframes pulse-q-ctrl {
+      0% { transform: translate(-50%, -50%) scale(1); background: var(--mint); }
+      100% { transform: translate(-50%, -50%) scale(1.2); background: var(--yellow); }
+    }
+
+    /* ── ANTENNA (SENSOR PATROL) ── */
     .css-antenna { position: relative; width: 100%; height: 100%; }
     .css-antenna-base { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 24px; height: 6px; background: var(--dark); border-radius: 3px 3px 0 0; }
     .css-antenna-base::before { content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 6px; height: 20px; background: var(--dark); }
@@ -210,158 +278,30 @@
     .css-antenna-waves::after { content: ''; position: absolute; top: -50%; left: -36%; width: 46px; height: 46px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--dark); animation: signal-pulse 2s infinite ease-in-out 0.3s; }
     @keyframes signal-pulse { 0% { opacity: 0.1; } 50% { opacity: 0.8; } 100% { opacity: 0.1; } }
 
-    /* ── QUANTUM SECURITY SHIELD (NEW) ── */
+    /* ── QUANTUM SECURITY SHIELD ── */
     .css-q-shield { 
       width: 48px; 
       height: 56px; 
       background: var(--blue); 
       border: 4px solid var(--dark); 
-      /* 利用不對稱的 border-radius 畫出完美的圓潤盾牌形狀 */
       border-radius: 12px 12px 26px 26px / 12px 12px 34px 34px; 
       position: relative; 
       display: flex; 
       align-items: center; 
       justify-content: center;
       overflow: hidden;
-      box-shadow: inset 0 6px 0 rgba(255,255,255,0.6); /* 頂部高光效果 */
+      box-shadow: inset 0 6px 0 rgba(255,255,255,0.6); 
       margin: 0 auto;
       z-index: 2;
     }
-    
-    /* 盾牌內部的原子軌道 */
-    .css-q-orbit { 
-      position: absolute; 
-      width: 40px; 
-      height: 14px; 
-      border: 3px solid rgba(255,255,255,0.9); 
-      border-radius: 50%; 
-    }
+    .css-q-orbit { position: absolute; width: 40px; height: 14px; border: 3px solid rgba(255,255,255,0.9); border-radius: 50%; }
     .css-q-orbit.deg1 { transform: rotate(45deg); }
     .css-q-orbit.deg2 { transform: rotate(-45deg); }
-    
-    /* 盾牌中心的量子核心 */
-    .css-q-core { 
-      position: absolute; 
-      width: 14px; 
-      height: 14px; 
-      background: var(--cream); 
-      border: 3px solid var(--dark); 
-      border-radius: 50%; 
-      z-index: 3;
-      animation: q-core-pulse 1.5s infinite ease-in-out alternate;
-    }
-
-    /* 盾牌外部漂浮的裝飾火花 */
-    .css-q-spark {
-      position: absolute;
-      background: var(--yellow);
-      border: 3px solid var(--dark);
-      border-radius: 50%;
-      z-index: 3;
-    }
+    .css-q-core { position: absolute; width: 14px; height: 14px; background: var(--cream); border: 3px solid var(--dark); border-radius: 50%; z-index: 3; animation: q-core-pulse 1.5s infinite ease-in-out alternate; }
+    .css-q-spark { position: absolute; background: var(--yellow); border: 3px solid var(--dark); border-radius: 50%; z-index: 3; }
     .css-q-s1 { width: 12px; height: 12px; top: -2px; right: -4px; animation: float 2s infinite ease-in-out; }
     .css-q-s2 { width: 10px; height: 10px; bottom: 8px; left: -6px; animation: float 2s infinite ease-in-out 1s; }
-
-    @keyframes q-core-pulse {
-      0% { transform: scale(1); background: var(--cream); }
-      100% { transform: scale(1.2); background: var(--mint); }
-    }
-    /* ── QUANTUM VERIFICATION (NEW) ── */
-    /* 放大鏡鏡片主體 */
-    .css-q-verify {
-      position: relative;
-      width: 46px;
-      height: 46px;
-      background: rgba(255,255,255,0.9);
-      border: 4px solid var(--dark);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      z-index: 2;
-      box-shadow: inset -4px -4px 0 rgba(149, 194, 255, 0.4); /* 玻璃邊緣反光 */
-      animation: inspect-float 3s infinite ease-in-out;
-    }
-    
-    /* 放大鏡的把手 */
-    .css-v-handle {
-      position: absolute;
-      bottom: -16px;
-      right: -12px;
-      width: 14px;
-      height: 22px;
-      background: var(--pink);
-      border: 4px solid var(--dark);
-      border-radius: 6px;
-      transform: rotate(-45deg);
-      z-index: -1;
-      box-shadow: inset -3px 0 0 rgba(0,0,0,0.1);
-    }
-    
-    /* 鏡片內的量子軌道 */
-    .css-v-orbit {
-      position: absolute;
-      width: 32px;
-      height: 12px;
-      border: 3px solid var(--dark);
-      border-radius: 50%;
-    }
-    .css-v-orbit.deg1 { transform: rotate(35deg); border-color: var(--blue); }
-    .css-v-orbit.deg2 { transform: rotate(-35deg); border-color: var(--yellow); }
-    
-    /* 被檢驗的量子核心 */
-    .css-v-core {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: var(--dark);
-      border-radius: 50%;
-      z-index: 3;
-      animation: v-core-blink 1.5s infinite alternate;
-    }
-
-    /* 驗證成功的綠色打勾徽章 */
-    .css-v-badge {
-      position: absolute;
-      bottom: 2px;
-      left: -4px;
-      width: 22px;
-      height: 22px;
-      background: var(--green);
-      border: 3px solid var(--dark);
-      border-radius: 50%;
-      z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 2px 2px 0 var(--dark);
-      animation: pop-bounce 2s infinite;
-    }
-    
-    /* 打勾符號 (純 CSS 繪製) */
-    .css-v-badge::after {
-      content: '';
-      width: 5px;
-      height: 10px;
-      border: 3px solid #fff;
-      border-top: none;
-      border-left: none;
-      transform: rotate(45deg) translate(-1px, -1px);
-    }
-
-    @keyframes inspect-float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-4px) rotate(6deg); }
-    }
-    @keyframes v-core-blink {
-      0% { transform: scale(1); background: var(--dark); }
-      100% { transform: scale(1.3); background: var(--mint); }
-    }
-    @keyframes pop-bounce {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1) rotate(-10deg); }
-    }
+    @keyframes q-core-pulse { 0% { transform: scale(1); background: var(--cream); } 100% { transform: scale(1.2); background: var(--mint); } }
 
     @keyframes glaw {
       0% { text-shadow: 0 0 4px #ffafc1, 0 0 9px #ffafc1; }
@@ -376,10 +316,8 @@
 
   <h1 class="game-title mb-10 text-center">Cat's Playground</h1>
 
-  <!-- ① Login / Register flip card -->
   <div class="flip-card" id="auth-card">
     <div class="flip-card-inner">
-      <!-- Front: Login -->
       <div class="flip-card-front">
         <div class="flex-grow flex flex-col justify-center">
           <h2 style="font-family:'Arial', sans-serif; font-weight:900; font-style:italic; font-size: 2.2rem; text-align: left; margin-bottom: 1.5rem; color: var(--dark);">LOGIN_</h2>
@@ -393,16 +331,13 @@
           </div>
         </div>
         
-        <!-- 主要行動按鈕：保持醒目 -->
         <button id="btn-login" onclick="handleLogin()" class="game-btn btn-red w-full">START!</button>
         
-        <!-- 次要選項區域：移除顏色標籤，全部統一為原本的灰色 -->
         <div class="flex justify-between items-center px-2 mt-4">
           <p class="switch-link !mt-0" onclick="handleGuestLogin()">Just visiting? Guest</p>
           <p class="switch-link !mt-0" onclick="toggleAuth()">New cat? Register</p>
         </div>
       </div>
-      <!-- Back: Register -->
       <div class="flip-card-back">
         <div class="pass-header"><h2>ADVENTURE PASS</h2></div>
         <div class="pass-body">
@@ -430,7 +365,6 @@
     </div>
   </div>
 
-  <!-- ② Cat's Playground hub (shown after login) -->
   <div id="hub" class="hidden w-full max-w-3xl">
     <div class="player-bar">
       <div class="player-main">
@@ -447,20 +381,37 @@
     </div>
 
     <div class="game-cards">
-      <!-- ✅ Meowtopia card -->
-      <a class="game-card" id="meowtopia-card" href="meowtopia/index.html">
+      
+      <a class="game-card" id="quantum-security-card" href="https://s112321005.github.io/Cybersecurity-Visualization/QuantumCybersecurityEducationPlatform.html" target="_blank" rel="noopener noreferrer">
         <div class="css-icon-wrapper">
-          <div class="css-cat">
-            <div class="css-cat-eyes"></div>
-            <div class="css-cat-nose"></div>
+          <div class="css-q-spark css-q-s1"></div>
+          <div class="css-q-spark css-q-s2"></div>
+          <div class="css-q-shield">
+            <div class="css-q-orbit deg1"></div>
+            <div class="css-q-orbit deg2"></div>
+            <div class="css-q-core"></div>
           </div>
         </div>
-        <div class="card-title">Meowtopia</div>
+        <div class="card-title">Quantum Security</div>
+        <div class="card-desc">Explore cybersecurity visuals!</div>
+        <div class="card-badge">OPEN</div>
+      </a>
+
+      <a class="game-card" id="meowtopia-card" href="meowtopia/index.html">
+        <div class="css-icon-wrapper">
+          <div class="css-rev-circuit">
+            <div class="css-rev-wire top"></div>
+            <div class="css-rev-wire bottom"></div>
+            <div class="css-rev-conn"></div>
+            <div class="css-rev-ctrl"></div>
+            <div class="css-rev-target"></div>
+          </div>
+        </div>
+        <div class="card-title">Quantum Circuit</div>
         <div class="card-desc">Guide your cat through mazes!</div>
         <div class="card-badge">LV. <span id="hub-meow-lv">1</span> / 18</div>
       </a>
 
-      <!-- Sensor Placement card -->
       <a class="game-card" id="placement-card" href="placement/index.html">
         <div class="css-icon-wrapper">
           <div class="css-antenna">
@@ -473,26 +424,6 @@
         <div class="card-desc">Place sensors to cover zones!</div>
         <div class="card-badge">LV. <span id="hub-place-lv">1</span> / 19</div>
       </a>
-
-      <!-- Quantum Security card -->
-      <!-- Quantum Security card -->
-      <a class="game-card" id="quantum-security-card" href="https://s112321005.github.io/Cybersecurity-Visualization/QuantumCybersecurityEducationPlatform.html" target="_blank" rel="noopener noreferrer">
-        <div class="css-icon-wrapper">
-          <!-- 漂浮裝飾 -->
-          <div class="css-q-spark css-q-s1"></div>
-          <div class="css-q-spark css-q-s2"></div>
-          <!-- 主盾牌 -->
-          <div class="css-q-shield">
-            <div class="css-q-orbit deg1"></div>
-            <div class="css-q-orbit deg2"></div>
-            <div class="css-q-core"></div>
-          </div>
-        </div>
-        <div class="card-title">Quantum Security</div>
-        <div class="card-desc">Explore cybersecurity visuals!</div>
-        <div class="card-badge">OPEN</div>
-      </a>
-
       
     </div>
   </div>
