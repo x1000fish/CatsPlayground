@@ -246,10 +246,10 @@
 
 </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels pro-active" id="body-root">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 mini-mode hide-labels" id="body-root">
     <div id="mode-toggle-container">
         <div id="mode-toggle" class="mode-toggle-fixed" onclick="togglePro()">👁️</div>
-        <div id="quantum-toggle" class="mode-toggle-fixed" onclick="toggleQuantumMode()" style="top: 100px; font-size: 26px;">⚛️</div>
+        <div id="quantum-toggle" class="mode-toggle-fixed hidden" onclick="toggleQuantumMode()" style="top: 100px; font-size: 26px;">⚛️</div>
     </div>
     <div id="leaderboard-wrapper">
         <div class="side-leaderboard-content">
@@ -277,7 +277,7 @@
                         <div class="skin-preview">
                             <img src="./RIP/Cat16.png" class="preview-cat" alt="RIP cat">
                         </div>
-                        <span>BONE</span>
+                        <span>RIP</span>
                     </button>
                     <button id="skin-option-poto" class="skin-card" onclick="selectSkin('poto')">
                         <div class="skin-preview">
@@ -331,7 +331,7 @@
         </div>
         <div class="main-layout">
             <div id="pro-panel">
-                <div class="panel-section-title" id="panel-title-gates">Path Select</div>
+                <div class="panel-section-title" id="panel-title-gates">Transformations</div>
                 <div class="grid grid-cols-2 gap-2 w-10/12 mx-auto" id="gate-container">
                     <button id="gate-x0" class="gate-btn-v2 btn-not" onclick="applyGate('X0')" onmouseover="syncGateHighlight('X0', true)" onmouseout="syncGateHighlight('X0', false)"></button>
                     <button id="gate-x1" class="gate-btn-v2 btn-not" onclick="applyGate('X1')" onmouseover="syncGateHighlight('X1', true)" onmouseout="syncGateHighlight('X1', false)"></button>      
@@ -410,7 +410,7 @@
             updateFeatureToggleLabels();
         }
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsOdnjfzdpZPaLEojtMJFNjs8t2EJaoPYib4kVj6GrCXKMwt9Fj6iV6swJbicaM28QOw/exec';
-        let steps = 0, time = 0, isPro = true, fishAtNode = [1, 0, 3, 2], gateHistory = [], timerInterval, isSolved = false;
+        let steps = 0, time = 0, isPro = false, fishAtNode = [1, 0, 3, 2], gateHistory = [], timerInterval, isSolved = false;
         const PROGRESS_TOTAL = 4;
         const PROGRESS_DEFAULT_CODE = '011';
 
@@ -670,7 +670,7 @@
         };       
         function updateLabels() {
             const isCube = !isQuantumMode;
-            document.getElementById('panel-title-gates').innerText = isCube ? 'Path Select' : 'Quantum Gate';
+            document.getElementById('panel-title-gates').innerText = isCube ? 'Transformations' : 'Quantum Gate';
             document.getElementById('circuit-title-text').innerText = isCube ? 'Paths' : 'Circuit Diagram';
             updateCircuitLabels();
             if (typeof updateFeatureToggleLabels === 'function') updateFeatureToggleLabels();
