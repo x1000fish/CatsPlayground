@@ -63,7 +63,6 @@
     }
     
     function renderPlayerPhoto() {
-      // 優先從緩存抓取圖片 (sessionStorage 與 localStorage)
       const photo = sessionStorage.getItem('playerPhoto') || localStorage.getItem('playerPhoto');
       const avatar = document.getElementById('meow-player-avatar');
       if (!avatar) return;
@@ -74,7 +73,6 @@
     }
     
     (function initMeowtopiaMap() {
-      // 嘗試從緩存中取得名字 (sessionStorage 優先，再來是 localStorage)
       const user = sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser');
       showMeowMap(user);
       
@@ -87,21 +85,16 @@
     
     function showMeowMap(user) {
       let meowLv;
-
-      // 如果抓不到 user，設定預設名字
       if (!user) {
         user = "Guest";
       }
-
-      // 從緩存抓取等級 (sessionStorage 優先，再來 localStorage)
+      const isGuest = sessionStorage.getItem('isGuest') === 'true';
       const _ml  = parseInt(sessionStorage.getItem('meow_level') || localStorage.getItem('meow_level'));
       const _cl  = parseInt(sessionStorage.getItem('currentLevel') || localStorage.getItem('currentLevel'));
 
-      // 檢查緩存是否有紀錄等級，如果都沒有，則預設給予 18 等
-      if (isNaN(_ml) && isNaN(_cl)) {
+      if (isGuest || (isNaN(_ml) && isNaN(_cl))) {
         meowLv = 18;
       } else {
-        // 如果緩存有紀錄，確保等級限制在 1~18 之間
         meowLv = Math.min(
           Math.max(
             isNaN(_ml) ? 1 : _ml,
@@ -111,24 +104,17 @@
           18
         );
       }
-
-      // 渲染名字與等級
       document.getElementById('meow-display-username').innerText = user;
       document.getElementById('meow-display-level').innerText    = `LV. ${meowLv}`;
-      
-      // 渲染照片 (會自動去找緩存)
       renderPlayerPhoto();
-      
       const grid = document.getElementById('level-grid');
       grid.innerHTML = '';
       
-      // 產生 18 個關卡按鈕
       for (let i = 1; i <= 18; i++) {
         const node = document.createElement('a');
         node.className = 'level-node';
         node.innerText = i; 
         
-        // 依據玩家等級解鎖
         if (i === 1 || i <= meowLv) {
           node.href = `level${i}.html`;
         } else {
@@ -143,10 +129,7 @@
     }
     
     function handleLogout() {
-      // 清除本次登入資訊
       sessionStorage.clear();
-      // 可選：如果你希望登出時連長期緩存也清掉，可把這行註解打開
-      // localStorage.clear(); 
       window.location.href = '../login.html';
     }
   </script>
